@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.noise.OpenSimplexNoise;
+import paulevs.betternether.noise.PregennedOpenSimplexNoise;
 import paulevs.betternether.noise.WorleyNoise;
 import paulevs.betternether.structures.big.BigStructure;
 import paulevs.betternether.structures.big.StructureManager;
@@ -23,15 +24,13 @@ public class CityStructureManager extends StructureManager
 	protected static final IBlockState LAVA = Blocks.LAVA.getDefaultState();
 	
 	protected CityGenerator generator = new CityGenerator();
-	private final OpenSimplexNoise noise;
-	private final WorleyNoise noiseX;
+	private PregennedOpenSimplexNoise noise;
 	
 	public CityStructureManager(long seed)
 	{
 		super("city", 80, seed);
 		random.setSeed(seed);
-		noise = new OpenSimplexNoise(random.nextLong());
-		noiseX = new WorleyNoise(random.nextLong());
+		//noise = new PregennedOpenSimplexNoise(xSize, ySize, noiseGen) OpenSimplexNoise(random.nextLong());
 	}
 
 	@Override
@@ -48,6 +47,7 @@ public class CityStructureManager extends StructureManager
 		{
 			BlockPos cp = positions.get(i);
 			int r = radiuses.get(i);
+			//noise = new PregennedOpenSimplexNoise(r * 3, r * 3, new OpenSimplexNoise(random.nextLong()));
 			makeCave(r, cp.getX(), cp.getY(), cp.getZ(), cave);
 		}
 		return cave;
@@ -56,9 +56,13 @@ public class CityStructureManager extends StructureManager
 	protected void makeCave(int radius, int centerY, BigStructure structure)
 	{
 		int bounds = (int) (radius * 1.5);
+		radius *= 0.8;
 		int rr = radius * radius;
 		int minY = 5 - centerY;
 		int lavaH = 31 - centerY;
+		int height = Math.abs(minY) + radius;
+		int noiseBounds = Math.max(bounds * 2, height);
+		noise = new PregennedOpenSimplexNoise(noiseBounds, noiseBounds, new OpenSimplexNoise(random.nextLong()));
 		for (int x = -bounds; x < bounds; x++)
 		{
 			for (int y = minY; y < radius; y++)
@@ -73,11 +77,14 @@ public class CityStructureManager extends StructureManager
 					/*double dx = noise.eval(y2 * 0.02, z * 0.02) * radius;
 					double dy = noise.eval(x * 0.02, z * 0.02) * radius;
 					double dz = noise.eval(y * 0.02, x * 0.02) * radius;*/
- 					double xx = x * x;
-					double yy = y2 * y2;
-					double zz = z * z;
-					double posRadius = radius - (Math.abs((noise.eval(x * 0.075, y * 0.075, z * 0.075) * 20)) + 10);
-					if (xx + yy + zz < posRadius * posRadius) 
+					double nx = warp(x, y - minY, z + bounds);
+					double ny = warp(y2, x + bounds, z + bounds);
+					double nz = warp(z, x + bounds, y - minY);
+ 					double xx = nx * nx;
+					double yy = ny * ny;
+					double zz = nz * nz;
+					//double posRadius = radius - (Math.abs((noise.eval(x * 0.075, y * 0.075, z * 0.075) * 20)) + 10);
+					if (xx + yy + zz < rr) 
 					{
 						if (wy > lavaH)
 							structure.setBlock(AIR, new BlockPos(x, wy, z));
@@ -92,14 +99,19 @@ public class CityStructureManager extends StructureManager
 	protected void makeCave(int radius, int centerX, int centerY, int centerZ, BigStructure structure)
 	{
 		int bounds = (int) (radius * 1.5);
+		radius *= 0.8;
 		int rr = radius * radius;
 		int minY = 5 - centerY;
 		int lavaH = 31 - centerY;
+		int height = Math.abs(minY) + bounds;
+		int noiseBounds = Math.max(bounds * 2, height);
+		noise = new PregennedOpenSimplexNoise(noiseBounds, noiseBounds, new OpenSimplexNoise(random.nextLong()));
 		for (int x = -bounds; x < bounds; x++)
 		{
 			int wx = x + centerX;
 			for (int y = minY; y < bounds; y++)
 			{
+				double y2 = y * 2;
 				int wy = y + centerY - 40;
 				for (int z = -bounds; z < bounds; z++)
 				{
@@ -107,12 +119,13 @@ public class CityStructureManager extends StructureManager
 					/*double dx = noise.eval(y * 0.02, z * 0.02) * radius - 10;
 					double dy = noise.eval(x * 0.02, z * 0.02) * radius - 10;
 					double dz = noise.eval(y * 0.02, x * 0.02) * radius - 10;*/
-					double y2 = y * 3;
-					double xx = x * x;
-					double yy = y2 * y2;
-					double zz = z * z;
-					double posRadius = radius - (Math.abs((noise.eval(x * 0.075, y * 0.075, z * 0.075) * 20)) + 10);
-					if (xx + yy + zz < posRadius * posRadius) 
+					double nx = warp(x, y - minY, z + bounds);
+					double ny = warp(y2, x + bounds, z + bounds);
+					double nz = warp(z, x + bounds, y - minY);
+ 					double xx = nx * nx;
+					double yy = ny * ny;
+					double zz = nz * nz;
+					if (xx + yy + zz < rr) 
 					{
 						if (wy > lavaH)
 							structure.setBlock(AIR, new BlockPos(wx, wy, wz));
@@ -124,11 +137,9 @@ public class CityStructureManager extends StructureManager
 		}
 	}
 	
-	private static int fastAbs(int n) {
-		int mask = n >> (32 - 1);
-		return ((n + mask) ^ mask);
+	private double warp(double val, int nx, int ny) {
+		return val + (noise.eval(nx, ny) * 5);
 	}
-
 	
 	@Override
 	public void load(World world)

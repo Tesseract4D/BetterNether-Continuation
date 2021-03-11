@@ -1,7 +1,5 @@
 package paulevs.betternether.noise;
 
-import net.minecraft.util.math.MathHelper;
-
 /**
  * Cached OpenSimplex noise. 
  */
@@ -12,7 +10,7 @@ public class PregennedOpenSimplexNoise {
 	public PregennedOpenSimplexNoise(int xSize, int ySize, OpenSimplexNoise noiseGen) {
 		xArrSize = (xSize >> 3) + 1;
 		yArrSize = (ySize >> 3) + 1; // divide size of noise by 8 (sampling rate), add one for interpolating any remainder
-		noise = new double[xArrSize * yArrSize]; // this performs better than a 2-dimensional array because java sucks
+		noise = new double[(xArrSize + 1) * yArrSize + 1]; // this performs better than a 2-dimensional array because java sucks
 		for(int x = 0; x < xArrSize; x++) {
 			for(int y = 0; y < yArrSize; y++) {
 				put(x, y, noiseGen.eval(x, y));
@@ -33,10 +31,16 @@ public class PregennedOpenSimplexNoise {
 		int lastY = y >> 3;
 		double distX = (x & 7) / 8D;
 		double distY = (y & 7) / 8D;
-		return lerp(get(lastX, lastY), distX * distY, get(lastX + 1, lastY + 1));
+		double q00 = get(lastX, lastY);
+		double q10 = get(lastX + 1, lastY);
+		double q01 = get(lastX, lastY + 1);
+		double q11 = get(lastX + 1, lastY + 1);
+		
+		
+		return lerp(lerp(q00, distX, q10), distY, lerp(q01, distX, q11));
 	}
 	
 	private static double lerp(double lower, double slide, double upper) {
-		return lower + ((lower - upper) * slide);
+		return lower + ((upper - lower) * slide);
 	}
 }
