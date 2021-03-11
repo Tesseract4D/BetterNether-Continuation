@@ -51,14 +51,6 @@ public class BigStructure
 		cz = structure.getInteger("cz");
 		int[] pos = structure.getIntArray("pos");
 		this.pos = new BlockPos(pos[0], pos[1], pos[2]);
-		NBTTagList chunkData = structure.getTagList("chunks", 10);
-		for (int i = 0; i < chunkData.tagCount(); i++)
-		{
-			NBTTagCompound chunk = chunkData.getCompoundTagAt(i);
-			StructureChunk c = new StructureChunk(chunk);
-			pos = chunk.getIntArray("pos");
-			data.put(new StructurePos(pos[0], pos[1], pos[2]), c);
-		}
 	}
 	
 	protected StructureChunk getStructureChunk(int x, int y, int z)
@@ -145,16 +137,6 @@ public class BigStructure
 		structure.setInteger("cx", cx);
 		structure.setInteger("cz", cz);
 		structure.setIntArray("pos", new int[] {pos.getX(), pos.getY(), pos.getZ()});
-		NBTTagList chunkData = new NBTTagList();
-		structure.setTag("chunks", chunkData);
-		for (StructurePos p: data.keySet())
-		{
-			StructureChunk c = data.get(p);
-			NBTTagCompound chunk = new NBTTagCompound();
-			chunk.setIntArray("pos", new int[] {p.getX(), p.getY(), p.getZ()});
-			c.writeNBT(chunk);
-			chunkData.appendTag(chunk);
-		}
 		return structure;
 	}
 	
