@@ -6,8 +6,6 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
-import elucent.albedo.lighting.ILightProvider;
-import elucent.albedo.lighting.Light;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -34,8 +32,8 @@ import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.sounds.SoundRegister;
 import paulevs.betternether.world.BNWorldGenerator;
 
-@Optional.Interface(iface="elucent.albedo.lighting.ILightProvider", modid="albedo")
-public class EntityFirefly extends EntityAmbientCreature implements IAnimals, ILightProvider
+//@Optional.Interface(iface="elucent.albedo.lighting.ILightProvider", modid="albedo") i can't be assed to figure out how to forgegradle rn
+public class EntityFirefly extends EntityAmbientCreature implements IAnimals
 {
 	private static final DataParameter<Byte> R = EntityDataManager.<Byte>createKey(EntityFirefly.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> G = EntityDataManager.<Byte>createKey(EntityFirefly.class, DataSerializers.BYTE);
@@ -289,7 +287,7 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals, IL
     	updateOffset();
     }
 
-	@Override
+	/*@Override
 	public Light provideLight()
 	{
 		return Light
@@ -299,7 +297,7 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals, IL
     			(float) (((Byte) this.dataManager.get(R)) & 255) / 255F,
 				(float) (((Byte) this.dataManager.get(G)) & 255) / 255F,
 				(float) (((Byte) this.dataManager.get(B)) & 255) / 255F).radius(2F).build();
-	}
+	}*/
 	
 	protected boolean canTriggerWalking()
     {

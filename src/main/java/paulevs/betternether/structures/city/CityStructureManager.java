@@ -12,7 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.noise.WorleyNoiseOctaved;
+import paulevs.betternether.noise.OpenSimplexNoise;
+import paulevs.betternether.noise.WorleyNoise;
 import paulevs.betternether.structures.big.BigStructure;
 import paulevs.betternether.structures.big.StructureManager;
 
@@ -22,17 +23,15 @@ public class CityStructureManager extends StructureManager
 	protected static final IBlockState LAVA = Blocks.LAVA.getDefaultState();
 	
 	protected CityGenerator generator = new CityGenerator();
-	protected WorleyNoiseOctaved noiseX;
-	protected WorleyNoiseOctaved noiseY;
-	protected WorleyNoiseOctaved noiseZ;
+	private final OpenSimplexNoise noise;
+	private final WorleyNoise noiseX;
 	
 	public CityStructureManager(long seed)
 	{
 		super("city", 80, seed);
 		random.setSeed(seed);
-		noiseX = new WorleyNoiseOctaved(random.nextLong(), 2);
-		noiseY = new WorleyNoiseOctaved(random.nextLong(), 2);
-		noiseZ = new WorleyNoiseOctaved(random.nextLong(), 2);
+		noise = new OpenSimplexNoise(random.nextLong());
+		noiseX = new WorleyNoise(random.nextLong());
 	}
 
 	@Override
@@ -68,13 +67,17 @@ public class CityStructureManager extends StructureManager
 				int y2 = y * 2;
 				for (int z = -bounds; z < bounds; z++)
 				{
-					double dx = x + noiseX.GetValue(y2 * 0.02, z * 0.02) * 20;
+					/*double dx = x + noiseX.GetValue(y2 * 0.02, z * 0.02) * 20;
 					double dy = y2 + noiseX.GetValue(x * 0.02, z * 0.02) * 20;
-					double dz = z + noiseX.GetValue(y * 0.02, x * 0.02) * 20;
-					double xx = dx * dx;
-					double yy = dy * dy;
-					double zz = dz * dz;
-					if (xx + yy + zz < rr)
+					double dz = z + noiseX.GetValue(y * 0.02, x * 0.02) * 20;*/
+					/*double dx = noise.eval(y2 * 0.02, z * 0.02) * radius;
+					double dy = noise.eval(x * 0.02, z * 0.02) * radius;
+					double dz = noise.eval(y * 0.02, x * 0.02) * radius;*/
+ 					double xx = x * x;
+					double yy = y2 * y2;
+					double zz = z * z;
+					double posRadius = radius - (Math.abs((noise.eval(x * 0.075, y * 0.075, z * 0.075) * 20)) + 10);
+					if (xx + yy + zz < posRadius * posRadius) 
 					{
 						if (wy > lavaH)
 							structure.setBlock(AIR, new BlockPos(x, wy, z));
@@ -101,13 +104,15 @@ public class CityStructureManager extends StructureManager
 				for (int z = -bounds; z < bounds; z++)
 				{
 					int wz = z + centerZ;
-					double dx = x + noiseX.GetValue(y * 0.02, z * 0.02) * 20 - 10;
-					double dy = y + noiseX.GetValue(x * 0.02, z * 0.02) * 20 - 10;
-					double dz = z + noiseX.GetValue(y * 0.02, x * 0.02) * 20 - 10;
-					double xx = dx * dx;
-					double yy = dy * dy;
-					double zz = dz * dz;
-					if (xx + yy + zz < rr)
+					/*double dx = noise.eval(y * 0.02, z * 0.02) * radius - 10;
+					double dy = noise.eval(x * 0.02, z * 0.02) * radius - 10;
+					double dz = noise.eval(y * 0.02, x * 0.02) * radius - 10;*/
+					double y2 = y * 3;
+					double xx = x * x;
+					double yy = y2 * y2;
+					double zz = z * z;
+					double posRadius = radius - (Math.abs((noise.eval(x * 0.075, y * 0.075, z * 0.075) * 20)) + 10);
+					if (xx + yy + zz < posRadius * posRadius) 
 					{
 						if (wy > lavaH)
 							structure.setBlock(AIR, new BlockPos(wx, wy, wz));
@@ -118,6 +123,12 @@ public class CityStructureManager extends StructureManager
 			}
 		}
 	}
+	
+	private static int fastAbs(int n) {
+		int mask = n >> (32 - 1);
+		return ((n + mask) ^ mask);
+	}
+
 	
 	@Override
 	public void load(World world)
