@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import paulevs.betternether.config.ConfigLoader;
 
 public class CityGenerator
 {
@@ -20,24 +21,13 @@ public class CityGenerator
 	
 	public CityGenerator()
 	{
-		addBuildingToList("city_center_01", -10, centers);
-		addBuildingToList("city_center_02", -10, centers);
+		for(String center : ConfigLoader.getCityCenters()) {
+			addBuildingToList(center, -10, centers);
+		}
 		
-		addBuildingToList("city_library_01", buildings);
-		addBuildingToList("city_tower_01", buildings);
-		addBuildingToList("city_tower_02", buildings);
-		addBuildingToList("city_building_01", buildings);
-		addBuildingToList("city_building_02", buildings);
-		addBuildingToList("city_building_03", buildings);
-		addBuildingToList("city_building_04", buildings);
-		addBuildingToList("city_building_05", buildings);
-		addBuildingToList("city_building_06", buildings);
-		addBuildingToList("city_building_07", buildings);
-		addBuildingToList("city_building_08", buildings);
-		addBuildingToList("city_building_09", buildings);
-		addBuildingToList("city_building_10", buildings);
-		addBuildingToList("city_enchanter_01", buildings);
-		addBuildingToList("city_hall", buildings);
+		for(String building : ConfigLoader.getCityBuildings()) {
+			addBuildingToList(building, buildings);
+		}
 		
 		addBuildingToList("road_end_01", roadEnds);
 		addBuildingToList("road_end_02", -2, roadEnds);

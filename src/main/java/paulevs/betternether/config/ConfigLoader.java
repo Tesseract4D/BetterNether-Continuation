@@ -38,6 +38,8 @@ public class ConfigLoader
 	
 	private static int cityDistance;
 	private static boolean hasCities;
+	private static String[] centers;
+	private static String[] buildings;
 	
 	public static void load(File file)
 	{
@@ -50,6 +52,8 @@ public class ConfigLoader
 		hasNetherWart = config.getBoolean("NetherWartGeneration", "Generator", true, "Enables|Disables vanilla nether wart generation in biomes");
 		cityDistance = config.getInt("CityGridSize", "Cities", 80, 8, 2048, "City grid size in chunks");
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
+		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers");
+		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings");
 		
 		for (Field f : BiomeRegister.class.getDeclaredFields())
 			if (f.getType().isAssignableFrom(NetherBiome.class))
@@ -164,5 +168,13 @@ public class ConfigLoader
 	public static boolean hasCities()
 	{
 		return hasCities;
+	}
+	
+	public static String[] getCityCenters() {
+		return centers;
+	}
+	
+	public static String[] getCityBuildings() {
+		return buildings;
 	}
 }
