@@ -113,15 +113,15 @@ public class BNWorldGenerator
 		if (ConfigLoader.hasCities())
 		{
 			cityManager = new CityStructureManager(seed);
-			cityManager.load(world);
+			//cityManager.load(world);
 			cityManager.setDistance(ConfigLoader.getCityDistance());
 		}
 	}
 	
 	public static void save(World world)
 	{
-		if (cityManager != null)
-			cityManager.save(world);
+		/*if (cityManager != null)
+			cityManager.save(world);*/
 	}
 	
 	private static void makeBiomeArray(int sx, int sz)
