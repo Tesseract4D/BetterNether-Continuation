@@ -58,8 +58,8 @@ public class WorleyNoiseID3D
 				}
 			}
 		}
-		Random random = new Random((((long) indexX << 32L | (long) indexZ)) << 8L | (long) indexY);
-		return random.nextInt();
+		//Random random = new Random((((long) indexX << 32L | (long) indexZ)) << 8L | (long) indexY);
+		return ids.PosChar(indexX, indexY, indexZ) * 4956823; //random.nextInt();
 	}
 	
 	private double sqr(double x)
