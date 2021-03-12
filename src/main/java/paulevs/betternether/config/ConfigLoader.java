@@ -5,8 +5,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
@@ -23,6 +27,7 @@ public class ConfigLoader
 	private static boolean[] registerBiomes;
 	//private static boolean[] registerBlocks;
 	private static boolean[] registerItems;
+	private static int[] biomeWeights;
 	
 	private static int indexBiome;
 	//private static int indexBlock;
@@ -54,23 +59,37 @@ public class ConfigLoader
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
 		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers");
 		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings");
-		
-		for (Field f : BiomeRegister.class.getDeclaredFields())
-			if (f.getType().isAssignableFrom(NetherBiome.class))
-				items.add(config.getBoolean(f.getName().toLowerCase(), "Biomes", true, "Enables|Disables biome"));
+		 
+		IntList weights = new IntArrayList();
+		for (Field f : BiomeRegister.class.getDeclaredFields()) {
+			if (f.getType().isAssignableFrom(NetherBiome.class)) {
+				if(!f.getName().toLowerCase(Locale.ROOT).contains("_edge")) {
+					if(!f.getName().equals("BIOME_BONE_REEF") && !f.getName().equals("BIOME_POOR_GRASSLANDS")) {
+						weights.add(config.getInt(f.getName().toLowerCase(Locale.ROOT) + "_weight", "Biomes", 1, 1, Short.MAX_VALUE, "Biome weight (higher = more common)"));
+					} else {
+						weights.add(config.getInt(f.getName().toLowerCase(Locale.ROOT) + "_chance", "Biomes", 1, 1, Short.MAX_VALUE, "Chance in 1000 for this sub-biome to appear within the main biome"));
+					}
+				} else {
+					weights.add(-1); // spacer
+				}
+				items.add(config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Biomes", true, "Enables|Disables biome"));
+			}
+		}
 		registerBiomes = new boolean[items.size()];
 		for (int i = 0; i < items.size(); i++)
 			registerBiomes[i] = items.get(i);
+		biomeWeights = new int[weights.size()];
+		weights.toArray(biomeWeights);
 		items.clear();
 
 		registerBlocks = new HashMap<String, Boolean>();
 		for (Field f : BlocksRegister.class.getDeclaredFields())
 			if (f.getType().isAssignableFrom(Block.class))
-				registerBlocks.put(f.getName().toLowerCase(), config.getBoolean(f.getName().toLowerCase(), "Blocks", true, "Enables|Disables block"));
+				registerBlocks.put(f.getName().toLowerCase(Locale.ROOT), config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Blocks", true, "Enables|Disables block"));
 		
 		for (Field f : ItemsRegister.class.getDeclaredFields())
 			if (f.getType().isAssignableFrom(Item.class))
-				items.add(config.getBoolean(f.getName().toLowerCase(), "Items", true, "Enables|Disables item"));
+				items.add(config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Items", true, "Enables|Disables item"));
 		registerItems = new boolean[items.size()];
 		for (int i = 0; i < items.size(); i++)
 			registerItems[i] = items.get(i);
@@ -107,14 +126,18 @@ public class ConfigLoader
 	
 	public static boolean mustInitBlock(Field field)
 	{
-		String s = field.getName().toLowerCase();
+		String s = field.getName().toLowerCase(Locale.ROOT);
 		return registerBlocks.containsKey(s) && registerBlocks.get(s);
 	}
 	
 	public static boolean mustInitBlock(String key)
 	{
-		String s = key.toLowerCase();
+		String s = key.toLowerCase(Locale.ROOT);
 		return registerBlocks.containsKey(s) && registerBlocks.get(s);
+	}
+	
+	public static int biomeWeight() {
+		return biomeWeights[indexBiome - 1];
 	}
 	
 	/*public static void resetBlockIndex()

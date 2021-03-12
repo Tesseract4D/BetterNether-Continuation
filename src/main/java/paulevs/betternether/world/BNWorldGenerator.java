@@ -12,6 +12,7 @@ import net.minecraft.block.BlockSoulSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
@@ -125,7 +126,7 @@ public class BNWorldGenerator
 	
 	private static void makeBiomeArray(int sx, int sz)
 	{
-		int id;
+		NetherBiome id;
 		int wx, wy, wz;
 		for (int x = 0; x < 8; x++)
 		{
@@ -137,7 +138,7 @@ public class BNWorldGenerator
 				{
 					wz = sz | (z << 1);
 					id = getBiome(wx, wy, wz);
-					BIO_ARRAY[x][y][z] = BiomeRegister.getBiomeID(id);
+					BIO_ARRAY[x][y][z] = id;
 					if (isEdge(id, wx, wy, wz, BIO_ARRAY[x][y][z].getEdgeSize()))
 						BIO_ARRAY[x][y][z] = BIO_ARRAY[x][y][z].getEdge();
 					else
@@ -275,7 +276,7 @@ public class BNWorldGenerator
 		}
 	}
 	
-	private static boolean isEdge(int centerID, int x, int y, int z, int distance)
+	private static boolean isEdge(NetherBiome centerID, int x, int y, int z, int distance)
 	{
 		return distance > 0 && (centerID != getBiome(x + distance, y, z) ||
 								centerID != getBiome(x - distance, y, z) ||
@@ -285,12 +286,12 @@ public class BNWorldGenerator
 								centerID != getBiome(x, y, z - distance));
 	}
 	
-	private static int getBiome(int x, int y, int z)
+	private static NetherBiome getBiome(int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * biomeSizeXZ;
 		double py = (double) dither.ditherY(x, y, z) * biomeSizeY;
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
-		return noise3d.GetValue(px, py, pz);
+		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.biomeList);
 	}
 	
 	public static void smoothChunk(World world, int cx, int cz)
@@ -448,19 +449,18 @@ public class BNWorldGenerator
 		structueDensity = density;
 	}
 	
-	public static int getSubBiome(int x, int y, int z, int count)
+	public static int getSubBiome(int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * subBiomeSize;
 		double py = (double) dither.ditherY(x, y, z) * subBiomeSize;
 		double pz = (double) dither.ditherZ(x, y, z) * subBiomeSize;
-		return subbiomesNoise.GetValue(px, py, pz) % count;
+		return subbiomesNoise.GetValue(px, py, pz);
 	}
 	
 	public static NetherBiome getBiome(BlockPos pos)
 	{
-		int id = getBiome(pos.getX(), pos.getY(), pos.getZ());
-		NetherBiome biome = BiomeRegister.getBiomeID(id);
-		if (isEdge(id, pos.getX(), pos.getY(), pos.getZ(), biome.getEdgeSize()))
+		NetherBiome biome = getBiome(pos.getX(), pos.getY(), pos.getZ());
+		if (isEdge(biome, pos.getX(), pos.getY(), pos.getZ(), biome.getEdgeSize()))
 			biome = biome.getEdge();
 		else
 			biome = biome.getSubBiome(pos.getX(), pos.getY(), pos.getZ());

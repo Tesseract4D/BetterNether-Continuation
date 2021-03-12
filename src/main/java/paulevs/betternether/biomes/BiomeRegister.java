@@ -9,10 +9,11 @@ public class BiomeRegister
 {
 	public static int biomeCount;
 	public static NetherBiome[] BiomeRegistry;
-	public static NetherBiome BIOME_EMPTY_NETHER;
-	public static NetherBiome BIOME_GRAVEL_DESERT;
-	public static NetherBiome BIOME_NETHER_JUNGLE;
-	public static NetherBiome BIOME_WART_FOREST;
+	public static List<NetherBiome> biomeList;
+	public static NetherBiome BIOME_EMPTY_NETHER = new NetherBiome("Empty Nether");
+	public static NetherBiome BIOME_GRAVEL_DESERT = new NetherBiomeGravelDesert("Gravel Desert");
+	public static NetherBiome BIOME_NETHER_JUNGLE = new NetherBiomeJungle("Nether Jungle");
+	public static NetherBiome BIOME_WART_FOREST = new NetherWartForest("Wart Forest");
 	public static NetherBiome BIOME_GRASSLANDS;
 	public static NetherBiome BIOME_MUSHROOM_FOREST;
 	public static NetherBiome BIOME_MUSHROOM_FOREST_EDGE;
@@ -34,6 +35,7 @@ public class BiomeRegister
 		BIOME_BONE_REEF = registerSubBiome(new NetherBoneReef("Bone Reef"), BIOME_GRASSLANDS);
 		BIOME_POOR_GRASSLANDS = registerSubBiome(new NetherPoorGrasslands("Poor Nether Grasslands"), BIOME_GRASSLANDS);
 		biomeCount = biomes.size();
+		biomeList = biomes;
 		BiomeRegistry = new NetherBiome[biomeCount];
 		for (int i = 0; i < biomeCount; i++)
 			BiomeRegistry[i] = biomes.get(i);
@@ -44,6 +46,7 @@ public class BiomeRegister
 		if (ConfigLoader.mustInitBiome())
 		{
 			biomes.add(biome);
+			biome.itemWeight = ConfigLoader.biomeWeight();
 			return biome;
 		}
 		else
@@ -66,6 +69,7 @@ public class BiomeRegister
 	{
 		if (ConfigLoader.mustInitBiome() && mainBiome != null)
 		{
+			biome.itemWeight = ConfigLoader.biomeWeight();
 			mainBiome.addSubBiome(biome);
 			return biome;
 		}

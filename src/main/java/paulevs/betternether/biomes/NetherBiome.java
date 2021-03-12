@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import paulevs.betternether.world.BNWorldGenerator;
 
-public class NetherBiome
+public class NetherBiome extends WeightedRandom.Item
 {
 	static NoiseGeneratorOctaves featureScatter  = new NoiseGeneratorOctaves(new Random(1337), 3);
 	float plantDensity = 1;
@@ -21,10 +22,10 @@ public class NetherBiome
 	
 	public NetherBiome(String name)
 	{
+		super(1);
 		this.name = name;
 		edge = this;
 		edgeSize = 0;
-		sl = 0;
 		subbiomes = new ArrayList<NetherBiome>();
 	}
 	
@@ -76,18 +77,15 @@ public class NetherBiome
 	public void addSubBiome(NetherBiome biome)
 	{
 		subbiomes.add(biome);
-		sl = subbiomes.size() << 3;
 	}
 	
 	public NetherBiome getSubBiome(int x, int y, int z)
 	{
-		if (sl > 0)
+		if (subbiomes.size() > 0)
 		{
-			int id = BNWorldGenerator.getSubBiome(x, y, z, sl);
-			if (id < subbiomes.size())
-				return subbiomes.get(id);
-			else
-				return this;
+			int id = BNWorldGenerator.getSubBiome(x, y, z);
+			NetherBiome b;
+			return (b = WeightedRandom.getRandomItem(new Random(id), subbiomes, 1000)) != null ? b : this;
 		}
 		else
 			return this;

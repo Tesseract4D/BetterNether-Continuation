@@ -26,6 +26,6 @@ public class WorleyNoiseIDDistorted3D
 		nx += noiseX.GetValue(y, z);
 		ny += noiseY.GetValue(x, -z);
 		nz += noiseZ.GetValue(-x, -y);
-		return idNoise.GetValue(nx, ny, nz);
+		return idNoise.getBiome(nx, ny, nz);
 	}
 }
