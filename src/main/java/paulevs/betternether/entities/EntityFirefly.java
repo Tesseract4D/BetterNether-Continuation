@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -312,10 +313,18 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
     {
     }
     
+    public SoundEvent getHurtSound(DamageSource src) {
+    	return SoundRegister.FLY_HURT;
+    }
+    
+    public SoundEvent getDeathSound() {
+    	return SoundRegister.FLY_DEATH;
+    }
+    
     @Nullable
     public SoundEvent getAmbientSound()
     {
-        return this.sitting ? null : SoundRegister.FLY_SOUND;
+        return this.sitting ? SoundRegister.FLY_SIT_AMBIENT : SoundRegister.FLY_SOUND;
     }
     
     protected float getSoundVolume()
