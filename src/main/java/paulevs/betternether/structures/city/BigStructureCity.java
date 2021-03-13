@@ -89,7 +89,7 @@ public class BigStructureCity extends BigStructure
 						BlockPos pos = new BlockPos(wx, y, wz);
 						Block b = world.getBlockState(pos).getBlock();
 						if (b == Blocks.FLOWING_LAVA)
-							world.setBlockState(pos, LAVA);
+							world.setBlockState(pos, LAVA, 2 | 16);
 					}
 				}
 			}

@@ -139,7 +139,7 @@ public class StructureCityBuilding extends StructureNBT
 			BlockPos repPos = rep.add(pos);
 			if (repPos.getX() >= boundingBox.minX && repPos.getX() <= boundingBox.maxX)
 				if (repPos.getZ() >= boundingBox.minZ && repPos.getZ() <= boundingBox.maxZ)
-					world.setBlockState(repPos, AIR);
+					world.setBlockState(repPos, AIR, 2 | 16);
 		}
 		IBlockState state;
 		int d;

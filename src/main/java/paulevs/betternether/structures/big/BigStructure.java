@@ -106,7 +106,7 @@ public class BigStructure
 						if (state != null)
 						{
 							//System.out.println(state.getBlock().getLocalizedName());
-							world.setBlockState(new BlockPos(wx, y, wz), state);
+							world.setBlockState(new BlockPos(wx, y, wz), state, 16 | 2);
 						}
 					}
 				}
