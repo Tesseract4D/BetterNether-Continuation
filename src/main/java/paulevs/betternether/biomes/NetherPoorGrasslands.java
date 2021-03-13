@@ -21,6 +21,10 @@ public class NetherPoorGrasslands extends NetherGrasslands
 		super(name);
 	}
 	
+	public boolean isSub() {
+		return true;
+	}
+	
 	@Override
 	public void genFloorObjects(World world, BlockPos pos, Random random)
 	{

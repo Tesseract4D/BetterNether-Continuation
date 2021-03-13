@@ -124,7 +124,7 @@ public class BNWorldGenerator
 			cityManager.save(world);*/
 	}
 	
-	private static void makeBiomeArray(int sx, int sz)
+	private static void makeBiomeArray(World world, int sx, int sz)
 	{
 		NetherBiome id;
 		int wx, wy, wz;
@@ -137,9 +137,9 @@ public class BNWorldGenerator
 				for (int z = 0; z < 8; z++)
 				{
 					wz = sz | (z << 1);
-					id = getBiome(wx, wy, wz);
+					id = getBiome(world, wx, wy, wz);
 					BIO_ARRAY[x][y][z] = id;
-					if (isEdge(id, wx, wy, wz, BIO_ARRAY[x][y][z].getEdgeSize()))
+					if (isEdge(world, id, wx, wy, wz, BIO_ARRAY[x][y][z].getEdgeSize()))
 						BIO_ARRAY[x][y][z] = BIO_ARRAY[x][y][z].getEdge();
 					else
 						BIO_ARRAY[x][y][z] = BIO_ARRAY[x][y][z].getSubBiome(wx, wy, wz);
@@ -205,7 +205,7 @@ public class BNWorldGenerator
 				}
 			}
 			
-			makeBiomeArray(sx, sz);
+			makeBiomeArray(world, sx, sz);
 			
 			// Total Populator
 			for (int x = 0; x < 16; x++)
@@ -276,22 +276,23 @@ public class BNWorldGenerator
 		}
 	}
 	
-	private static boolean isEdge(NetherBiome centerID, int x, int y, int z, int distance)
+	private static boolean isEdge(World world, NetherBiome centerID, int x, int y, int z, int distance)
 	{
-		return distance > 0 && (centerID != getBiome(x + distance, y, z) ||
-								centerID != getBiome(x - distance, y, z) ||
-								centerID != getBiome(x, y + distance, z) ||
-								centerID != getBiome(x, y - distance, z) ||
-								centerID != getBiome(x, y, z + distance) ||
-								centerID != getBiome(x, y, z - distance));
+		return distance > 0 && (centerID != getBiome(world, x + distance, y, z) ||
+								centerID != getBiome(world, x - distance, y, z) ||
+								centerID != getBiome(world, x, y + distance, z) ||
+								centerID != getBiome(world, x, y - distance, z) ||
+								centerID != getBiome(world, x, y, z + distance) ||
+								centerID != getBiome(world, x, y, z - distance));
 	}
 	
-	private static NetherBiome getBiome(int x, int y, int z)
+	private static NetherBiome getBiome(World world, int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * biomeSizeXZ;
 		double py = (double) dither.ditherY(x, y, z) * biomeSizeY;
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
-		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.biomeList);
+		//NetherBiome biome = Nether
+		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.usedBiomesList);
 	}
 	
 	public static void smoothChunk(World world, int cx, int cz)
@@ -457,10 +458,10 @@ public class BNWorldGenerator
 		return subbiomesNoise.GetValue(px, py, pz);
 	}
 	
-	public static NetherBiome getBiome(BlockPos pos)
+	public static NetherBiome getBiome(World world, BlockPos pos)
 	{
-		NetherBiome biome = getBiome(pos.getX(), pos.getY(), pos.getZ());
-		if (isEdge(biome, pos.getX(), pos.getY(), pos.getZ(), biome.getEdgeSize()))
+		NetherBiome biome = getBiome(world, pos.getX(), pos.getY(), pos.getZ());
+		if (isEdge(world, biome, pos.getX(), pos.getY(), pos.getZ(), biome.getEdgeSize()))
 			biome = biome.getEdge();
 		else
 			biome = biome.getSubBiome(pos.getX(), pos.getY(), pos.getZ());

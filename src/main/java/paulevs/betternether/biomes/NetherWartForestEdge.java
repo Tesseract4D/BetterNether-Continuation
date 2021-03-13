@@ -16,6 +16,10 @@ public class NetherWartForestEdge extends NetherWartForest
 		super(name);
 	}
 	
+	public boolean isEdge() {
+		return true;
+	}
+	
 	@Override
 	public void genFloorObjects(World world, BlockPos pos, Random random)
 	{

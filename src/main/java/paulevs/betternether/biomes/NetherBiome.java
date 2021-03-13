@@ -29,6 +29,13 @@ public class NetherBiome extends WeightedRandom.Item
 		subbiomes = new ArrayList<NetherBiome>();
 	}
 	
+	public boolean isEdge() {
+		return false;
+	}
+	public boolean isSub() {
+		return false;
+	}
+	
 	public void genSurfColumn(World world, BlockPos pos, Random random) {}
 	
 	public void genFloorObjects(World world, BlockPos pos, Random random) {}

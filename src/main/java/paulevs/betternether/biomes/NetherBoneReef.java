@@ -27,6 +27,10 @@ public class NetherBoneReef extends NetherGrasslands
 		super(name);
 	}
 	
+	public boolean isSub() {
+		return true;
+	}
+	
 	@Override
 	public void genFloorObjects(World chunk, BlockPos pos, Random random)
 	{

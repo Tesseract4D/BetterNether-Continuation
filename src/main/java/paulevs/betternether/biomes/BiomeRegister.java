@@ -1,89 +1,86 @@
 package paulevs.betternether.biomes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import paulevs.betternether.config.ConfigLoader;
 
 public class BiomeRegister
 {
 	public static int biomeCount;
-	public static NetherBiome[] BiomeRegistry;
-	public static List<NetherBiome> biomeList;
-	public static NetherBiome BIOME_EMPTY_NETHER = new NetherBiome("Empty Nether");
-	public static NetherBiome BIOME_GRAVEL_DESERT = new NetherBiomeGravelDesert("Gravel Desert");
-	public static NetherBiome BIOME_NETHER_JUNGLE = new NetherBiomeJungle("Nether Jungle");
-	public static NetherBiome BIOME_WART_FOREST = new NetherWartForest("Wart Forest");
-	public static NetherBiome BIOME_GRASSLANDS;
-	public static NetherBiome BIOME_MUSHROOM_FOREST;
-	public static NetherBiome BIOME_MUSHROOM_FOREST_EDGE;
-	public static NetherBiome BIOME_WART_FOREST_EDGE;
-	public static NetherBiome BIOME_BONE_REEF;
-	public static NetherBiome BIOME_POOR_GRASSLANDS;
+	public static NetherBiome[] usedBiomes;
+	public static List<NetherBiome> usedBiomesList;
+	public static NetherBiome defaultBiome;
+	public static final Map<String, NetherBiome> BIOME_REGISTRY = new HashMap<>();
+	public static final NetherBiome BIOME_EMPTY_NETHER = register("empty_nether", new NetherBiome("Empty Nether"));
+	public static final NetherBiome BIOME_GRAVEL_DESERT = register("gravel_desert", new NetherBiomeGravelDesert("Gravel Desert"));
+	public static final NetherBiome BIOME_NETHER_JUNGLE = register("nether_jungle", new NetherBiomeJungle("Nether Jungle"));
+	public static final NetherBiome BIOME_WART_FOREST = register("wart_forest", new NetherWartForest("Wart Forest"));
+	public static final NetherBiome BIOME_GRASSLANDS = register("grasslands", new NetherGrasslands("Nether Grasslands"));
+	public static final NetherBiome BIOME_MUSHROOM_FOREST = register("mushroom_forest", new NetherMushroomForest("Nether Mushroom Forest"));
+	public static final NetherBiome BIOME_MUSHROOM_FOREST_EDGE = register("mushroom_forest_edge", new NetherMushroomForestEdge("Nether Mushroom Forest Edge"));
+	public static final NetherBiome BIOME_WART_FOREST_EDGE = register("wart_forest_edge", new NetherWartForestEdge("Nether Wart Forest Edge"));
+	public static final NetherBiome BIOME_BONE_REEF = register("bone_reef", new NetherBoneReef("Bone Reef"));
+	public static final NetherBiome BIOME_POOR_GRASSLANDS = register("poor_grasslands", new NetherPoorGrasslands("Poor Nether Grasslands"));
 	
 	public static void registerBiomes()
 	{
 		List<NetherBiome> biomes = new ArrayList<NetherBiome>();
-		BIOME_EMPTY_NETHER = registerBiome(new NetherBiome("Empty Nether"), biomes);
-		BIOME_GRAVEL_DESERT = registerBiome(new NetherBiomeGravelDesert("Gravel Desert"), biomes);
-		BIOME_NETHER_JUNGLE = registerBiome(new NetherBiomeJungle("Nether Jungle"), biomes);
-		BIOME_WART_FOREST = registerBiome(new NetherWartForest("Wart Forest"), biomes);
-		BIOME_GRASSLANDS = registerBiome(new NetherGrasslands("Nether Grasslands"), biomes);
-		BIOME_MUSHROOM_FOREST = registerBiome(new NetherMushroomForest("Nether Mushroom Forest"), biomes);
-		BIOME_MUSHROOM_FOREST_EDGE = registerEdgeBiome(new NetherMushroomForestEdge("Nether Mushroom Forest Edge"), BIOME_MUSHROOM_FOREST, 10);
-		BIOME_WART_FOREST_EDGE = registerEdgeBiome(new NetherWartForestEdge("Nether Wart Forest Edge"), BIOME_WART_FOREST, 9);
-		BIOME_BONE_REEF = registerSubBiome(new NetherBoneReef("Bone Reef"), BIOME_GRASSLANDS);
-		BIOME_POOR_GRASSLANDS = registerSubBiome(new NetherPoorGrasslands("Poor Nether Grasslands"), BIOME_GRASSLANDS);
+		useBiome(BIOME_EMPTY_NETHER, biomes);
+		useBiome(BIOME_GRAVEL_DESERT, biomes);
+		useBiome(BIOME_NETHER_JUNGLE, biomes);
+		useBiome(BIOME_WART_FOREST, biomes);
+		useBiome(BIOME_GRASSLANDS, biomes);
+		useBiome(BIOME_MUSHROOM_FOREST, biomes);
+		useEdgeBiome(BIOME_MUSHROOM_FOREST_EDGE, BIOME_MUSHROOM_FOREST, 10);
+		useEdgeBiome(BIOME_WART_FOREST_EDGE, BIOME_WART_FOREST, 9);
+		useSubBiome(BIOME_BONE_REEF, BIOME_GRASSLANDS);
+		useSubBiome(BIOME_POOR_GRASSLANDS, BIOME_GRASSLANDS);
 		biomeCount = biomes.size();
-		biomeList = biomes;
-		BiomeRegistry = new NetherBiome[biomeCount];
+		usedBiomesList = biomes;
+		usedBiomes = new NetherBiome[biomeCount];
 		for (int i = 0; i < biomeCount; i++)
-			BiomeRegistry[i] = biomes.get(i);
+			usedBiomes[i] = biomes.get(i);
 	}
 	
-	private static NetherBiome registerBiome(NetherBiome biome, List<NetherBiome> biomes)
+	private static NetherBiome register(String id, NetherBiome biome) {
+		BIOME_REGISTRY.put(id, biome);
+		return biome;
+	}
+	
+	private static void useBiome(NetherBiome biome, List<NetherBiome> biomes)
 	{
-		if (ConfigLoader.mustInitBiome())
+		if (ConfigLoader.mustInitBiome(biome))
 		{
 			biomes.add(biome);
-			biome.itemWeight = ConfigLoader.biomeWeight();
-			return biome;
 		}
-		else
-			return null;
 	}
 	
-	private static NetherBiome registerEdgeBiome(NetherBiome biome, NetherBiome mainBiome, int size)
+	private static void useEdgeBiome(NetherBiome biome, NetherBiome mainBiome, int size)
 	{
-		if (ConfigLoader.mustInitBiome() && mainBiome != null)
+		if (ConfigLoader.mustInitBiome(biome))
 		{
 			mainBiome.setEdge(biome);
 			mainBiome.setEdgeSize(size);
-			return biome;
 		}
-		else
-			return null;
 	}
 	
-	private static NetherBiome registerSubBiome(NetherBiome biome, NetherBiome mainBiome)
+	private static void useSubBiome(NetherBiome biome, NetherBiome mainBiome)
 	{
-		if (ConfigLoader.mustInitBiome() && mainBiome != null)
+		if (ConfigLoader.mustInitBiome(biome))
 		{
-			biome.itemWeight = ConfigLoader.biomeWeight();
 			mainBiome.addSubBiome(biome);
-			return biome;
 		}
-		else
-			return null;
 	}
 	
 	public static NetherBiome getBiomeID(int id)
 	{
-		return BiomeRegistry[id];
+		return usedBiomes[id];
 	}
 	
 	public static NetherBiome[] getBiomes()
 	{
-		return BiomeRegistry;
+		return usedBiomes;
 	}
 }

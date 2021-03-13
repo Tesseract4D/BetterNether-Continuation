@@ -4,13 +4,12 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
@@ -23,13 +22,11 @@ import paulevs.betternether.world.BNWorldGenerator;
 public class ConfigLoader
 {
 	private static Configuration config;
-	
-	private static boolean[] registerBiomes;
 	//private static boolean[] registerBlocks;
 	private static boolean[] registerItems;
-	private static int[] biomeWeights;
 	
-	private static int indexBiome;
+	private static Set<NetherBiome> biomesToAdd;
+	
 	//private static int indexBlock;
 	private static int indexItems;
 	
@@ -59,13 +56,13 @@ public class ConfigLoader
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
 		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers");
 		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings");
-		 
-		IntList weights = new IntArrayList();
-		for (Field f : BiomeRegister.class.getDeclaredFields()) {
+		
+		/*for (Field f : BiomeRegister.class.getDeclaredFields()) {
 			if (f.getType().isAssignableFrom(NetherBiome.class)) {
 				if(!f.getName().toLowerCase(Locale.ROOT).contains("_edge")) {
 					if(!f.getName().equals("BIOME_BONE_REEF") && !f.getName().equals("BIOME_POOR_GRASSLANDS")) {
-						weights.add(config.getInt(f.getName().toLowerCase(Locale.ROOT) + "_weight", "Biomes", 1, 1, Short.MAX_VALUE, "Biome weight (higher = more common)"));
+						int weight = config.getInt(f.getName().toLowerCase(Locale.ROOT) + "_weight", "Biomes", 1, 1, Short.MAX_VALUE, "Biome weight (higher = more common)");
+						
 					} else {
 						weights.add(config.getInt(f.getName().toLowerCase(Locale.ROOT) + "_chance", "Biomes", 1, 1, Short.MAX_VALUE, "Chance in 1000 for this sub-biome to appear within the main biome"));
 					}
@@ -74,12 +71,27 @@ public class ConfigLoader
 				}
 				items.add(config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Biomes", true, "Enables|Disables biome"));
 			}
+		}*/
+		biomesToAdd = new HashSet<>();
+		for(Map.Entry<String, NetherBiome> e : BiomeRegister.BIOME_REGISTRY.entrySet()) {
+			String name = e.getKey();
+			NetherBiome biome = e.getValue();
+			if(config.getBoolean(name, "Biomes", true, "Enables|Disables biome")) {
+				biomesToAdd.add(biome);
+			}
+			if(!biome.isEdge()) {
+				if(biome.isSub()) {
+					biome.itemWeight = config.getInt(name + "_chance", "Biomes", 1, 1, Short.MAX_VALUE, "Chance in 1000 for this sub-biome to appear within the main biome");
+				} else {
+					biome.itemWeight = config.getInt(name + "_weight", "Biomes", 1, 1, Short.MAX_VALUE, "Biome weight (higher = more common)");
+				}
+			}
 		}
-		registerBiomes = new boolean[items.size()];
+		/*registerBiomes = new boolean[items.size()];
 		for (int i = 0; i < items.size(); i++)
 			registerBiomes[i] = items.get(i);
 		biomeWeights = new int[weights.size()];
-		weights.toArray(biomeWeights);
+		weights.toArray(biomeWeights);*/
 		items.clear();
 
 		registerBlocks = new HashMap<String, Boolean>();
@@ -99,7 +111,6 @@ public class ConfigLoader
 		BNWorldGenerator.enablePlayerDamage = config.getBoolean("DamagePlayer", "EggplantDamage", true, "Damage for players");
 		BNWorldGenerator.enableMobDamage = config.getBoolean("DamageMobs", "EggplantDamage", true, "Damage for mobs");
 		
-		resetBiomeIndex();
 		resetItemIndex();
 	}
 	
@@ -114,14 +125,9 @@ public class ConfigLoader
 		}
 	}
 	
-	public static boolean mustInitBiome()
+	public static boolean mustInitBiome(NetherBiome biome)
 	{
-		return registerBiomes[indexBiome++];
-	}
-	
-	public static void resetBiomeIndex()
-	{
-		indexBiome = 0;
+		return biomesToAdd.contains(biome);
 	}
 	
 	public static boolean mustInitBlock(Field field)
@@ -134,10 +140,6 @@ public class ConfigLoader
 	{
 		String s = key.toLowerCase(Locale.ROOT);
 		return registerBlocks.containsKey(s) && registerBlocks.get(s);
-	}
-	
-	public static int biomeWeight() {
-		return biomeWeights[indexBiome - 1];
 	}
 	
 	/*public static void resetBlockIndex()
@@ -159,7 +161,7 @@ public class ConfigLoader
 	{
 		config.save();
 		registerBlocks = null;
-		registerBiomes = null;
+		biomesToAdd = null;
 		registerItems = null;
 	}
 	

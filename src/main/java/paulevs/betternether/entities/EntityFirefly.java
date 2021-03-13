@@ -62,7 +62,7 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
 	//@SideOnly(Side.CLIENT)
 	public boolean getCanSpawnHere()
     {
-		NetherBiome biome = BNWorldGenerator.getBiome(this.getPosition());
+		NetherBiome biome = BNWorldGenerator.getBiome(world, this.getPosition());
 		return biome == BiomeRegister.BIOME_GRASSLANDS || biome == BiomeRegister.BIOME_NETHER_JUNGLE;
     }
 	
