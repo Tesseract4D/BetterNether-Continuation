@@ -30,6 +30,9 @@ public class NetherBoneReef extends NetherGrasslands
 	public boolean isSub() {
 		return true;
 	}
+	public int getDefaultWeight() {
+		return 125;
+	}
 	
 	@Override
 	public void genFloorObjects(World chunk, BlockPos pos, Random random)

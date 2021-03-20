@@ -4,15 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import paulevs.betternether.config.ConfigLoader;
 
 public class BiomeRegister
 {
 	public static int biomeCount;
-	public static NetherBiome[] usedBiomes;
-	public static List<NetherBiome> usedBiomesList;
-	public static NetherBiome defaultBiome;
+	//public static NetherBiome[] usedBiomes;
+	//public static List<NetherBiome> usedBiomesList;
 	public static final Map<String, NetherBiome> BIOME_REGISTRY = new HashMap<>();
+	private static final Object2ObjectMap<Biome, List<NetherBiome>> SPAWN_MAP = new Object2ObjectOpenHashMap<>();
 	public static final NetherBiome BIOME_EMPTY_NETHER = register("empty_nether", new NetherBiome("Empty Nether"));
 	public static final NetherBiome BIOME_GRAVEL_DESERT = register("gravel_desert", new NetherBiomeGravelDesert("Gravel Desert"));
 	public static final NetherBiome BIOME_NETHER_JUNGLE = register("nether_jungle", new NetherBiomeJungle("Nether Jungle"));
@@ -26,35 +32,29 @@ public class BiomeRegister
 	
 	public static void registerBiomes()
 	{
-		List<NetherBiome> biomes = new ArrayList<NetherBiome>();
-		useBiome(BIOME_EMPTY_NETHER, biomes);
-		useBiome(BIOME_GRAVEL_DESERT, biomes);
-		useBiome(BIOME_NETHER_JUNGLE, biomes);
-		useBiome(BIOME_WART_FOREST, biomes);
-		useBiome(BIOME_GRASSLANDS, biomes);
-		useBiome(BIOME_MUSHROOM_FOREST, biomes);
+		List<NetherBiome> everywhereBiomes = ConfigLoader.getEverywhereBiomes();
+		Map<String, List<NetherBiome>> restrictedBiomes = ConfigLoader.getRestrictedBiomes();
+		for(Map.Entry<String, List<NetherBiome>> e : restrictedBiomes.entrySet()) {
+			List<NetherBiome> list = new ArrayList<>();
+			list.addAll(everywhereBiomes);
+			list.addAll(e.getValue());
+			SPAWN_MAP.put(ForgeRegistries.BIOMES.getValue(new ResourceLocation(e.getKey())), list);
+		}
+		SPAWN_MAP.defaultReturnValue(everywhereBiomes);
 		useEdgeBiome(BIOME_MUSHROOM_FOREST_EDGE, BIOME_MUSHROOM_FOREST, 10);
 		useEdgeBiome(BIOME_WART_FOREST_EDGE, BIOME_WART_FOREST, 9);
 		useSubBiome(BIOME_BONE_REEF, BIOME_GRASSLANDS);
 		useSubBiome(BIOME_POOR_GRASSLANDS, BIOME_GRASSLANDS);
-		biomeCount = biomes.size();
+		/*biomeCount = biomes.size();
 		usedBiomesList = biomes;
 		usedBiomes = new NetherBiome[biomeCount];
 		for (int i = 0; i < biomeCount; i++)
-			usedBiomes[i] = biomes.get(i);
+			usedBiomes[i] = biomes.get(i);*/
 	}
 	
 	private static NetherBiome register(String id, NetherBiome biome) {
 		BIOME_REGISTRY.put(id, biome);
 		return biome;
-	}
-	
-	private static void useBiome(NetherBiome biome, List<NetherBiome> biomes)
-	{
-		if (ConfigLoader.mustInitBiome(biome))
-		{
-			biomes.add(biome);
-		}
 	}
 	
 	private static void useEdgeBiome(NetherBiome biome, NetherBiome mainBiome, int size)
@@ -74,7 +74,11 @@ public class BiomeRegister
 		}
 	}
 	
-	public static NetherBiome getBiomeID(int id)
+	public static List<NetherBiome> getBiomesForMCBiome(Biome biome) {
+		return SPAWN_MAP.get(biome);
+	}
+	
+	/*public static NetherBiome getBiomeID(int id)
 	{
 		return usedBiomes[id];
 	}
@@ -82,5 +86,5 @@ public class BiomeRegister
 	public static NetherBiome[] getBiomes()
 	{
 		return usedBiomes;
-	}
+	}*/
 }

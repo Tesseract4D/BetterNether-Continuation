@@ -24,6 +24,9 @@ public class NetherPoorGrasslands extends NetherGrasslands
 	public boolean isSub() {
 		return true;
 	}
+	public int getDefaultWeight() {
+		return 125;
+	}
 	
 	@Override
 	public void genFloorObjects(World world, BlockPos pos, Random random)

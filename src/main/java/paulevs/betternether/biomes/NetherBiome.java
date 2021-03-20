@@ -35,6 +35,9 @@ public class NetherBiome extends WeightedRandom.Item
 	public boolean isSub() {
 		return false;
 	}
+	public int getDefaultWeight() {
+		return 1;
+	}
 	
 	public void genSurfColumn(World world, BlockPos pos, Random random) {}
 	
@@ -96,5 +99,9 @@ public class NetherBiome extends WeightedRandom.Item
 		}
 		else
 			return this;
+	}
+	
+	public String toString() {
+		return name;
 	}
 }

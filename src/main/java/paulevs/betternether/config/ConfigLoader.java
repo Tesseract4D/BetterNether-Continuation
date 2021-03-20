@@ -12,6 +12,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
 import paulevs.betternether.biomes.BiomeRegister;
 import paulevs.betternether.biomes.NetherBiome;
@@ -25,7 +26,9 @@ public class ConfigLoader
 	//private static boolean[] registerBlocks;
 	private static boolean[] registerItems;
 	
-	private static Set<NetherBiome> biomesToAdd;
+	private static Set<NetherBiome> enabledBiomes;
+	private static List<NetherBiome> everywhereBiomes;
+	private static Map<String, List<NetherBiome>> restrictedBiomes;
 	
 	//private static int indexBlock;
 	private static int indexItems;
@@ -72,18 +75,31 @@ public class ConfigLoader
 				items.add(config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Biomes", true, "Enables|Disables biome"));
 			}
 		}*/
-		biomesToAdd = new HashSet<>();
+		enabledBiomes = new HashSet<>();
+		everywhereBiomes = new ArrayList<>();
+		restrictedBiomes = new HashMap<>();
 		for(Map.Entry<String, NetherBiome> e : BiomeRegister.BIOME_REGISTRY.entrySet()) {
 			String name = e.getKey();
 			NetherBiome biome = e.getValue();
-			if(config.getBoolean(name, "Biomes", true, "Enables|Disables biome")) {
-				biomesToAdd.add(biome);
+			boolean enabled = config.getBoolean(name, "Biomes", true, "Enables|Disables biome");
+			if(enabled) {
+				enabledBiomes.add(biome);
 			}
 			if(!biome.isEdge()) {
 				if(biome.isSub()) {
-					biome.itemWeight = config.getInt(name + "_chance", "Biomes", 1, 1, Short.MAX_VALUE, "Chance in 1000 for this sub-biome to appear within the main biome");
+					biome.itemWeight = config.getInt(name + "_chance", "Biomes", biome.getDefaultWeight(), 1, 1000, "Chance in 1000 for this sub-biome to appear within the main biome");
 				} else {
-					biome.itemWeight = config.getInt(name + "_weight", "Biomes", 1, 1, Short.MAX_VALUE, "Biome weight (higher = more common)");
+					biome.itemWeight = config.getInt(name + "_weight", "Biomes", biome.getDefaultWeight(), 1, Short.MAX_VALUE, "Biome weight (higher = more common)");
+					String[] validBiomes = config.getStringList(name + "_spawns", "Biomes", new String[0], "Proper MC-registered biomes this \"biome\" can spawn in. Leave empty for all biomes.");
+					if(enabled) {
+						if(validBiomes.length == 0) {
+							everywhereBiomes.add(biome);
+						} else {
+							for(String b : validBiomes) {
+								restrictedBiomes.computeIfAbsent(b, s -> new ArrayList<>()).add(biome);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -119,7 +135,7 @@ public class ConfigLoader
 		BNWorldGenerator.setPlantDensity(config.getFloat("GlobalDensity", "Generator", 1, 0, 1, "Global plant density, multiplied on other"));
 		BNWorldGenerator.setStructureDensity(config.getFloat("StructureDensity", "Generator", 1F / 16F, 0, 1, "Structure density for random world structures"));
 		BNWorldGenerator.setOreDensity(config.getFloat("OreDensity", "Generator", 1F / 1024F, 0, 1, "Cincinnasite ore density"));
-		for (NetherBiome biome : BiomeRegister.getBiomes())
+		for (NetherBiome biome : enabledBiomes)
 		{
 			biome.setDensity(config.getFloat(biome.getName().replace(" ", "") + "Density", "Generator", 1, 0, 1, "Density for " + biome.getName() + " biome"));
 		}
@@ -127,7 +143,7 @@ public class ConfigLoader
 	
 	public static boolean mustInitBiome(NetherBiome biome)
 	{
-		return biomesToAdd.contains(biome);
+		return enabledBiomes.contains(biome);
 	}
 	
 	public static boolean mustInitBlock(Field field)
@@ -161,7 +177,7 @@ public class ConfigLoader
 	{
 		config.save();
 		registerBlocks = null;
-		biomesToAdd = null;
+		enabledBiomes = null;
 		registerItems = null;
 	}
 	
@@ -201,5 +217,13 @@ public class ConfigLoader
 	
 	public static String[] getCityBuildings() {
 		return buildings;
+	}
+	
+	public static List<NetherBiome> getEverywhereBiomes() {
+		return everywhereBiomes;
+	}
+	
+	public static Map<String, List<NetherBiome>> getRestrictedBiomes() {
+		return restrictedBiomes;
 	}
 }

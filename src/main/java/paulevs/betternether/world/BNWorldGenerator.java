@@ -16,6 +16,7 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import paulevs.betternether.biomes.BiomeRegister;
 import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.blocks.BlocksRegister;
@@ -291,8 +292,8 @@ public class BNWorldGenerator
 		double px = (double) dither.ditherX(x, y, z) * biomeSizeXZ;
 		double py = (double) dither.ditherY(x, y, z) * biomeSizeY;
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
-		//NetherBiome biome = Nether
-		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.usedBiomesList);
+		Biome biome = world.getBiome(new BlockPos(x, y, z));
+		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.getBiomesForMCBiome(biome));
 	}
 	
 	public static void smoothChunk(World world, int cx, int cz)

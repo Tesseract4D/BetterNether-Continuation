@@ -24,8 +24,6 @@ public class CommonProxy
 		BlocksRegister.register();
 		BlocksRegister.registerOreDictionary();
 		ItemsRegister.register();
-		BiomeRegister.registerBiomes();
-		ConfigLoader.postBiomeInit();
 		RecipeRegister.register();
 		SoundRegister.register();
 		EntityRegister.register();
@@ -35,7 +33,8 @@ public class CommonProxy
 
 	public void init(FMLInitializationEvent event)
 	{
-		
+		BiomeRegister.registerBiomes();
+		ConfigLoader.postBiomeInit();
 	}
 
 	public void postInit(FMLPostInitializationEvent event)
