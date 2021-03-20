@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockBlackBush extends Block
 {
@@ -51,7 +52,7 @@ public class BlockBlackBush extends Block
 	private boolean canStay(World world, BlockPos pos)
 	{
 		Block under = world.getBlockState(pos.down()).getBlock();
-		return under instanceof BlockNetherrack || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
 	}
 	
 	@Override
@@ -100,6 +101,6 @@ public class BlockBlackBush extends Block
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return under instanceof BlockNetherrack || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
     }
 }

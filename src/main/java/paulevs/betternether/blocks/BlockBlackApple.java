@@ -21,6 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.items.ItemsRegister;
 
 public class BlockBlackApple extends Block
@@ -78,7 +79,7 @@ public class BlockBlackApple extends Block
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return under instanceof BlockNetherrack || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
     }
 	
 	@Override

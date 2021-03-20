@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureBlackApple implements IStructure
@@ -18,7 +19,7 @@ public class StructureBlackApple implements IStructure
 	public void generate(World world, BlockPos pos, Random random)
 	{
 		Block under = world.getBlockState(pos).getBlock();
-		if (under instanceof BlockNetherrack || under == Blocks.SOUL_SAND)
+		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND)
 		{
 			IBlockState state = BlocksRegister.BLOCK_BLACK_APPLE.getDefaultState();
 			for (int i = 0; i < 8; i++)
@@ -30,7 +31,7 @@ public class StructureBlackApple implements IStructure
 				{
 					BlockPos npos = new BlockPos(x, y - j, z);
 					under = world.getBlockState(npos.down()).getBlock();
-					if ((under instanceof BlockNetherrack || under == Blocks.SOUL_SAND) && (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getMaterial() != Material.LAVA))
+					if ((ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND) && (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getMaterial() != Material.LAVA))
 					{
 						if (world.getBlockState(npos).getMaterial().isReplaceable())
 							world.setBlockState(npos, state);

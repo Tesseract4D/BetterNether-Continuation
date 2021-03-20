@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockLucisSpore extends Block implements IGrowable
 {
@@ -129,7 +130,7 @@ public class BlockLucisSpore extends Block implements IGrowable
 
 	private boolean canAttachTo(World world, BlockPos pos, EnumFacing side)
 	{
-		return world.getBlockState(pos).getBlock() instanceof BlockNetherrack;
+		return ConfigLoader.isTerrain(world.getBlockState(pos).getBlock());
 	}
 
 	@Override

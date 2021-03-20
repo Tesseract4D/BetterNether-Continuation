@@ -12,8 +12,10 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import paulevs.betternether.biomes.BiomeRegister;
 import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.blocks.BlocksRegister;
@@ -29,6 +31,13 @@ public class ConfigLoader
 	private static Set<NetherBiome> enabledBiomes;
 	private static List<NetherBiome> everywhereBiomes;
 	private static Map<String, List<NetherBiome>> restrictedBiomes;
+	
+	private static final Set<Block> NETHER_TERRAIN = new HashSet<>();
+	private static final Set<Block> NETHER_GEN_TERRAIN = new HashSet<>();
+	private static final Set<Block> NETHER_GEN_REPL_TERRAIN = new HashSet<>();
+	private static String[] netherTerrainIds;
+	private static String[] netherGenTerrainIds;
+	private static String[] netherGenReplTerrainIds;
 	
 	//private static int indexBlock;
 	private static int indexItems;
@@ -59,7 +68,9 @@ public class ConfigLoader
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
 		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers");
 		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings");
-		
+		netherTerrainIds = config.getStringList("PlantableBlocks", "Other", new String[]{"minecraft:netherrack", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "List of blocks plants can grow on. Some plants will always grow on soul sand.");
+		netherGenTerrainIds = config.getStringList("TerrainBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "Blocks to consider normal terrain during worldgen for structure gen, etc.");
+		netherGenReplTerrainIds = config.getStringList("TerrainReplaceBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "minecraft:gravel"}, "Blocks to replace with Better Nether's biome ground covering (if there is one) during worldgen");
 		/*for (Field f : BiomeRegister.class.getDeclaredFields()) {
 			if (f.getType().isAssignableFrom(NetherBiome.class)) {
 				if(!f.getName().toLowerCase(Locale.ROOT).contains("_edge")) {
@@ -130,7 +141,7 @@ public class ConfigLoader
 		resetItemIndex();
 	}
 	
-	public static void postBiomeInit()
+	public static void init()
 	{
 		BNWorldGenerator.setPlantDensity(config.getFloat("GlobalDensity", "Generator", 1, 0, 1, "Global plant density, multiplied on other"));
 		BNWorldGenerator.setStructureDensity(config.getFloat("StructureDensity", "Generator", 1F / 16F, 0, 1, "Structure density for random world structures"));
@@ -139,6 +150,18 @@ public class ConfigLoader
 		{
 			biome.setDensity(config.getFloat(biome.getName().replace(" ", "") + "Density", "Generator", 1, 0, 1, "Density for " + biome.getName() + " biome"));
 		}
+		for(String s : netherTerrainIds) {
+			NETHER_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+		}
+		for(String s : netherGenTerrainIds) {
+			NETHER_GEN_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+		}
+		for(String s : netherGenReplTerrainIds) {
+			NETHER_GEN_REPL_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+		}
+		System.out.println(NETHER_TERRAIN);
+		System.out.println(NETHER_GEN_TERRAIN);
+		System.out.println(NETHER_GEN_REPL_TERRAIN);
 	}
 	
 	public static boolean mustInitBiome(NetherBiome biome)
@@ -225,5 +248,17 @@ public class ConfigLoader
 	
 	public static Map<String, List<NetherBiome>> getRestrictedBiomes() {
 		return restrictedBiomes;
+	}
+	
+	public static boolean isTerrain(Block b) {
+		return NETHER_TERRAIN.contains(b);
+	}
+	
+	public static boolean isGenTerrain(Block b) {
+		return NETHER_GEN_TERRAIN.contains(b);
+	}
+	
+	public static boolean isReplace(Block b) {
+		return NETHER_GEN_REPL_TERRAIN.contains(b);
 	}
 }

@@ -34,7 +34,7 @@ public class CommonProxy
 	public void init(FMLInitializationEvent event)
 	{
 		BiomeRegister.registerBiomes();
-		ConfigLoader.postBiomeInit();
+		ConfigLoader.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent event)

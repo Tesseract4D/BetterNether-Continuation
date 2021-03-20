@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.noise.WorleyNoise;
 import paulevs.betternether.structures.IStructure;
 
@@ -19,7 +20,7 @@ public class StructureMagmaFlower implements IStructure
 	@Override
 	public void generate(World world, BlockPos pos, Random random)
 	{
-		if (world.getBlockState(pos).getBlock() instanceof BlockNetherrack)
+		if (ConfigLoader.isTerrain(world.getBlockState(pos).getBlock()))
 		{
 			IBlockState state = BlocksRegister.BLOCK_MAGMA_FLOWER.getDefaultState();
 			offsetNoise = new WorleyNoise(((long) pos.getX() << 32L) | (long) pos.getZ());

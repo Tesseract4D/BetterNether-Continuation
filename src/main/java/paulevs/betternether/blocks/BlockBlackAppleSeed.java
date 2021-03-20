@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockBlackAppleSeed extends Block implements IGrowable
 {
@@ -107,6 +108,6 @@ public class BlockBlackAppleSeed extends Block implements IGrowable
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock() instanceof BlockNetherrack;
+        return ConfigLoader.isTerrain(worldIn.getBlockState(pos.down()).getBlock());
     }
 }

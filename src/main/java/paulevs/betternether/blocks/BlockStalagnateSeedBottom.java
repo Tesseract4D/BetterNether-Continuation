@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockStalagnateSeedBottom extends Block implements IGrowable
 {
@@ -74,7 +75,7 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 				break;
 			}
 		}
-		if (interrupted && worldIn.getBlockState(pos.up(h2 + 1)).getBlock() instanceof BlockNetherrack)
+		if (interrupted && ConfigLoader.isTerrain(worldIn.getBlockState(pos.up(h2 + 1)).getBlock()))
 		{
 			IBlockState middleState = BlocksRegister.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
 			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_BOTTOM.getDefaultState());
@@ -133,7 +134,7 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock() instanceof BlockNetherrack;
+        return ConfigLoader.isTerrain(worldIn.getBlockState(pos.down()).getBlock());
     }
 	
 	@Override

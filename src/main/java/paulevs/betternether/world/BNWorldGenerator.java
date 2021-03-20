@@ -356,10 +356,7 @@ public class BNWorldGenerator
 	
 	private static boolean canReplace(World chunk, BlockPos pos)
 	{
-		return !isAir(chunk, pos) && (
-				chunk.getBlockState(pos).getBlock() instanceof BlockNetherrack ||
-				chunk.getBlockState(pos).getBlock() instanceof BlockSoulSand ||
-				chunk.getBlockState(pos).getBlock() instanceof BlockGravel);
+		return !isAir(chunk, pos) && ConfigLoader.isReplace(chunk.getBlockState(pos).getBlock());
 	}
 	
 	private static void spawnOre(IBlockState state, World world, BlockPos pos, Random random)
@@ -433,7 +430,7 @@ public class BNWorldGenerator
 		{
 			p = new BlockPos(start.getX(), j, start.getZ());
 			b = world.getBlockState(p).getBlock();
-			if (b != Blocks.AIR && (b instanceof BlockNetherrack || b instanceof BlockSoulSand || world.getBlockState(p).getMaterial() == Material.LAVA))
+			if (b != Blocks.AIR && (ConfigLoader.isGenTerrain(b) || world.getBlockState(p).getMaterial() == Material.LAVA))
 			{
 				return new BlockPos(start.getX(), j, start.getZ());
 			}

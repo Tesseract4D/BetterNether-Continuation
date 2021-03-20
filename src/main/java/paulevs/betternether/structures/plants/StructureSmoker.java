@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureSmoker implements IStructure
@@ -17,7 +18,7 @@ public class StructureSmoker implements IStructure
 	public void generate(World world, BlockPos pos, Random random)
 	{
 		Block under = world.getBlockState(pos).getBlock();
-		if (under instanceof BlockNetherrack || under == Blocks.SOUL_SAND)
+		if (ConfigLoader.isGenTerrain(under) || under == Blocks.SOUL_SAND)
 		{
 			IBlockState state = BlocksRegister.BLOCK_SMOKER.getDefaultState();
 			for (int i = 0; i < 8; i++)
@@ -31,7 +32,7 @@ public class StructureSmoker implements IStructure
 					if (npos.getY() > 31)
 					{
 						under = world.getBlockState(npos.down()).getBlock();
-						if (under instanceof BlockNetherrack || under == Blocks.SOUL_SAND)
+						if (ConfigLoader.isGenTerrain(under) || under == Blocks.SOUL_SAND)
 						{
 							int h = 1 + random.nextInt(5);
 							for (int k = 0; k < h; k++)

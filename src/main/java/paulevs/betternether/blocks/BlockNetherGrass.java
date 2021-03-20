@@ -15,6 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockNetherGrass extends BlockBush implements net.minecraftforge.common.IShearable
 {
@@ -44,7 +45,7 @@ public class BlockNetherGrass extends BlockBush implements net.minecraftforge.co
 	@Override
 	protected boolean canSustainBush(IBlockState state)
     {
-        return state.getBlock() instanceof BlockNetherrack || state.getBlock() instanceof BlockSoulSand;
+        return ConfigLoader.isTerrain(state.getBlock()) || state.getBlock() instanceof BlockSoulSand;
     }
 
 	@Override

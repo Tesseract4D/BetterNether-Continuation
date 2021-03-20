@@ -9,14 +9,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockCincinnasitFireBowl;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 
 public class StructureAltar implements IStructureWorld
 {
 	@Override
 	public void generate(World world, BlockPos pos, Rotation rotation)
 	{
-		if ((world.getBlockState(pos.down()).getBlock() instanceof BlockNetherrack ||
-				world.getBlockState(pos.down()).getBlock() instanceof BlockSoulSand) &&
+		if ((ConfigLoader.isGenTerrain(world.getBlockState(pos.down()).getBlock())) &&
 				world.getBlockState(pos).getBlock() == Blocks.AIR &&
 				world.getBlockState(pos.up()).getBlock() == Blocks.AIR)
 		{

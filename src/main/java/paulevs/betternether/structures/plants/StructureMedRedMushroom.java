@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockRedLargeMushroom;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureMedRedMushroom implements IStructure
@@ -18,7 +19,7 @@ public class StructureMedRedMushroom implements IStructure
 	public void generate(World world, BlockPos pos, Random random)
 	{
 		Block under = world.getBlockState(pos).getBlock();
-		if (under instanceof BlockNetherrack || under == Blocks.SOUL_SAND)
+		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND)
 		{
 			for (int i = 0; i < 10; i++)
 			{

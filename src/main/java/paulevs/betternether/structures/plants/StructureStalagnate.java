@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureStalagnate implements IStructure
@@ -42,7 +43,7 @@ public class StructureStalagnate implements IStructure
 		int h = dist;
 		dist = dist - start.getY();
 		BlockPos result = new BlockPos(start.getX(), h, start.getZ());
-		if (dist < 25 && dist > 2 && chunk.getBlockState(result).getBlock() instanceof BlockNetherrack)
+		if (dist < 25 && dist > 2 && ConfigLoader.isTerrain(chunk.getBlockState(result).getBlock()))
 		{
 			return result;
 		}

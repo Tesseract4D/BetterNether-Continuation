@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockInkBush extends Block
 {
@@ -50,7 +51,7 @@ public class BlockInkBush extends Block
 	private boolean canStay(World world, BlockPos pos)
 	{
 		Block under = world.getBlockState(pos.down()).getBlock();
-		return under instanceof BlockNetherrack || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
 	}
 	
 	@Override

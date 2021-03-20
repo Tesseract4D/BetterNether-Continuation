@@ -26,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockWartSeed extends Block implements IGrowable
 {
@@ -240,7 +241,7 @@ public class BlockWartSeed extends Block implements IGrowable
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return under instanceof BlockNetherrack || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
     }
 	
 	@Override

@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockNetherReed extends Block
 {
@@ -109,7 +110,7 @@ public class BlockNetherReed extends Block
 		{
 			return true;
 		}
-		else if (!(block instanceof BlockNetherrack) && block != Blocks.SOUL_SAND)
+		else if (!ConfigLoader.isTerrain(block) && block != Blocks.SOUL_SAND)
 		{
 			return false;
 		}

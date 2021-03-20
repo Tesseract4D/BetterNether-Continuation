@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockStalagnateSeed extends Block implements IGrowable
 {
@@ -77,7 +78,7 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 				break;
 			}
 		}
-		if (interrupted && worldIn.getBlockState(pos.down(h2 + 1)).getBlock() instanceof BlockNetherrack)
+		if (interrupted && ConfigLoader.isTerrain(worldIn.getBlockState(pos.down(h2 + 1)).getBlock()))
 		{
 			IBlockState middleState = BlocksRegister.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
 			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_TOP.getDefaultState());
@@ -93,7 +94,7 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 		if (!worldIn.isRemote)
         {
             super.updateTick(worldIn, pos, state, random);
-			if (!(worldIn.getBlockState(pos.up()).getBlock() instanceof BlockNetherrack))
+			if (!ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()))
 				worldIn.destroyBlock(pos, true);
 			else if (random.nextInt(16) == 0 && canGrow(worldIn, pos, state, false))
 	        	grow(worldIn, random, pos, state);
@@ -136,15 +137,15 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.up()).getBlock() instanceof BlockNetherrack || worldIn.getBlockState(pos.down()).getBlock() instanceof BlockNetherrack;
+        return ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()) || ConfigLoader.isTerrain(worldIn.getBlockState(pos.down()).getBlock());
     }
 	
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-		if (worldIn.getBlockState(pos.up()).getBlock() instanceof BlockNetherrack)
+		if (ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()))
 			worldIn.setBlockState(pos, state);
-		else if (worldIn.getBlockState(pos.down()).getBlock() instanceof BlockNetherrack)
+		else if (ConfigLoader.isTerrain(worldIn.getBlockState(pos.down()).getBlock()))
 			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_SEED_BOTTOM.getDefaultState());
     }
 }
