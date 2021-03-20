@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.world.BNWorldGenerator;
 
 public class NetherMushroomForestEdge extends NetherMushroomForest
@@ -43,7 +44,7 @@ public class NetherMushroomForestEdge extends NetherMushroomForest
 					else
 						world.setBlockState(pos.up(), Blocks.BROWN_MUSHROOM.getDefaultState());
 			}
-			else if (world.getBlockState(pos).getBlock() == Blocks.NETHERRACK && random.nextBoolean() && BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR)
+			else if (ConfigLoader.isTerrain(world.getBlockState(pos).getBlock()) && random.nextBoolean() && BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR)
 			{
 				world.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
 			}

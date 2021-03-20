@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockEyeVine extends Block
 {
@@ -79,7 +80,7 @@ public class BlockEyeVine extends Block
 		//	worldIn.destroyBlock(pos, false);
 		//}
 		Block up = worldIn.getBlockState(pos.up()).getBlock();
-		if (up != this && up != Blocks.NETHERRACK)
+		if (up != this && !ConfigLoader.isTerrain(up))
 		{
 			worldIn.destroyBlock(pos, false);
 			worldIn.scheduleBlockUpdate(pos.down(), Blocks.AIR, 0, 0);

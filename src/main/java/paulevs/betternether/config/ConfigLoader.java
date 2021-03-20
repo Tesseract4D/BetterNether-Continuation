@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -151,13 +152,28 @@ public class ConfigLoader
 			biome.setDensity(config.getFloat(biome.getName().replace(" ", "") + "Density", "Generator", 1, 0, 1, "Density for " + biome.getName() + " biome"));
 		}
 		for(String s : netherTerrainIds) {
-			NETHER_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
+			if(b == Blocks.AIR) {
+				System.out.println("Ignoring non-present block in valid plant blocks: " + s);
+			} else {
+				NETHER_TERRAIN.add(b);
+			}
 		}
 		for(String s : netherGenTerrainIds) {
-			NETHER_GEN_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
+			if(b == Blocks.AIR) {
+				System.out.println("Ignoring non-present block in terrain gen terrain blocks: " + s);
+			} else {
+				NETHER_GEN_TERRAIN.add(b);
+			}
 		}
 		for(String s : netherGenReplTerrainIds) {
-			NETHER_GEN_REPL_TERRAIN.add(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s)));
+			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
+			if(b == Blocks.AIR) {
+				System.out.println("Ignoring non-present block in terrain gen terrain replaceable blocks: " + s);
+			} else {
+				NETHER_GEN_REPL_TERRAIN.add(b);
+			}
 		}
 		System.out.println(NETHER_TERRAIN);
 		System.out.println(NETHER_GEN_TERRAIN);

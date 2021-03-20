@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+import paulevs.betternether.config.ConfigLoader;
 
 public class BlockEyeSeed extends Block implements IGrowable
 {
@@ -100,7 +101,7 @@ public class BlockEyeSeed extends Block implements IGrowable
 		if (!worldIn.isRemote)
         {
             super.updateTick(worldIn, pos, state, random);
-			if (worldIn.getBlockState(pos.up()).getBlock() != Blocks.NETHERRACK)
+			if (!ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()))
 				worldIn.destroyBlock(pos, true);
 			else if (random.nextInt(16) == 0 && canGrow(worldIn, pos, state, false))
 	        	grow(worldIn, random, pos, state);
@@ -136,13 +137,13 @@ public class BlockEyeSeed extends Block implements IGrowable
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-		if (worldIn.getBlockState(pos.up()).getBlock() != Blocks.NETHERRACK)
+		if (!ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()))
 			worldIn.destroyBlock(pos, true);
     }
 	
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.up()).getBlock() == Blocks.NETHERRACK;
+        return ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock());
     }
 }

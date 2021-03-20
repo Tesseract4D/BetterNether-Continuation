@@ -14,6 +14,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.EnumPlantType;
 import paulevs.betternether.BetterNether;
 import paulevs.betternether.config.ConfigLoader;
 
@@ -28,6 +29,11 @@ public class BlockNetherGrass extends BlockBush implements net.minecraftforge.co
 		this.setUnlocalizedName("nether_grass");
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
+	}
+	
+	@Override
+	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+		return EnumPlantType.Nether;
 	}
 	
 	@Override

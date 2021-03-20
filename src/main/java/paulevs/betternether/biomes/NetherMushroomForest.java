@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import paulevs.betternether.blocks.BlockRedLargeMushroom;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.world.BNWorldGenerator;
 
 public class NetherMushroomForest extends NetherBiome
@@ -75,7 +76,7 @@ public class NetherMushroomForest extends NetherBiome
 	@Override
 	public void genWallObjects(World world, BlockPos origin, BlockPos pos, Random random)
 	{
-		if (random.nextFloat() <= plantDensity && BNWorldGenerator.hasLucisGen && random.nextInt(4) == 0 && world.getBlockState(origin).getBlock() == Blocks.NETHERRACK)
+		if (random.nextFloat() <= plantDensity && BNWorldGenerator.hasLucisGen && random.nextInt(4) == 0 && ConfigLoader.isTerrain(world.getBlockState(origin).getBlock()))
 			BNWorldGenerator.lucisGen.generate(world, pos, random);
 	}
 

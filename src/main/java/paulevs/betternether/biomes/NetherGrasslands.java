@@ -11,6 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.plants.StructureReeds;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -25,7 +26,7 @@ public class NetherGrasslands extends NetherBiome
 	public void genFloorObjects(World world, BlockPos pos, Random random)
 	{
 		Block ground = world.getBlockState(pos).getBlock();
-		if (random.nextFloat() <= plantDensity && ground instanceof BlockNetherrack || ground == Blocks.SOUL_SAND)
+		if (random.nextFloat() <= plantDensity && ConfigLoader.isGenTerrain(ground) || ground == Blocks.SOUL_SAND)
 		{
 			boolean reeds = false;
 			if (BlocksRegister.BLOCK_NETHER_REED != Blocks.AIR && random.nextInt(4) == 0)

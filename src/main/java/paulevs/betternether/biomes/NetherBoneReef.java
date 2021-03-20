@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import paulevs.betternether.blocks.BNBlockBone;
 import paulevs.betternether.blocks.BlockBoneMushroom;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.StructureNBT;
 
 public class NetherBoneReef extends NetherGrasslands
@@ -40,7 +41,7 @@ public class NetherBoneReef extends NetherGrasslands
 		Block ground = chunk.getBlockState(pos).getBlock();
 		if (random.nextFloat() <= plantDensity)
 		{
-			if (ground instanceof BlockNetherrack || ground == Blocks.SOUL_SAND)
+			if (ConfigLoader.isGenTerrain(ground) || ground == Blocks.SOUL_SAND)
 			{
 				if (random.nextInt(20) == 0)
 					bones[random.nextInt(bones.length)].generateCentered(
@@ -48,7 +49,7 @@ public class NetherBoneReef extends NetherGrasslands
 							pos.down(random.nextInt(4)),
 							random
 							);
-				else if (BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR && random.nextInt(4) != 0)
+				else if (BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR && random.nextInt(4) != 0 && ConfigLoader.isTerrain(ground))
 					chunk.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
 			}
 			else if (ground instanceof BlockBone || ground instanceof BNBlockBone)
