@@ -29,6 +29,14 @@ public class BigStructureCity extends BigStructure
 		buildings = generator.generate(pos, random);
 	}
 	
+	public int getChunkX() {
+		return cx;
+	}
+	
+	public int getChunkZ() {
+		return cz;
+	}
+	
 	public BigStructureCity(NBTTagCompound structure, CityGenerator generator)
 	{
 		super(structure);

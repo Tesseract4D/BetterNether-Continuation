@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.noise.OpenSimplexNoise;
 import paulevs.betternether.noise.PregennedOpenSimplexNoise;
-import paulevs.betternether.noise.WorleyNoise;
 import paulevs.betternether.structures.big.BigStructure;
 import paulevs.betternether.structures.big.StructureManager;
 
@@ -33,12 +32,18 @@ public class CityStructureManager extends StructureManager
 		//noise = new PregennedOpenSimplexNoise(xSize, ySize, noiseGen) OpenSimplexNoise(random.nextLong());
 	}
 
-	@Override
-	protected BigStructure makeStructure(int cx, int cz)
+	protected BigStructureCity makeStructure(int cx, int cz) {
+		setSeed(cx, cz);
+		BlockPos pos = new BlockPos(cx << 4, 40, cz << 4);
+		return makeStructure(cx, cz, new BigStructureCity(pos, cx, cz, generator, random));
+	}
+	
+	protected BigStructureCity makeStructure(int cx, int cz, BigStructureCity structure)
 	{
 		setSeed(cx, cz);
 		BlockPos pos = new BlockPos(cx << 4, 40, cz << 4);
-		BigStructureCity cave = new BigStructureCity(pos, cx, cz, generator, random);
+		BigStructureCity cave = new BigStructureCity(pos, cx, cz, generator, random); // rng consistency
+		cave = structure;
 		int caveSize = (int) (cave.getCitySide() * 0.6) + random.nextInt(50);
 		makeCave(caveSize, 40, cave);
 		List<BlockPos> positions = cave.getPosList(pos);
@@ -157,6 +162,9 @@ public class CityStructureManager extends StructureManager
 				for (int i = 0; i < structureData.tagCount(); i++)
 				{
 					BigStructureCity city = new BigStructureCity(structureData.getCompoundTagAt(i), generator);
+					if(!city.generationComplete()) {
+						makeStructure(city.getChunkX(), city.getChunkZ(), city);
+					}
 					structures.add(city);
 				}
 			}
