@@ -2,6 +2,7 @@ package paulevs.betternether.config;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class ConfigLoader
 	private static String[] netherTerrainIds;
 	private static String[] netherGenTerrainIds;
 	private static String[] netherGenReplTerrainIds;
+	private static Path structureLoadPath;
 	
 	//private static int indexBlock;
 	private static int indexItems;
@@ -56,8 +58,9 @@ public class ConfigLoader
 	private static String[] centers;
 	private static String[] buildings;
 	
-	public static void load(File file)
+	public static void load(File file, File configDir)
 	{
+		structureLoadPath = configDir.toPath().resolve("betternether").resolve("structures");
 		List<Boolean> items= new ArrayList<Boolean>();
 		config = new Configuration(file);
 		config.load();
@@ -67,8 +70,8 @@ public class ConfigLoader
 		hasNetherWart = config.getBoolean("NetherWartGeneration", "Generator", true, "Enables|Disables vanilla nether wart generation in biomes");
 		cityDistance = config.getInt("CityGridSize", "Cities", 80, 8, 2048, "City grid size in chunks");
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
-		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers");
-		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings");
+		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers. Loaded from config/betternether/structures/city. (You can also override built-in ones by putting files with the same name there.)");
+		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings. Loaded from config/betternether/structures/city. (You can also override built-in ones by putting files with the same name there.)");
 		netherTerrainIds = config.getStringList("PlantableBlocks", "Other", new String[]{"minecraft:netherrack", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "List of blocks plants can grow on. Some plants will always grow on soul sand.");
 		netherGenTerrainIds = config.getStringList("TerrainBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "Blocks to consider normal terrain during worldgen for structure gen, etc.");
 		netherGenReplTerrainIds = config.getStringList("TerrainReplaceBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "minecraft:gravel"}, "Blocks to replace with Better Nether's biome ground covering (if there is one) during worldgen");
@@ -276,5 +279,9 @@ public class ConfigLoader
 	
 	public static boolean isReplace(Block b) {
 		return NETHER_GEN_REPL_TERRAIN.contains(b);
+	}
+	
+	public static Path getStructureLoadPath() {
+		return structureLoadPath;
 	}
 }

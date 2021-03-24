@@ -1,7 +1,10 @@
 package paulevs.betternether.structures;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -17,6 +20,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
+import paulevs.betternether.config.ConfigLoader;
 
 public class StructureNBT
 {
@@ -34,7 +38,7 @@ public class StructureNBT
 	public StructureNBT(String structure)
 	{
 		location = new ResourceLocation("betternether", structure);
-		template = readTemplateFromJar(new ResourceLocation("betternether", structure));
+		template = readTemplate(new ResourceLocation("betternether", structure));
 	}
 	
 	protected StructureNBT(ResourceLocation location, Template template)
@@ -83,22 +87,33 @@ public class StructureNBT
 		return true;
 	}
 	
-	private Template readTemplateFromJar(ResourceLocation resource)
+	private Template readTemplate(ResourceLocation resource)
     {
         String s = resource.getResourceDomain();
         String s1 = resource.getResourcePath();
-
-        try
-        {
-        	InputStream inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt");
-            return readTemplateFromStream(inputstream);
+        Path p = ConfigLoader.getStructureLoadPath().resolve(s1 + ".nbt");
+        if(Files.exists(p)) {
+        	try(InputStream inStream = new BufferedInputStream(Files.newInputStream(p))) {
+        		return readTemplateFromStream(inStream);
+        	} catch (IOException e) {
+				System.err.println("Error loading Better Nether structure " + s1 + " from config dir:");
+				e.printStackTrace();
+				return null;
+			}
+        } else {
+        	try(InputStream inStream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt")) {
+        		if(inStream != null) {
+        			return readTemplateFromStream(inStream);
+        		} else {
+        			System.err.println("Better Nether structure " + s + ":" + s1 + " not found in filesystem or classpath - double check your file paths.");
+        			return null;
+        		}
+        	} catch (IOException e) {
+				System.err.println("Error loading Better Nether structure " + ("/assets/" + s + "/structures/" + s1 + ".nbt") + " from classpath");
+				e.printStackTrace();
+				return null;
+			}
         }
-        catch (IOException e)
-        {
-			e.printStackTrace();
-		}
-        
-        return null;
     }
 	
 	private Template readTemplateFromStream(InputStream stream) throws IOException

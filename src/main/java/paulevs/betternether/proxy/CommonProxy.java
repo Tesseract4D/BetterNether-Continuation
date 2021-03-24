@@ -19,7 +19,7 @@ public class CommonProxy
 {
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		ConfigLoader.load(event.getSuggestedConfigurationFile());
+		ConfigLoader.load(event.getSuggestedConfigurationFile(), event.getModConfigurationDirectory());
 		EventsHandler.init();
 		BlocksRegister.register();
 		BlocksRegister.registerOreDictionary();
