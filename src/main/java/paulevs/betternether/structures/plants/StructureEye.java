@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureEye implements IStructure
@@ -44,8 +45,12 @@ public class StructureEye implements IStructure
 			eyeState = BlocksRegister.BLOCK_EYEBALL.getDefaultState();
 		else
 			eyeState = BlocksRegister.BLOCK_EYEBALL_SMALL.getDefaultState();
-		for (int y = 0; y < h; y++)
-			world.setBlockState(pos.down(y), vineState);
+		if(ConfigLoader.isTerrain(world.getBlockState(pos).getBlock())) {
+			for (int y = 0; y < h; y++) {
+				world.setBlockState(pos.down(y), vineState);
+			}
+		}
+		
 		world.setBlockState(pos.down(h), eyeState);
 	}
 
