@@ -45,7 +45,7 @@ public class StructureEye implements IStructure
 			eyeState = BlocksRegister.BLOCK_EYEBALL.getDefaultState();
 		else
 			eyeState = BlocksRegister.BLOCK_EYEBALL_SMALL.getDefaultState();
-		if(ConfigLoader.isTerrain(world.getBlockState(pos).getBlock())) {
+		if(ConfigLoader.isTerrain(world.getBlockState(pos.up()).getBlock())) {
 			for (int y = 0; y < h; y++) {
 				world.setBlockState(pos.down(y), vineState);
 			}
