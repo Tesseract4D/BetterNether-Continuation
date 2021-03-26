@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import paulevs.betternether.biomes.BiomeRegister;
@@ -163,19 +164,19 @@ public class BNWorldGenerator
 		return BIO_ARRAY[x][y][z];
 	}
 
-	public static void generate(World world, int cx, int cz, Random random)
+	public static void generate(World world, int cx, int cz, Random r)
 	{
 		if (!world.isRemote)
 		{
-			
+			Random random = new Random(world.getSeed() ^ (new ChunkPos(cx, cz).hashCode() * 49376522L));
 			NetherBiome biome;
 			int sx = (cx << 4) | 8;
 			int sz = (cz << 4) | 8;
 			
 			//Structure Generator
-			if (coordinateRandom.nextFloat() < structueDensity)
+			if (random.nextFloat() < structueDensity)
 			{
-				pos = new BlockPos(sx + coordinateRandom.nextInt(8), 32 + coordinateRandom.nextInt(120 - 32), sz + coordinateRandom.nextInt(8));
+				pos = new BlockPos(sx + random.nextInt(8), 32 + random.nextInt(120 - 32), sz + random.nextInt(8));
 				while (world.getBlockState(pos).getBlock() != Blocks.AIR && pos.getY() > 32)
 				{
 					pos = pos.down();
@@ -195,13 +196,13 @@ public class BNWorldGenerator
 					if (terrain)
 					{
 						if (globalStructuresLava.length > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
-							globalStructuresLava[coordinateRandom.nextInt(globalStructuresLava.length)].generateLava(world, pos.up(), coordinateRandom);
+							globalStructuresLava[random.nextInt(globalStructuresLava.length)].generateLava(world, pos.up(), random);
 						else if (globalStructuresLand.length > 0)
-							globalStructuresLand[coordinateRandom.nextInt(globalStructuresLand.length)].generateSurface(world, pos.up(), coordinateRandom);
+							globalStructuresLand[random.nextInt(globalStructuresLand.length)].generateSurface(world, pos.up(), random);
 					}
 					else if (globalStructuresCave.length > 0)
 					{
-						globalStructuresCave[coordinateRandom.nextInt(globalStructuresCave.length)].generateSubterrain(world, pos, coordinateRandom);
+						globalStructuresCave[random.nextInt(globalStructuresCave.length)].generateSubterrain(world, pos, random);
 					}
 				}
 			}
