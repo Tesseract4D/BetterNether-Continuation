@@ -62,7 +62,7 @@ public class EntityFirefly extends EntityAmbientCreature implements ILightProvid
 	//@SideOnly(Side.CLIENT)
 	public boolean getCanSpawnHere()
     {
-		NetherBiome biome = BNWorldGenerator.getBiome(this.getPosition());
+		NetherBiome biome = BNWorldGenerator.getBiome(this.world, this.getPosition());
 		return biome == BiomeRegister.BIOME_GRASSLANDS || biome == BiomeRegister.BIOME_NETHER_JUNGLE;
     }
 	
@@ -289,6 +289,7 @@ public class EntityFirefly extends EntityAmbientCreature implements ILightProvid
     }
 
 	@Override
+	@Optional.Method(modid="albedo")
 	public Light provideLight()
 	{
 		return Light
@@ -301,6 +302,7 @@ public class EntityFirefly extends EntityAmbientCreature implements ILightProvid
     }
     
     @Override
+    @Optional.Method(modid="albedo")
 	public void gatherLights(GatherLightsEvent event, Entity entity) {
 		event.add(this.provideLight());
 	}
