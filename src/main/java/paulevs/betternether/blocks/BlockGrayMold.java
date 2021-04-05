@@ -19,6 +19,12 @@ public class BlockGrayMold extends BlockMold
 		super("gray_mold");
 	}
 	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return AABB;
+	}
+	
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {

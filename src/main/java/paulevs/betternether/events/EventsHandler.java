@@ -60,7 +60,6 @@ public class EventsHandler
 	{
 		if (!event.getWorld().isRemote && event.getWorld().provider.getDimensionType() == DimensionType.NETHER)
 		{
-			Random random = event.getRand();
 			World world = event.getWorld();
 			BNWorldGenerator.generate(world, event.getChunkX(), event.getChunkZ(), world.rand);
 		}
@@ -71,7 +70,6 @@ public class EventsHandler
 	{
 		if (!event.getWorld().isRemote && event.getWorld().provider.getDimensionType() == DimensionType.NETHER)
 		{
-			Chunk chunk = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
 			BNWorldGenerator.smoothChunk(event.getWorld(), event.getChunkX(), event.getChunkZ());
 		}
 	}

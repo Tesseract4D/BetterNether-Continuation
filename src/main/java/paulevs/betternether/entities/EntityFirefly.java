@@ -6,19 +6,20 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
+import elucent.albedo.event.GatherLightsEvent;
+import elucent.albedo.lighting.ILightProvider;
+import elucent.albedo.lighting.Light;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -33,8 +34,8 @@ import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.sounds.SoundRegister;
 import paulevs.betternether.world.BNWorldGenerator;
 
-//@Optional.Interface(iface="elucent.albedo.lighting.ILightProvider", modid="albedo") i can't be assed to figure out how to forgegradle rn
-public class EntityFirefly extends EntityAmbientCreature implements IAnimals
+@Optional.Interface(iface="elucent.albedo.lighting.ILightProvider", modid="albedo")
+public class EntityFirefly extends EntityAmbientCreature implements ILightProvider
 {
 	private static final DataParameter<Byte> R = EntityDataManager.<Byte>createKey(EntityFirefly.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> G = EntityDataManager.<Byte>createKey(EntityFirefly.class, DataSerializers.BYTE);
@@ -46,7 +47,6 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
 	private boolean sitting;
 	private boolean wantToSit;
 	private float sitY;
-	private float test;
 
 	public EntityFirefly(World worldIn)
 	{
@@ -62,7 +62,7 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
 	//@SideOnly(Side.CLIENT)
 	public boolean getCanSpawnHere()
     {
-		NetherBiome biome = BNWorldGenerator.getBiome(world, this.getPosition());
+		NetherBiome biome = BNWorldGenerator.getBiome(this.getPosition());
 		return biome == BiomeRegister.BIOME_GRASSLANDS || biome == BiomeRegister.BIOME_NETHER_JUNGLE;
     }
 	
@@ -288,7 +288,7 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
     	updateOffset();
     }
 
-	/*@Override
+	@Override
 	public Light provideLight()
 	{
 		return Light
@@ -298,7 +298,12 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
     			(float) (((Byte) this.dataManager.get(R)) & 255) / 255F,
 				(float) (((Byte) this.dataManager.get(G)) & 255) / 255F,
 				(float) (((Byte) this.dataManager.get(B)) & 255) / 255F).radius(2F).build();
-	}*/
+    }
+    
+    @Override
+	public void gatherLights(GatherLightsEvent event, Entity entity) {
+		event.add(this.provideLight());
+	}
 	
 	protected boolean canTriggerWalking()
     {
@@ -313,18 +318,10 @@ public class EntityFirefly extends EntityAmbientCreature implements IAnimals
     {
     }
     
-    public SoundEvent getHurtSound(DamageSource src) {
-    	return SoundRegister.FLY_HURT;
-    }
-    
-    public SoundEvent getDeathSound() {
-    	return SoundRegister.FLY_DEATH;
-    }
-    
     @Nullable
     public SoundEvent getAmbientSound()
     {
-        return this.sitting ? SoundRegister.FLY_SIT_AMBIENT : SoundRegister.FLY_SOUND;
+        return this.sitting ? null : SoundRegister.FLY_SOUND;
     }
     
     protected float getSoundVolume()

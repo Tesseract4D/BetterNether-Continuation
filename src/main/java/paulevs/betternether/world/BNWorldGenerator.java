@@ -270,7 +270,7 @@ public class BNWorldGenerator
 								}
 							}
 						}
-						if (BlocksRegister.BLOCK_CINCINNASITE_ORE != Blocks.AIR && random.nextInt(1024) == 0)
+						if (BlocksRegister.BLOCK_CINCINNASITE_ORE != Blocks.AIR && random.nextFloat() < oreDensity)
 							spawnOre(BlocksRegister.BLOCK_CINCINNASITE_ORE.getDefaultState(), world, popPos, random);
 					}
 				}
