@@ -16,7 +16,8 @@ public abstract class NetherCreature extends EntityLiving
     {
     	if(!world.isRemote)
     	{
-    		EntityTracker tracker = ((WorldServer) world).getEntityTracker();
+    		@SuppressWarnings("unused")
+			EntityTracker tracker = ((WorldServer) world).getEntityTracker();
     	}
     }
 

@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -26,8 +25,7 @@ public class StructureNBT
 {
 	protected ResourceLocation location;
 	protected Template template;
-	protected static final PlacementSettings DEFAULT_SETTINGS = (
-			new PlacementSettings())
+	protected static final PlacementSettings DEFAULT_SETTINGS = new PlacementSettings()
 			.setMirror(Mirror.NONE)
 			.setRotation(Rotation.NONE)
 			.setIgnoreEntities(false)
@@ -61,7 +59,6 @@ public class StructureNBT
 		}
 		
 		BlockPos blockpos2 = template.getSize();
-		IBlockState iblockstate = world.getBlockState(pos);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
 				.setRotation(Rotation.NONE).setIgnoreEntities(false).setChunk((ChunkPos) null)
 				.setReplacedBlock((Block) null).setIgnoreStructureBlock(false);

@@ -1,11 +1,5 @@
 package paulevs.betternether.noise;
 
-import java.util.Random;
-
-import net.minecraft.util.WeightedRandom;
-import paulevs.betternether.biomes.BiomeRegister;
-import paulevs.betternether.biomes.NetherBiome;
-
 public class WorleyNoiseID3D
 {
 	private PermutationTable randX;
@@ -59,7 +53,7 @@ public class WorleyNoiseID3D
 			}
 		}
 		//Random random = new Random((((long) indexX << 32L | (long) indexZ)) << 8L | (long) indexY);
-		return ids.PosChar(indexX, indexY, indexZ) * 4956823; //random.nextInt();
+		return (ids.PosChar(indexX, indexY, indexZ) * 4956823) % (maxID > 0 ? maxID : 1); //random.nextInt();
 	}
 	
 	private double sqr(double x)

@@ -7,5 +7,41 @@
         "stream": false
       }
     ]
+  },
+  "mob.firefly.hurt_one": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "betternether:mob/firefly/hurtfly1",
+        "stream": false
+      }
+    ]
+  },
+  "mob.firefly.hurt_two": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "betternether:mob/firefly/hurtfly2",
+        "stream": false
+      }
+    ]
+  },
+  "mob.firefly.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "betternether:mob/firefly/deathfly",
+        "stream": false
+      }
+    ]
+  },
+  "mob.firefly.sitambient": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "betternether:mob/firefly/nfly",
+        "stream": false
+      }
+    ]
   }
 }

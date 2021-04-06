@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -321,17 +322,32 @@ public class EntityFirefly extends EntityAmbientCreature implements ILightProvid
     }
     
     @Nullable
+    @Override
     public SoundEvent getAmbientSound()
     {
-        return this.sitting ? null : SoundRegister.FLY_SOUND;
+        return random.nextInt(4) != 0 ? null : (this.sitting ? SoundRegister.FLY_SIT_AMBIENT : SoundRegister.FLY_SOUND);
     }
     
-    protected float getSoundVolume()
+    @Override
+    protected SoundEvent getDeathSound()
     {
-        return 0.3F + random.nextFloat() * 0.2F;
+    	return SoundRegister.FLY_DEATH;
     }
     
-    protected float getSoundPitch()
+    @Override
+    protected SoundEvent getHurtSound(DamageSource d)
+    {
+    	return random.nextInt(2) == 0 ? SoundRegister.FLY_HURT1 : SoundRegister.FLY_HURT2;
+    }
+    
+    @Override
+    public float getSoundVolume()
+    {
+        return this.sitting ? 0.1F + random.nextFloat() * 0.15F : 0.2F + random.nextFloat() * 0.2F;
+    }
+    
+    @Override
+    public float getSoundPitch()
     {
         return random.nextFloat() * 0.4F + 0.8F;
     }

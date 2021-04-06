@@ -33,15 +33,10 @@ public class CreativeTab extends CreativeTabs
 		itemList.sort(comparator);
     }
 	
-	class ItemComparator implements Comparator
+	class ItemComparator implements Comparator<ItemStack>
 	{
 		@Override
-		public int compare(Object arg0, Object arg1)
-		{
-			return compareStack((ItemStack) arg0, (ItemStack) arg1);
-		}
-		
-		private int compareStack(ItemStack stack1, ItemStack stack2)
+		public int compare(ItemStack stack1, ItemStack stack2)
 		{
 			/*String name1 = stack1.getUnlocalizedName();
 			String name2 = stack2.getUnlocalizedName();

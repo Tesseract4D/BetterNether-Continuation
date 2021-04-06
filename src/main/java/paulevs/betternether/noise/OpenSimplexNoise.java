@@ -779,7 +779,7 @@ public class OpenSimplexNoise {
 	public double eval(double x, double y, double z, double w) {
 		
 		// Get points for A4 lattice
-		double s = -0.138196601125011 * (x + y + z + w);
+		double s = STRETCH_CONSTANT_4D * (x + y + z + w);
 		double xs = x + s, ys = y + s, zs = z + s, ws = w + s;
 		
 		return eval4_Base(xs, ys, zs, ws);

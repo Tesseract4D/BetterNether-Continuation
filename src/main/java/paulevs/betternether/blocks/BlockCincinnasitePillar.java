@@ -8,7 +8,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockCincinnasitPillar extends BlockCincinnasite
+public class BlockCincinnasitePillar extends BlockCincinnasite
 {
 	public static enum EnumShape implements IStringSerializable
 	{
@@ -44,7 +44,7 @@ public class BlockCincinnasitPillar extends BlockCincinnasite
 	
 	public static final PropertyEnum<EnumShape> SHAPE = PropertyEnum.<EnumShape>create("shape", EnumShape.class);
 	
-	public BlockCincinnasitPillar(String name)
+	public BlockCincinnasitePillar(String name)
 	{
 		super(name);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumShape.SMALL));

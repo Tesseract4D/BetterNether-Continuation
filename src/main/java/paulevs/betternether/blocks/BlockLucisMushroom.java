@@ -142,10 +142,11 @@ public class BlockLucisMushroom extends Block
 		}
 	}
 
-	//public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-	//{
-	//	updateState(worldIn, pos, state);
-	//}
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	{
+		updateState(worldIn, pos, state);
+	}
 
 	private void updateState(World worldIn, BlockPos pos, IBlockState state)
 	{
@@ -188,36 +189,7 @@ public class BlockLucisMushroom extends Block
 	{
 		int type = meta >> 2;
 		int face = meta & 3;
-		EnumDir direc = null;
-		EnumShape shape = null;
-		switch(type)
-		{
-		case 0:
-			shape = EnumShape.CORNER;
-			break;
-		case 1:
-			shape = EnumShape.SIDE;
-			break;
-		case 2:
-			shape = EnumShape.CENTER;
-			break;
-		}
-		switch(face)
-		{
-		case 0:
-			direc = EnumDir.NORTH;
-			break;
-		case 1:
-			direc = EnumDir.SOUTH;
-			break;
-		case 2:
-			direc = EnumDir.EAST;
-			break;
-		case 3:
-			direc = EnumDir.WEST;
-			break;
-		}
-		return this.getDefaultState().withProperty(FACING, direc).withProperty(SHAPE, shape);
+		return this.getDefaultState().withProperty(FACING, EnumDir.values()[face]).withProperty(SHAPE, EnumShape.values()[type]);
 	}
 
 	public int getMetaFromState(IBlockState state)

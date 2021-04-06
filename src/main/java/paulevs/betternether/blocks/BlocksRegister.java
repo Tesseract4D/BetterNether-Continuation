@@ -26,9 +26,7 @@ import paulevs.betternether.BetterNether;
 import paulevs.betternether.config.ConfigLoader;
 
 public class BlocksRegister
-{
-	private static List<Block> additional;
-	
+{	
 	public static Block BLOCK_EYEBALL;
 	public static Block BLOCK_EYEBALL_SMALL;
 	public static Block BLOCK_EYE_VINE;
@@ -129,7 +127,7 @@ public class BlocksRegister
 	public static Block BLOCK_BONE_REED_DOOR;
 	public static Block BLOCK_BONE_CINCINNASITE_DOOR;
 	public static Block BLOCK_QUARTZ_STAINED_GLASS_FRAMED;
-	//public static Block BLOCK_QUARTZ_STAINED_GLASS_PANE;
+	public static Block BLOCK_QUARTZ_STAINED_GLASS_PANE;
 	public static Block BLOCK_STALAGNATE_BOWL;
 	public static Block BLOCK_CHEST_OF_DRAWERS;
 	
@@ -196,10 +194,10 @@ public class BlocksRegister
 		BLOCK_ORANGE_MUSHROOM = registerBlock(new BlockOrangeMushroom(), "BLOCK_ORANGE_MUSHROOM");
 		BLOCK_RED_MOLD = registerBlock(new BlockRedMold(), "BLOCK_RED_MOLD");
 		BLOCK_GRAY_MOLD = registerBlock(new BlockGrayMold(), "BLOCK_GRAY_MOLD");
-		BLOCK_CINCINNASITE_ORE = registerBlock(new BlockCincinnasitOre(), "BLOCK_CINCINNASITE_ORE");
+		BLOCK_CINCINNASITE_ORE = registerBlock(new BlockCincinnasiteOre(), "BLOCK_CINCINNASITE_ORE");
 		BLOCK_CINCINNASITE = registerBlock(new BlockCincinnasite("cincinnasite_block"), "BLOCK_CINCINNASITE");
 		BLOCK_CINCINNASITE_FORGED = registerBlock(new BlockCincinnasite("cincinnasite_forged"), BLOCK_CINCINNASITE, "BLOCK_CINCINNASITE_FORGED");
-		BLOCK_CINCINNASITE_PILLAR = registerBlock(new BlockCincinnasitPillar("cincinnasite_pillar"), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_PILLAR");
+		BLOCK_CINCINNASITE_PILLAR = registerBlock(new BlockCincinnasitePillar("cincinnasite_pillar"), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_PILLAR");
 		BLOCK_CINCINNASITE_BRICKS = registerBlock(new BlockCincinnasite("cincinnasite_bricks"), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_BRICKS");
 		BLOCK_CINCINNASITE_BRICK_PLATE = registerBlock(new BlockCincinnasite("cincinnasite_brick_plate"), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_BRICK_PLATE");
 		BLOCK_CINCINNASITE_STAIRS = registerBlock(new BlockBNStairs("cincinnasite_stairs", BLOCK_CINCINNASITE_FORGED), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_STAIRS");
@@ -228,7 +226,7 @@ public class BlocksRegister
 		BLOCK_BONE_SLAB_HALF = slabs[0];
 		BLOCK_BONE_BUTTON = registerBlock(new BlockWoodenButton("bone_button"), BLOCK_BONE, "BLOCK_BONE_BUTTON");
 		BLOCK_BONE_PLATE = registerBlock(new BlockPlateWooden("bone_plate"), BLOCK_BONE, "BLOCK_BONE_PLATE");
-		BLOCK_CINCINNASITE_FIRE_BOWL = registerBlock(new BlockCincinnasitFireBowl(), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_FIRE_BOWL");
+		BLOCK_CINCINNASITE_FIRE_BOWL = registerBlock(new BlockCincinnasiteFireBowl(), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_FIRE_BOWL");
 		BLOCK_BONE_WALL = registerBlock(new BNWall("bone_wall", Material.ROCK, MapColor.SAND, SoundType.STONE), BLOCK_BONE, "BLOCK_BONE_WALL");
 		BLOCK_NETHER_BRICK_WALL = registerBlock(new BNWall("nether_brick_wall", Material.ROCK, MapColor.NETHERRACK, SoundType.STONE), "BLOCK_NETHER_BRICK_WALL");
 		slabs = registerBlockSlab(
@@ -245,7 +243,7 @@ public class BlocksRegister
 		BLOCK_CINCINNASITE_PEDESTAL = registerBlock(new BlockCincinnasitePedestal(), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_PEDESTAL");
 		BLOCK_PIG_STATUE_RESPAWNER = registerBlock(new BlockStatueRespawner("pig_statue_01"), "BLOCK_PIG_STATUE_RESPAWNER");
 		BLOCK_CINCINNASITE_POT = registerBlock(new BlockCincinnasitePot(), "BLOCK_CINCINNASITE_POT");
-		BLOCK_POTTED_PLANT = registerNoItem(new BlockPottedPlant1(), BLOCK_CINCINNASITE_POT, "BLOCK_POTTED_PLANT");
+		BLOCK_POTTED_PLANT = registerNoItem(new BlockPottedPlant(), BLOCK_CINCINNASITE_POT, "BLOCK_POTTED_PLANT");
 		BLOCK_CINCINNASITE_FRAME = registerBlock(new BlockCincinnasiteFrame("cincinnasite_frame"), BLOCK_CINCINNASITE_FORGED, "BLOCK_CINCINNASITE_FRAME");
 		BLOCK_QUARTZ_GLASS = registerBlock(new BlockQuartzGlass("quartz_glass"), "BLOCK_QUARTZ_GLASS");
 		BLOCK_QUARTZ_GLASS_FRAMED = registerBlock(new BlockQuartzGlass("quartz_glass_framed"), "BLOCK_QUARTZ_GLASS_FRAMED");
@@ -258,7 +256,7 @@ public class BlocksRegister
 		BLOCK_BONE_REED_DOOR = registerBlock(new BlockBNDoor("bone_reed_door", Material.ROCK, SoundType.STONE), "BLOCK_BONE_REED_DOOR");
 		BLOCK_BONE_CINCINNASITE_DOOR = registerBlock(new BlockBNDoor("bone_cincinnasite_door", Material.ROCK, SoundType.STONE), "BLOCK_BONE_CINCINNASITE_DOOR");
 		BLOCK_QUARTZ_STAINED_GLASS_FRAMED = registerColoredBlock(new BlockStainedQuartzGlass("quartz_stained_glass_framed"), "BLOCK_QUARTZ_STAINED_GLASS_FRAMED");
-		//BLOCK_QUARTZ_STAINED_GLASS_PANE = registerColoredBlock(new BlockStainedQuartzGlassPane("quartz_stained_glass_pane"), "BLOCK_QUARTZ_STAINED_GLASS_PANE");
+		BLOCK_QUARTZ_STAINED_GLASS_PANE = registerColoredBlock(new BlockStainedQuartzGlassPane("quartz_stained_glass_pane"), "BLOCK_QUARTZ_STAINED_GLASS_PANE");
 		BLOCK_STALAGNATE_BOWL = registerNoItem(new BlockStalagnateBowl(), "BLOCK_STALAGNATE_BOWL");
 		BLOCK_CHEST_OF_DRAWERS = registerBlock(new BlockChestOfDrawers(), "BLOCK_CHEST_OF_DRAWERS");
 	}
@@ -316,6 +314,7 @@ public class BlocksRegister
 			return Blocks.AIR;
 	}
 	
+	@SuppressWarnings("unused")
 	private static Block registerBlockDoor(Block block, String key)
 	{
 		if (ConfigLoader.mustInitBlock(key))

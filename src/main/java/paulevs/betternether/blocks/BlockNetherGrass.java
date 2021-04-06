@@ -5,7 +5,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockNetherrack;
 import net.minecraft.block.BlockSoulSand;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;

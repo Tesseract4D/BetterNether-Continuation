@@ -3,7 +3,6 @@ package paulevs.betternether.structures.plants;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockNetherrack;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

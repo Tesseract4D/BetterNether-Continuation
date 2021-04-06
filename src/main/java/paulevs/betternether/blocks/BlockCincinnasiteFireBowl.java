@@ -23,12 +23,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCincinnasitFireBowl extends BlockCincinnasite
+public class BlockCincinnasiteFireBowl extends BlockCincinnasite
 {
 	public static final PropertyBool STATE = PropertyBool.create("state");
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.75, 1);
 	
-	public BlockCincinnasitFireBowl()
+	public BlockCincinnasiteFireBowl()
 	{
 		super("cincinnasite_fire_bowl");
 	}

@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockNetherBrick;
-import net.minecraft.block.BlockNetherrack;
-import net.minecraft.block.BlockSoulSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -96,7 +93,6 @@ public class BNWorldGenerator
 	public static boolean enablePlayerDamage;
 	public static boolean enableMobDamage;
 	
-	private static Random coordinateRandom;
 	private static IBlockState state_air = Blocks.AIR.getDefaultState();
 	
 	private static CityStructureManager cityManager;
@@ -111,7 +107,6 @@ public class BNWorldGenerator
 		noise3d = new WorleyNoiseIDDistorted3D(seed, BiomeRegister.biomeCount);
 		subbiomesNoise = new WorleyNoiseIDDistorted3D(~seed, 256);
 		dither = new Dither(seed);
-		coordinateRandom = new Random();
 		if (ConfigLoader.hasCities())
 		{
 			cityManager = new CityStructureManager(seed);
@@ -424,7 +419,6 @@ public class BNWorldGenerator
 	
 	private static BlockPos downRay(World world, BlockPos start)
 	{
-		int dist = 0;
 		Block b;
 		BlockPos p;
 		for (int j = start.getY(); j > 31; j--)

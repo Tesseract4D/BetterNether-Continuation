@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPottedPlant1 extends Block
+public class BlockPottedPlant extends Block
 {
 	public static enum EnumPlant implements IStringSerializable
 	{
@@ -85,7 +85,7 @@ public class BlockPottedPlant1 extends Block
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125, -0.5, 0.125, 0.875, 0.875, 0.875);
 	private static Map<String, EnumPlant> plants;
 	
-	public BlockPottedPlant1()
+	public BlockPottedPlant()
 	{
 		super(Material.PLANTS);
 		this.setHardness(0.5F);
