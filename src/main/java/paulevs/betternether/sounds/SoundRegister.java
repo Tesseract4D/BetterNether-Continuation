@@ -22,6 +22,6 @@ public class SoundRegister
 	}
 	
 	private static SoundEvent registerBNSound(String name) {
-		return new SoundEvent(new ResourceLocation("betterneter", name)).setRegistryName(name);
+		return new SoundEvent(new ResourceLocation("betternether", name)).setRegistryName(name);
 	}
 }
