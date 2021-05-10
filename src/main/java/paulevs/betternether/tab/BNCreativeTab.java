@@ -6,12 +6,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import paulevs.betternether.blocks.BlocksRegister;
 
-public class CreativeTab extends CreativeTabs
+public class BNCreativeTab extends CreativeTabs
 {
 
-	public CreativeTab()
+	public BNCreativeTab()
 	{
 		super("better_nether");
 	}
@@ -25,7 +26,7 @@ public class CreativeTab extends CreativeTabs
 	@Override
     public void displayAllRelevantItems(NonNullList<ItemStack> itemList)
     {
-		for (Item item : Item.REGISTRY)
+		for (Item item : ForgeRegistries.ITEMS)
         {
             item.getSubItems(this, itemList);
         }
