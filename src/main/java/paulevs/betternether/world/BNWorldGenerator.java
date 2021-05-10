@@ -104,7 +104,7 @@ public class BNWorldGenerator
 	public static void init(World world)
 	{
 		long seed = world.getSeed();
-		noise3d = new WorleyNoiseIDDistorted3D(seed, BiomeRegister.biomeCount);
+		noise3d = new WorleyNoiseIDDistorted3D(seed, Integer.MAX_VALUE);
 		subbiomesNoise = new WorleyNoiseIDDistorted3D(~seed, 256);
 		dither = new Dither(seed);
 		if (ConfigLoader.hasCities())
