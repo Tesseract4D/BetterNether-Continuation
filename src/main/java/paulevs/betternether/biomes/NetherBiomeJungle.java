@@ -29,7 +29,7 @@ public class NetherBiomeJungle extends NetherBiome
 				reeds = StructureReeds.generate(world, pos, random);
 			if (!reeds)
 			{
-				if (BNWorldGenerator.hasEyeGen && random.nextInt(8) == 0)
+				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(8) == 0)
 					BNWorldGenerator.stalagnateGen.generate(world, pos, random);
 				else if (BNWorldGenerator.hasMagmaFlowerGen && pos.getY() < 37 && pos.getY() > 23 && random.nextInt(32) == 0)
 					BNWorldGenerator.magmaFlowerGen.generate(world, pos, random);

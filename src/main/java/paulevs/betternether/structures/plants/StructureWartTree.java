@@ -88,6 +88,8 @@ public class StructureWartTree implements IStructure
 	{
 		if (world.getBlockState(pos).getBlock() == Blocks.AIR)
 		{
+			if (BlocksRegister.BLOCK_WART_SEED == Blocks.AIR)
+				return;
 			IBlockState seed = BlocksRegister.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
 			if (world.getBlockState(pos.north()).isFullBlock())
 				seed = seed.withProperty(BlockDirectional.FACING, EnumFacing.SOUTH);

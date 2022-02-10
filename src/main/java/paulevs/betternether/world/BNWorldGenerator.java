@@ -383,7 +383,6 @@ public class BNWorldGenerator
 				BlocksRegister.BLOCK_STALAGNATE_TOP != Blocks.AIR;
 		hasLucisGen = BlocksRegister.BLOCK_LUCIS_MUSHROOM != Blocks.AIR;
 		hasSmokerGen = BlocksRegister.BLOCK_SMOKER != Blocks.AIR;
-		hasWartTreeGen = BlocksRegister.BLOCK_WART_SEED != Blocks.AIR;
 		hasEggPlantGen = BlocksRegister.BLOCK_EGG_PLANT != Blocks.AIR;
 		hasInkBushGen = BlocksRegister.BLOCK_INK_BUSH != Blocks.AIR;
 		hasBlackAppleGen = BlocksRegister.BLOCK_BLACK_APPLE != Blocks.AIR;
