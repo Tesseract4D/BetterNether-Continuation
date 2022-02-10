@@ -1,5 +1,6 @@
 package paulevs.betternether.structures;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Rotation;
@@ -20,7 +21,7 @@ public class StructureAltar implements IStructureWorld
 		{
 			IBlockState pillar = BlocksRegister.BLOCK_CINCINNASITE_WALL.getDefaultState();
 			setBlockAndNotifyAdequately(world, pos, BlocksRegister.BLOCK_CINCINNASITE_PILLAR.getDefaultState());
-			setBlockAndNotifyAdequately(world, pos.up(), BlocksRegister.BLOCK_CINCINNASITE_FIRE_BOWL.getDefaultState().withProperty(BlockCincinnasiteFireBowl.STATE, true));
+			setBlockAndNotifyAdequately(world, pos.up(), Block.isEqualTo(BlocksRegister.BLOCK_CINCINNASITE_FIRE_BOWL, Blocks.AIR) ? Blocks.AIR.getDefaultState() : BlocksRegister.BLOCK_CINCINNASITE_FIRE_BOWL.getDefaultState().withProperty(BlockCincinnasiteFireBowl.STATE, true));
 			setBlockAndNotifyAdequately(world, pos.north().east(), pillar);
 			setBlockAndNotifyAdequately(world, pos.north().west(), pillar);
 			setBlockAndNotifyAdequately(world, pos.south().east(), pillar);

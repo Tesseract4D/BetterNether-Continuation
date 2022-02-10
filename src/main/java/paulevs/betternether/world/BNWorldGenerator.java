@@ -87,7 +87,7 @@ public class BNWorldGenerator
 	private static double biomeSizeY;
 	private static double subBiomeSize;
 	private static float plantDensity = 1;
-	private static float structueDensity = 1F / 64F;
+	private static float structureDensity = 1F / 64F;
 	private static float oreDensity = 1F / 1024F;
 	
 	public static boolean enablePlayerDamage;
@@ -168,8 +168,8 @@ public class BNWorldGenerator
 			int sx = (cx << 4) | 8;
 			int sz = (cz << 4) | 8;
 			
-			//Structure Generator
-			if (random.nextFloat() < structueDensity)
+			// Structure Generator
+			if (random.nextFloat() < structureDensity)
 			{
 				pos = new BlockPos(sx + random.nextInt(8), 32 + random.nextInt(120 - 32), sz + random.nextInt(8));
 				while (world.getBlockState(pos).getBlock() != Blocks.AIR && pos.getY() > 32)
@@ -440,7 +440,7 @@ public class BNWorldGenerator
 	
 	public static void setStructureDensity(float density)
 	{
-		structueDensity = density;
+		structureDensity = density;
 	}
 	
 	public static int getSubBiome(int x, int y, int z)
