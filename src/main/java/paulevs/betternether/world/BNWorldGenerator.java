@@ -1,7 +1,9 @@
 package paulevs.betternether.world;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -59,9 +61,9 @@ public class BNWorldGenerator
 	public static StructureGrayMold grayMoldGen = new StructureGrayMold();
 	public static StructureWartCap wartCapGen = new StructureWartCap();
 	
-	public static IStructureWorld[] globalStructuresLand;
-	public static IStructureWorld[] globalStructuresLava;
-	public static IStructureWorld[] globalStructuresCave;
+	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLand = new LinkedHashMap<>();
+	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLava = new LinkedHashMap<>();
+	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresCave = new LinkedHashMap<>();
 	
 	public static boolean hasCleaningPass = true;
 	public static boolean hasEyeGen = true;
@@ -190,14 +192,14 @@ public class BNWorldGenerator
 					}
 					if (terrain)
 					{
-						if (globalStructuresLava.length > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
-							globalStructuresLava[random.nextInt(globalStructuresLava.length)].generateLava(world, pos.up(), random);
-						else if (globalStructuresLand.length > 0)
-							globalStructuresLand[random.nextInt(globalStructuresLand.length)].generateSurface(world, pos.up(), random);
+						if (globalStructuresLava.size() > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
+							calculateWeightedMap(globalStructuresLava, ConfigLoader.getTotalWeightLava(), random).generateLava(world, pos.up(), random);
+						else if (globalStructuresLand.size() > 0)
+							calculateWeightedMap(globalStructuresLand, ConfigLoader.getTotalWeightLand(), random).generateSurface(world, pos.up(), random);
 					}
-					else if (globalStructuresCave.length > 0)
+					else if (globalStructuresCave.size() > 0)
 					{
-						globalStructuresCave[random.nextInt(globalStructuresCave.length)].generateSubterrain(world, pos, random);
+						calculateWeightedMap(globalStructuresCave, ConfigLoader.getTotalWeightCave(), random).generateSubterrain(world, pos, random);
 					}
 				}
 			}
@@ -393,29 +395,47 @@ public class BNWorldGenerator
 		hasGrayMoldGen = BlocksRegister.BLOCK_GRAY_MOLD != Blocks.AIR;
 		hasWartsGen = ConfigLoader.hasNetherWart();
 		
-		globalStructuresLand = new IStructureWorld[] {
-				new StructureAltar(),
-				new StructureBuilding("altar_01", -1),
-				new StructureBuilding("altar_02", -4),
-				new StructureBuilding("altar_03", -3),
-				new StructureBuilding("altar_04", -3),
-				new StructureBuilding("altar_05", -2),
-				new StructureBuilding("altar_06", -2),
-				new StructureBuilding("portal_01", -4),
-				new StructureBuilding("portal_02", -3),
-				new StructureBuilding("garden_01", -3),
-				new StructureBuilding("garden_02", -2),
-				new StructureBuilding("pillar_01", -1),
-				new StructureBuilding("respawn_point_01", -3),
-				new StructureBuilding("respawn_point_02", -2)
-		};
+		globalStructuresLand.clear();
+		for (int i = 0; i < ConfigLoader.getScInfosLand().length; i++) {
+			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosLand()[i];
+			if ("altar".equals(info.name)) {
+				globalStructuresLand.put(new StructureAltar(), info.weight);
+			} else {
+				globalStructuresLand.put(new StructureBuilding(info.name, info.offsetY), info.weight);
+			}
+		}
 		
-		globalStructuresLava = new IStructureWorld[] { };
+		globalStructuresLava.clear();
+		for (int i = 0; i < ConfigLoader.getScInfosLava().length; i++) {
+			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosLava()[i];
+			if ("altar".equals(info.name)) {
+				globalStructuresLava.put(new StructureAltar(), info.weight);
+			} else {
+				globalStructuresLava.put(new StructureBuilding(info.name, info.offsetY), info.weight);
+			}
+		}
 		
-		globalStructuresCave = new IStructureWorld[] {
-				new StructureBuilding("room_01", -5),
-		};
+		globalStructuresCave.clear();
+		for (int i = 0; i < ConfigLoader.getScInfosCave().length; i++) {
+			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosCave()[i];
+			if ("altar".equals(info.name)) {
+				globalStructuresCave.put(new StructureAltar(), info.weight);
+			} else {
+				globalStructuresCave.put(new StructureBuilding(info.name, info.offsetY), info.weight);
+			}
+		}
 	}
+
+	private static <T> T calculateWeightedMap(Map<T, Integer> map, int totalWeight, Random random) {
+		double r = random.nextDouble() * totalWeight;
+		double countWeight = 0.0;
+		for (Map.Entry<T, Integer> item : map.entrySet()) {
+			countWeight += item.getValue();
+			if (countWeight >= r)
+				return item.getKey();
+		}
+		return null;
+	} 
 	
 	private static BlockPos downRay(World world, BlockPos start)
 	{

@@ -40,6 +40,30 @@ public class ConfigLoader
 	private static String[] netherGenTerrainIds;
 	private static String[] netherGenReplTerrainIds;
 	private static Path structureLoadPath;
+	private static StructureConfigInfo[] scInfosLand = new StructureConfigInfo[] {
+		new StructureConfigInfo("altar", 0),
+		new StructureConfigInfo("altar_01", -1),
+		new StructureConfigInfo("altar_02", -4),
+		new StructureConfigInfo("altar_03", -3),
+		new StructureConfigInfo("altar_04", -3),
+		new StructureConfigInfo("altar_05", -2),
+		new StructureConfigInfo("altar_06", -2),
+		new StructureConfigInfo("portal_01", -4),
+		new StructureConfigInfo("portal_02", -3),
+		new StructureConfigInfo("garden_01", -3),
+		new StructureConfigInfo("garden_02", -2),
+		new StructureConfigInfo("pillar_01", -1),
+		new StructureConfigInfo("respawn_point_01", -3),
+		new StructureConfigInfo("respawn_point_02", -2)
+	};
+	private static StructureConfigInfo[] scInfosLava = new StructureConfigInfo[] {
+	};
+	private static StructureConfigInfo[] scInfosCave = new StructureConfigInfo[] {
+		new StructureConfigInfo("room_01", -5)
+	};
+	private static int totalWeightLand;
+	private static int totalWeightLava;
+	private static int totalWeightCave;
 	
 	//private static int indexBlock;
 	private static int indexItems;
@@ -180,6 +204,38 @@ public class ConfigLoader
 		System.out.println(NETHER_TERRAIN);
 		System.out.println(NETHER_GEN_TERRAIN);
 		System.out.println(NETHER_GEN_REPL_TERRAIN);
+
+		totalWeightLand = 0;
+		totalWeightLava = 0;
+		totalWeightCave = 0;
+
+		for (StructureConfigInfo scInfo : scInfosLand) {
+			scInfo.weight = config.getInt("StructureWeight_"+scInfo.name, "StructureGenWeights_Land", 1, 0, 100, "Spawn weight for selecting land structures to spawn");
+			totalWeightLand += scInfo.weight;
+		}
+		for (StructureConfigInfo scInfo : scInfosLava) {
+			scInfo.weight = config.getInt("StructureWeight_"+scInfo.name, "StructureGenWeights_Lava", 1, 0, 100, "Spawn weight for selecting lava structures to spawn");
+			totalWeightLava += scInfo.weight;
+		}
+		for (StructureConfigInfo scInfo : scInfosCave) {
+			scInfo.weight = config.getInt("StructureWeight_"+scInfo.name, "StructureGenWeights_Cave", 1, 0, 100, "Spawn weight for selecting cave structures to spawn");
+			totalWeightCave += scInfo.weight;
+		}
+	}
+
+	public static class StructureConfigInfo {
+		public final String name;
+		public final int offsetY;
+		public int weight = 1;
+		
+		StructureConfigInfo(String name, int offsetY) {
+			this.name = name;
+			this.offsetY = offsetY;
+		}
+
+		public void setWeight(int weight) {
+			this.weight = weight;
+		}
 	}
 	
 	public static boolean mustInitBiome(NetherBiome biome)
@@ -282,5 +338,29 @@ public class ConfigLoader
 	
 	public static Path getStructureLoadPath() {
 		return structureLoadPath;
+	}
+
+	public static StructureConfigInfo[] getScInfosLand() {
+		return scInfosLand;
+	}
+
+	public static StructureConfigInfo[] getScInfosLava() {
+		return scInfosLava;
+	}
+
+	public static StructureConfigInfo[] getScInfosCave() {
+		return scInfosCave;
+	}
+
+	public static int getTotalWeightLand() {
+		return totalWeightLand;
+	}
+
+	public static int getTotalWeightLava() {
+		return totalWeightLava;
+	}
+
+	public static int getTotalWeightCave() {
+		return totalWeightCave;
 	}
 }
