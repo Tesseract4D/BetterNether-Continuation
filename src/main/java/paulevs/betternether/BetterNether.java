@@ -14,8 +14,8 @@ import paulevs.betternether.tab.BNCreativeTab;
 public class BetterNether
 {
 	public static final String MODID = "betternether";
-	public static final String NAME = "Better Nether";
-	public static final String VERSION = "0.1.8.6";
+	public static final String NAME = "BetterNether: RotN Edition";
+	public static final String VERSION = "0.1.9.3";
 	
 	public static final CreativeTabs BN_TAB = new BNCreativeTab();
 	
