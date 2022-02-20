@@ -192,12 +192,12 @@ public class BNWorldGenerator
 					}
 					if (terrain)
 					{
-						if (globalStructuresLava.size() > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
+						if (globalStructuresLava.size() > 0 && ConfigLoader.getTotalWeightLava() > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
 							calculateWeightedMap(globalStructuresLava, ConfigLoader.getTotalWeightLava(), random).generateLava(world, pos.up(), random);
-						else if (globalStructuresLand.size() > 0)
+						else if (globalStructuresLand.size() > 0 && ConfigLoader.getTotalWeightLand() > 0)
 							calculateWeightedMap(globalStructuresLand, ConfigLoader.getTotalWeightLand(), random).generateSurface(world, pos.up(), random);
 					}
-					else if (globalStructuresCave.size() > 0)
+					else if (globalStructuresCave.size() > 0 && ConfigLoader.getTotalWeightCave() > 0)
 					{
 						calculateWeightedMap(globalStructuresCave, ConfigLoader.getTotalWeightCave(), random).generateSubterrain(world, pos, random);
 					}

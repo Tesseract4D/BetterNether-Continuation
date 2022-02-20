@@ -15,7 +15,7 @@ public class BetterNether
 {
 	public static final String MODID = "betternether";
 	public static final String NAME = "BetterNether: RotN Edition";
-	public static final String VERSION = "0.1.9.3";
+	public static final String VERSION = "0.1.9.4";
 	
 	public static final CreativeTabs BN_TAB = new BNCreativeTab();
 	
