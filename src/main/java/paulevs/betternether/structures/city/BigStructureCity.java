@@ -109,7 +109,7 @@ public class BigStructureCity extends BigStructure
 		ArrayList<BlockPos> positions = new ArrayList<BlockPos>();
 		for (BuildingInfo bi: buildings)
 		{
-			BlockPos center = bi.building.getBoungingBox().getCenter();
+			BlockPos center = bi.building.getBoundingBox().getCenter();
 			center = center.add(bi.pos).subtract(pos);
 			center = center.add(0, 40 - center.getY(), 0);
 			positions.add(center);
@@ -122,8 +122,8 @@ public class BigStructureCity extends BigStructure
 		ArrayList<Integer> rad = new ArrayList<Integer>();
 		for (BuildingInfo bi: buildings)
 		{
-			int sideX = bi.building.getBoungingBox().getSideX();
-			int sideZ = bi.building.getBoungingBox().getSideZ();
+			int sideX = bi.building.getBoundingBox().getSideX();
+			int sideZ = bi.building.getBoundingBox().getSideZ();
 			rad.add(Math.max(sideX, sideZ));
 		}
 		return rad;
@@ -133,15 +133,15 @@ public class BigStructureCity extends BigStructure
 	{
 		BuildingInfo info = buildings.get(0);
 		int minX = info.pos.getX();
-		int maxX = info.building.getBoungingBox().getMaxX() + info.pos.getX();
+		int maxX = info.building.getBoundingBox().getMaxX() + info.pos.getX();
 		int minZ = info.pos.getZ();
-		int maxZ = info.building.getBoungingBox().getMaxZ() + info.pos.getZ();
+		int maxZ = info.building.getBoundingBox().getMaxZ() + info.pos.getZ();
 		for (BuildingInfo bi: buildings)
 		{
 			minX = Math.min(minX, bi.pos.getX());
-			maxX = Math.max(maxX, bi.building.getBoungingBox().getMaxX() + bi.pos.getX());
+			maxX = Math.max(maxX, bi.building.getBoundingBox().getMaxX() + bi.pos.getX());
 			minZ = Math.min(minZ, bi.pos.getZ());
-			maxZ = Math.max(maxZ, bi.building.getBoungingBox().getMinZ() + bi.pos.getZ());
+			maxZ = Math.max(maxZ, bi.building.getBoundingBox().getMinZ() + bi.pos.getZ());
 		}
 		return Math.max(maxX - minX, maxZ - minZ);
 	}

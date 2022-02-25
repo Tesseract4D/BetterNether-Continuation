@@ -84,7 +84,7 @@ public class StructureCityBuilding extends StructureNBT
 		}
 	}
 
-	public BoundingBox getBoungingBox()
+	public BoundingBox getBoundingBox()
 	{
 		return bb;
 	}

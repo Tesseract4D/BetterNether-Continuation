@@ -53,7 +53,7 @@ public class CityGenerator
 	
 	private void placeCenterBuilding(BlockPos pos, StructureCityBuilding building, ArrayList<BuildingInfo> city)
 	{
-		BoundingBox bb = building.getBoungingBox().offset(pos);
+		BoundingBox bb = building.getBoundingBox().offset(pos);
 		bounds.add(bb);
 		city.add(new BuildingInfo(building, pos.add(0, building.getYOffset(), 0)));
 		for (int i = 0; i < building.getEndsCount(); i++)
@@ -73,7 +73,7 @@ public class CityGenerator
 					StructureCityBuilding building = buildings.get(b | r);
 					int index = random.nextInt(building.getEndsCount());
 					BlockPos offset = building.getPos(index);
-					BoundingBox bb = building.getBoungingBox().offset(pos).offsetNegative(offset);
+					BoundingBox bb = building.getBoundingBox().offset(pos).offsetNegative(offset);
 					if (noCollisions(bb))
 					{
 						BlockPos npos = new BlockPos(bb.x1, pos.getY() - offset.getY() + building.getYOffset(), bb.z1);
@@ -102,7 +102,7 @@ public class CityGenerator
 			{
 				StructureCityBuilding building = roadEnds.get(n);
 				BlockPos offset = building.getPos(0);
-				BoundingBox bb = building.getBoungingBox().offset(pos).offsetNegative(offset);
+				BoundingBox bb = building.getBoundingBox().offset(pos).offsetNegative(offset);
 				if (noCollisions(bb))
 				{
 					BlockPos npos = new BlockPos(bb.x1, pos.getY() - offset.getY() + building.getYOffset(), bb.z1);
