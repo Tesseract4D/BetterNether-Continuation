@@ -1,10 +1,10 @@
 package paulevs.betternether.world;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNetherBrick;
@@ -60,11 +60,11 @@ public class BNWorldGenerator
 	public static StructureRedMold redMoldGen = new StructureRedMold();
 	public static StructureGrayMold grayMoldGen = new StructureGrayMold();
 	public static StructureWartCap wartCapGen = new StructureWartCap();
-	
+
 	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLand = new LinkedHashMap<>();
 	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLava = new LinkedHashMap<>();
 	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresCave = new LinkedHashMap<>();
-	
+
 	public static boolean hasCleaningPass = true;
 	public static boolean hasEyeGen = true;
 	public static boolean hasStalagnateGen = true;
@@ -81,7 +81,7 @@ public class BNWorldGenerator
 	public static boolean hasRedMoldGen = true;
 	public static boolean hasGrayMoldGen = true;
 	public static boolean hasWartsGen = true;
-	
+
 	private static WorleyNoiseIDDistorted3D noise3d;
 	private static WorleyNoiseIDDistorted3D subbiomesNoise;
 	private static Dither dither;
@@ -91,16 +91,16 @@ public class BNWorldGenerator
 	private static float plantDensity = 1;
 	private static float structureDensity = 1F / 64F;
 	private static float oreDensity = 1F / 1024F;
-	
+
 	public static boolean enablePlayerDamage;
 	public static boolean enableMobDamage;
-	
+
 	private static IBlockState state_air = Blocks.AIR.getDefaultState();
-	
+
 	private static CityStructureManager cityManager;
 	private static BlockPos pos;
 	private static MutableBlockPos popPos = new MutableBlockPos();
-	
+
 	private static final NetherBiome[][][] BIO_ARRAY = new NetherBiome[8][64][8];
 
 	public static void init(World world)
@@ -116,39 +116,76 @@ public class BNWorldGenerator
 			cityManager.setDistance(ConfigLoader.getCityDistance());
 		}
 	}
-	
+
 	public static void save(World world)
 	{
 		if (cityManager != null)
 			cityManager.save(world);
 	}
-	
+
 	private static void makeBiomeArray(World world, int sx, int sz)
 	{
-		NetherBiome id;
-		int wx, wy, wz;
-		for (int x = 0; x < 8; x++)
+		final NetherBiome[] id = new NetherBiome[1];
+		final int[] wx = new int[1];
+		final int[] wy = new int[1];
+		final int[] wz = new int[1];
+		Map<BlockPos, NetherBiome> biomeMap = new HashMap<>();
+		int numThreads = Runtime.getRuntime().availableProcessors();
+		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+		for (int i = 0; i < 8; i += numThreads)
 		{
-			wx = sx | (x << 1);
-			for (int y = 0; y < 64; y++)
-			{
-				wy = (y << 1);
-				for (int z = 0; z < 8; z++)
+			final int start = i;
+			final int end = Math.min(i + numThreads, 8);
+			Callable<Void> task = () -> {
+				for (int x = start; x < end; x++)
 				{
-					wz = sz | (z << 1);
-					id = getBiome(world, wx, wy, wz);
-					BIO_ARRAY[x][y][z] = id;
-					if (isEdge(world, id, wx, wy, wz, BIO_ARRAY[x][y][z].getEdgeSize()))
-						BIO_ARRAY[x][y][z] = BIO_ARRAY[x][y][z].getEdge();
-					else
-						BIO_ARRAY[x][y][z] = BIO_ARRAY[x][y][z].getSubBiome(wx, wy, wz);
+					wx[0] = sx | (x << 1);
+					for (int z = 0; z < 8; z++)
+					{
+						wz[0] = sz | (z << 1);
+						NetherBiome edge = null;
+						for (int y = 0; y < 64; y++)
+						{
+							wy[0] = (y << 1);
+							BlockPos pos = new BlockPos(wx[0], wy[0], wz[0]);
+							if (!biomeMap.containsKey(pos))
+							{
+								id[0] = getBiome(world, wx[0], wy[0], wz[0]);
+								biomeMap.put(pos, id[0]);
+								if (isEdge(world, id[0], wx[0], wy[0], wz[0], id[0].getEdgeSize()))
+									edge = id[0].getEdge();
+								else
+									edge = id[0].getSubBiome(wx[0], wy[0], wz[0]);
+							}
+							else
+							{
+								id[0] = biomeMap.get(pos);
+								if (edge != null && isEdge(world, id[0], wx[0], wy[0], wz[0], edge.getEdgeSize()))
+									id[0] = edge.getEdge();
+								else if (edge != null)
+									id[0] = edge.getSubBiome(wx[0], wy[0], wz[0]);
+								biomeMap.put(pos, id[0]);
+							}
+							BIO_ARRAY[x][y][z] = id[0];
+						}
+					}
 				}
-			}
+				return null;
+			};
+
+			executor.submit(task);
+		}
+
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
 		}
 	}
-	
-	private static NetherBiome getBiomeLocal(int x, int y, int z, Random random)
-	{
+	private static final NetherBiome[][][] biomeCache = new NetherBiome[16][128][16];
+
+	private static NetherBiome getBiomeLocal(int x, int y, int z, World world, Random random) {
 		x = (x + random.nextInt(2)) >> 1;
 		if (x > 7)
 			x = 7;
@@ -158,7 +195,21 @@ public class BNWorldGenerator
 		z = (z + random.nextInt(2)) >> 1;
 		if (z > 7)
 			z = 7;
-		return BIO_ARRAY[x][y][z];
+
+		// Verify if the biome already exists in the cache
+		NetherBiome biome = biomeCache[x][y][z];
+		if (biome != null) {
+			return biome;
+		}
+
+		// Otherwise, generate a new biome and store it in the cache.
+		biome = BIO_ARRAY[x][y][z];
+		if (isEdge(world, biome, x, y, z, biome.getEdgeSize()))
+			biome = biome.getEdge();
+		else
+			biome = biome.getSubBiome(x, y, z);
+		biomeCache[x][y][z] = biome;
+		return biome;
 	}
 
 	public static void generate(World world, int cx, int cz, Random r)
@@ -169,7 +220,7 @@ public class BNWorldGenerator
 			NetherBiome biome;
 			int sx = (cx << 4) | 8;
 			int sz = (cz << 4) | 8;
-			
+
 			// Structure Generator
 			if (random.nextFloat() < structureDensity)
 			{
@@ -203,9 +254,9 @@ public class BNWorldGenerator
 					}
 				}
 			}
-			
+
 			makeBiomeArray(world, sx, sz);
-			
+
 			// Total Populator
 			for (int x = 0; x < 16; x++)
 			{
@@ -219,9 +270,9 @@ public class BNWorldGenerator
 						popPos.setPos(wx, y, wz);
 						if (world.getBlockState(popPos).isFullBlock())
 						{
-							
-							biome = getBiomeLocal(x, y, z, random);
-							
+
+							biome = getBiomeLocal(x, y, z,world, random);
+
 							// Ground Generation
 							if (world.getBlockState(popPos.up()).getBlock() == Blocks.AIR)
 							{
@@ -229,14 +280,14 @@ public class BNWorldGenerator
 								if (random.nextFloat() <= plantDensity)
 									biome.genFloorObjects(world, popPos, random);
 							}
-							
+
 							// Ceiling Generation
 							else if (world.getBlockState(popPos.down()).getBlock() == Blocks.AIR)
 							{
 								if (random.nextFloat() <= plantDensity)
 									biome.genCeilObjects(world, popPos, random);
 							}
-							
+
 							// Wall Generation
 							else if (((x + y + z) & 1) == 0)
 							{
@@ -274,17 +325,30 @@ public class BNWorldGenerator
 			}
 		}
 	}
-	
-	private static boolean isEdge(World world, NetherBiome centerID, int x, int y, int z, int distance)
-	{
-		return distance > 0 && (centerID != getBiome(world, x + distance, y, z) ||
-								centerID != getBiome(world, x - distance, y, z) ||
-								centerID != getBiome(world, x, y + distance, z) ||
-								centerID != getBiome(world, x, y - distance, z) ||
-								centerID != getBiome(world, x, y, z + distance) ||
-								centerID != getBiome(world, x, y, z - distance));
+
+	private static boolean isEdge(World world, NetherBiome centerID, int x, int y, int z, int distance) {
+		if (distance <= 0) {
+			return false;
+		}
+		Map<String, NetherBiome> biomeCache = new HashMap<>(); // create a new cache
+		for (int i = -distance; i <= distance; i += distance * 2) {
+			for (int j = -distance; j <= distance; j += distance * 2) {
+				for (int k = -distance; k <= distance; k += distance * 2) {
+					String key = String.format("%d_%d_%d", x + i, y + j, z + k);
+					NetherBiome biome = biomeCache.get(key);
+					if (biome == null) {
+						biome = getBiome(world, x + i, y + j, z + k);
+						biomeCache.put(key, biome);
+					}
+					if (centerID != biome) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
-	
+
 	private static NetherBiome getBiome(World world, int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * biomeSizeXZ;
@@ -293,7 +357,7 @@ public class BNWorldGenerator
 		Biome biome = world.getBiome(new BlockPos(x, y, z));
 		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.getBiomesForMCBiome(biome));
 	}
-	
+
 	public static void smoothChunk(World world, int cx, int cz)
 	{
 		if (hasCleaningPass)
@@ -346,17 +410,17 @@ public class BNWorldGenerator
 		if (cityManager != null)
 			cityManager.generate(world, cx, cz);
 	}
-	
+
 	private static boolean isAir(World chunk, BlockPos pos)
 	{
 		return chunk.getBlockState(pos).getBlock() == Blocks.AIR;
 	}
-	
+
 	private static boolean canReplace(World chunk, BlockPos pos)
 	{
 		return !isAir(chunk, pos) && ConfigLoader.isReplace(chunk.getBlockState(pos).getBlock());
 	}
-	
+
 	private static void spawnOre(IBlockState state, World world, BlockPos pos, Random random)
 	{
 		for (int i = 0; i < 6 + random.nextInt(11); i++)
@@ -368,7 +432,7 @@ public class BNWorldGenerator
 			}
 		}
 	}
-	
+
 	public static void updateGenSettings()
 	{
 		biomeSizeXZ = 1.0 / (double) ConfigLoader.getBiomeSizeXZ();
@@ -393,7 +457,7 @@ public class BNWorldGenerator
 		hasRedMoldGen = BlocksRegister.BLOCK_RED_MOLD != Blocks.AIR;
 		hasGrayMoldGen = BlocksRegister.BLOCK_GRAY_MOLD != Blocks.AIR;
 		hasWartsGen = ConfigLoader.hasNetherWart();
-		
+
 		globalStructuresLand.clear();
 		for (int i = 0; i < ConfigLoader.getScInfosLand().length; i++) {
 			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosLand()[i];
@@ -403,7 +467,7 @@ public class BNWorldGenerator
 				globalStructuresLand.put(new StructureBuilding(info.name, info.offsetY), info.weight);
 			}
 		}
-		
+
 		globalStructuresLava.clear();
 		for (int i = 0; i < ConfigLoader.getScInfosLava().length; i++) {
 			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosLava()[i];
@@ -413,7 +477,7 @@ public class BNWorldGenerator
 				globalStructuresLava.put(new StructureBuilding(info.name, info.offsetY), info.weight);
 			}
 		}
-		
+
 		globalStructuresCave.clear();
 		for (int i = 0; i < ConfigLoader.getScInfosCave().length; i++) {
 			ConfigLoader.StructureConfigInfo info = ConfigLoader.getScInfosCave()[i];
@@ -434,8 +498,8 @@ public class BNWorldGenerator
 				return item.getKey();
 		}
 		return null;
-	} 
-	
+	}
+
 	private static BlockPos downRay(World world, BlockPos start)
 	{
 		Block b;
@@ -451,17 +515,17 @@ public class BNWorldGenerator
 		}
 		return null;
 	}
-	
+
 	public static void setPlantDensity(float density)
 	{
 		plantDensity = density;
 	}
-	
+
 	public static void setStructureDensity(float density)
 	{
 		structureDensity = density;
 	}
-	
+
 	public static int getSubBiome(int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * subBiomeSize;
@@ -469,7 +533,7 @@ public class BNWorldGenerator
 		double pz = (double) dither.ditherZ(x, y, z) * subBiomeSize;
 		return subbiomesNoise.GetValue(px, py, pz);
 	}
-	
+
 	public static NetherBiome getBiome(World world, BlockPos pos)
 	{
 		NetherBiome biome = getBiome(world, pos.getX(), pos.getY(), pos.getZ());
@@ -479,7 +543,7 @@ public class BNWorldGenerator
 			biome = biome.getSubBiome(pos.getX(), pos.getY(), pos.getZ());
 		return biome;
 	}
-	
+
 	public static BlockPos getNearestCity(World world, int cx, int cz)
 	{
 		return cityManager.getNearestStructure(world, cx, cz);
