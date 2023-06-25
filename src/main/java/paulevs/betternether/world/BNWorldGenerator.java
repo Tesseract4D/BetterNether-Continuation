@@ -1,10 +1,8 @@
 package paulevs.betternether.world;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNetherBrick;
@@ -14,7 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import paulevs.betternether.biomes.BiomeRegister;
@@ -123,43 +120,35 @@ public class BNWorldGenerator
 			cityManager.save(world);
 	}
 
-	private static void makeBiomeArray(World world, int sx, int sz)
-	{
+	private static void makeBiomeArray(World world, int sx, int sz) {
 		final NetherBiome[] id = new NetherBiome[1];
 		final int[] wx = new int[1];
 		final int[] wy = new int[1];
 		final int[] wz = new int[1];
-		Map<BlockPos, NetherBiome> biomeMap = new HashMap<>();
+		Map<BlockPos, NetherBiome> biomeMap = new ConcurrentHashMap<>();
 		int numThreads = Runtime.getRuntime().availableProcessors();
 		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
-		for (int i = 0; i < 8; i += numThreads)
-		{
+		for (int i = 0; i < 8; i += numThreads) {
 			final int start = i;
 			final int end = Math.min(i + numThreads, 8);
 			Callable<Void> task = () -> {
-				for (int x = start; x < end; x++)
-				{
+				for (int x = start; x < end; x++) {
 					wx[0] = sx | (x << 1);
-					for (int z = 0; z < 8; z++)
-					{
+					for (int z = 0; z < 8; z++) {
 						wz[0] = sz | (z << 1);
 						NetherBiome edge = null;
-						for (int y = 0; y < 64; y++)
-						{
+						for (int y = 0; y < 64; y++) {
 							wy[0] = (y << 1);
 							BlockPos pos = new BlockPos(wx[0], wy[0], wz[0]);
-							if (!biomeMap.containsKey(pos))
-							{
+							if (!biomeMap.containsKey(pos)) {
 								id[0] = getBiome(world, wx[0], wy[0], wz[0]);
 								biomeMap.put(pos, id[0]);
 								if (isEdge(world, id[0], wx[0], wy[0], wz[0], id[0].getEdgeSize()))
 									edge = id[0].getEdge();
 								else
 									edge = id[0].getSubBiome(wx[0], wy[0], wz[0]);
-							}
-							else
-							{
+							} else {
 								id[0] = biomeMap.get(pos);
 								if (edge != null && isEdge(world, id[0], wx[0], wy[0], wz[0], edge.getEdgeSize()))
 									id[0] = edge.getEdge();
@@ -181,8 +170,10 @@ public class BNWorldGenerator
 		try {
 			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 		} catch (InterruptedException e) {
+			// Handle interruption if required
 		}
 	}
+
 	private static final NetherBiome[][][] biomeCache = new NetherBiome[16][128][16];
 
 	private static NetherBiome getBiomeLocal(int x, int y, int z, World world, Random random) {
@@ -212,119 +203,119 @@ public class BNWorldGenerator
 		return biome;
 	}
 
-	public static void generate(World world, int cx, int cz, Random r)
-	{
-		if (!world.isRemote)
-		{
-			Random random = new Random(world.getSeed() ^ (new ChunkPos(cx, cz).hashCode() * 49376522L));
-			NetherBiome biome;
-			int sx = (cx << 4) | 8;
-			int sz = (cz << 4) | 8;
+	public static void generate(World world, int cx, int cz, Random r) {
+		if (world.isRemote) {
+			return;
+		}
 
-			// Structure Generator
-			if (random.nextFloat() < structureDensity)
-			{
-				pos = new BlockPos(sx + random.nextInt(8), 32 + random.nextInt(120 - 32), sz + random.nextInt(8));
-				while (world.getBlockState(pos).getBlock() != Blocks.AIR && pos.getY() > 32)
-				{
-					pos = pos.down();
+		AtomicReference<NetherBiome> biome = new AtomicReference<>(null);
+		int sx = (cx << 4) | 8;
+		int sz = (cz << 4) | 8;
+
+		// Structure Generator
+		if (r.nextFloat() < structureDensity) {
+			BlockPos pos = new BlockPos(sx + r.nextInt(8), 32 + r.nextInt(120 - 32), sz + r.nextInt(8));
+			IBlockState blockState;
+			while ((blockState = world.getBlockState(pos)).getBlock() != Blocks.AIR && pos.getY() > 32) {
+				pos = pos.down();
+			}
+			pos = downRay(world, pos);
+			if (pos != null) {
+				boolean terrain = true;
+				for (int y = 1; y < 8; y++) {
+					if (world.getBlockState(pos.up(y)).getBlock() != Blocks.AIR) {
+						terrain = false;
+						break;
+					}
 				}
-				pos = downRay(world, pos);
-				if (pos != null)
-				{
-					boolean terrain = true;
-					for (int y = 1; y < 8; y++)
-					{
-						if (world.getBlockState(pos.up(y)).getBlock() != Blocks.AIR)
-						{
-							terrain = false;
-							break;
-						}
-					}
-					if (terrain)
-					{
-						if (globalStructuresLava.size() > 0 && ConfigLoader.getTotalWeightLava() > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
-							calculateWeightedMap(globalStructuresLava, ConfigLoader.getTotalWeightLava(), random).generateLava(world, pos.up(), random);
-						else if (globalStructuresLand.size() > 0 && ConfigLoader.getTotalWeightLand() > 0)
-							calculateWeightedMap(globalStructuresLand, ConfigLoader.getTotalWeightLand(), random).generateSurface(world, pos.up(), random);
-					}
-					else if (globalStructuresCave.size() > 0 && ConfigLoader.getTotalWeightCave() > 0)
-					{
-						calculateWeightedMap(globalStructuresCave, ConfigLoader.getTotalWeightCave(), random).generateSubterrain(world, pos, random);
-					}
+				if (terrain) {
+					if (globalStructuresLava.size() > 0 && ConfigLoader.getTotalWeightLava() > 0 && world.getBlockState(pos).getMaterial() == Material.LAVA)
+						calculateWeightedMap(globalStructuresLava, ConfigLoader.getTotalWeightLava(), r).generateLava(world, pos.up(), r);
+					else if (globalStructuresLand.size() > 0 && ConfigLoader.getTotalWeightLand() > 0)
+						calculateWeightedMap(globalStructuresLand, ConfigLoader.getTotalWeightLand(), r).generateSurface(world, pos.up(), r);
+				} else if (globalStructuresCave.size() > 0 && ConfigLoader.getTotalWeightCave() > 0) {
+					calculateWeightedMap(globalStructuresCave, ConfigLoader.getTotalWeightCave(), r).generateSubterrain(world, pos, r);
 				}
 			}
+		}
 
-			makeBiomeArray(world, sx, sz);
+		makeBiomeArray(world, sx, sz);
+		NetherBiome[][] biomeCache = new NetherBiome[16][16]; // Cache for biome lookup results
 
-			// Total Populator
-			for (int x = 0; x < 16; x++)
-			{
-				int wx = sx + x;
-				for (int z = 0; z < 16; z++)
-				{
-					int wz = sz + z;
-					for (int y = 5; y < 126; y++)
-					{
-						//pos = new BlockPos(wx, y, wz);
-						popPos.setPos(wx, y, wz);
-						if (world.getBlockState(popPos).isFullBlock())
-						{
-
-							biome = getBiomeLocal(x, y, z,world, random);
-
-							// Ground Generation
-							if (world.getBlockState(popPos.up()).getBlock() == Blocks.AIR)
-							{
-								biome.genSurfColumn(world, popPos, random);
-								if (random.nextFloat() <= plantDensity)
-									biome.genFloorObjects(world, popPos, random);
-							}
-
-							// Ceiling Generation
-							else if (world.getBlockState(popPos.down()).getBlock() == Blocks.AIR)
-							{
-								if (random.nextFloat() <= plantDensity)
-									biome.genCeilObjects(world, popPos, random);
-							}
-
-							// Wall Generation
-							else if (((x + y + z) & 1) == 0)
-							{
-								boolean bNorth = world.getBlockState(popPos.north()).getBlock() == Blocks.AIR;
-								boolean bSouth = world.getBlockState(popPos.south()).getBlock() == Blocks.AIR;
-								boolean bEast = world.getBlockState(popPos.east()).getBlock() == Blocks.AIR;
-								boolean bWest = world.getBlockState(popPos.west()).getBlock() == Blocks.AIR;
-								if (bNorth || bSouth || bEast || bWest)
-								{
-									BlockPos objPos = null;
-									if (bNorth)
-										objPos = popPos.north();
-									else if (bSouth)
-										objPos = popPos.south();
-									else if (bEast)
-										objPos = popPos.east();
-									else
-										objPos = popPos.west();
-									boolean bDown = world.getBlockState(objPos.up()).getBlock() == Blocks.AIR;
-									boolean bUp = world.getBlockState(objPos.down()).getBlock() == Blocks.AIR;
-									if (bDown && bUp)
-									{
-										if (random.nextFloat() <= plantDensity)
-											biome.genWallObjects(world, popPos, objPos, random);
-										if (y < 37 && world.getBlockState(popPos).getBlock() instanceof BlockNetherBrick && random.nextInt(512) == 0)
-											wartCapGen.generate(world, popPos, random);
-									}
-								}
-							}
-						}
-						if (BlocksRegister.BLOCK_CINCINNASITE_ORE != Blocks.AIR && random.nextFloat() < oreDensity)
-							spawnOre(BlocksRegister.BLOCK_CINCINNASITE_ORE.getDefaultState(), world, popPos, random);
+		// Total Populator
+		List<BlockPos> blocksToPopulate = new ArrayList<>();
+		for (int x = 0; x < 16; x++) {
+			int wx = sx + x;
+			for (int z = 0; z < 16; z++) {
+				int wz = sz + z;
+				for (int y = 5; y < 126; y++) {
+					BlockPos popPos = new BlockPos(wx, y, wz);
+					IBlockState blockState = world.getBlockState(popPos);
+					if (blockState.isFullBlock()) {
+						blocksToPopulate.add(popPos.toImmutable());
 					}
 				}
 			}
 		}
+
+		for (BlockPos pos : blocksToPopulate) {
+			IBlockState blockState = world.getBlockState(pos);
+			if (blockState.isFullBlock()) {
+				biome.set(getBiomeFromCache(pos.getX() & 15, pos.getZ() & 15, biomeCache, world, r));
+
+				// Ground Generation
+				if (world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
+					biome.get().genSurfColumn(world, pos, r);
+					if (r.nextFloat() <= plantDensity)
+						biome.get().genFloorObjects(world, pos, r);
+				}
+
+				// Ceiling Generation
+				if (world.getBlockState(pos.down()).getBlock() == Blocks.AIR) {
+					if (r.nextFloat() <= plantDensity)
+						biome.get().genCeilObjects(world, pos, r);
+				}
+
+				// Wall Generation
+				else if (((pos.getX() + pos.getY() + pos.getZ()) & 1) == 0) {
+					boolean bNorth = world.getBlockState(pos.north()).getBlock() == Blocks.AIR;
+					boolean bSouth = world.getBlockState(pos.south()).getBlock() == Blocks.AIR;
+					boolean bEast = world.getBlockState(pos.east()).getBlock() == Blocks.AIR;
+					boolean bWest = world.getBlockState(pos.west()).getBlock() == Blocks.AIR;
+					if (bNorth || bSouth || bEast || bWest) {
+						BlockPos objPos = null;
+						if (bNorth)
+							objPos = pos.north();
+						else if (bSouth)
+							objPos = pos.south();
+						else if (bEast)
+							objPos = pos.east();
+						else
+							objPos = pos.west();
+						boolean bDown = world.getBlockState(objPos.up()).getBlock() == Blocks.AIR;
+						boolean bUp = world.getBlockState(objPos.down()).getBlock() == Blocks.AIR;
+						if (bDown && bUp) {
+							if (r.nextFloat() <= plantDensity)
+								biome.get().genWallObjects(world, pos, objPos, r);
+							if (pos.getY() < 37 && world.getBlockState(pos).getBlock() instanceof BlockNetherBrick && r.nextInt(512) == 0)
+								wartCapGen.generate(world, pos, r);
+						}
+					}
+				}
+
+				if (BlocksRegister.BLOCK_CINCINNASITE_ORE != Blocks.AIR && r.nextFloat() < oreDensity)
+					spawnOre(BlocksRegister.BLOCK_CINCINNASITE_ORE.getDefaultState(), world, pos, r);
+			}
+		}
 	}
+
+	private static NetherBiome getBiomeFromCache(int x, int z, NetherBiome[][] biomeCache, World world, Random r) {
+		if (biomeCache[x][z] == null) {
+			biomeCache[x][z] = getBiomeLocal(x, 0, z, world, r);
+		}
+		return biomeCache[x][z];
+	}
+
 
 	private static boolean isEdge(World world, NetherBiome centerID, int x, int y, int z, int distance) {
 		if (distance <= 0) {
@@ -356,59 +347,6 @@ public class BNWorldGenerator
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
 		Biome biome = world.getBiome(new BlockPos(x, y, z));
 		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.getBiomesForMCBiome(biome));
-	}
-
-	public static void smoothChunk(World world, int cx, int cz)
-	{
-		if (hasCleaningPass)
-		{
-			int wx = (cx << 4) | 8;
-			int wz = (cz << 4) | 8;
-			List<BlockPos> pos = new ArrayList<BlockPos>();
-			BlockPos up;
-			BlockPos down;
-			BlockPos north;
-			BlockPos south;
-			BlockPos east;
-			BlockPos west;
-			for (int y = 32; y < 110; y++)
-			{
-				for (int x = 0; x < 16; x++)
-					for (int z = 0; z < 16; z++)
-					{
-						popPos.setPos(x + wx, y, z + wz);
-						if (canReplace(world, popPos))
-						{
-							up = popPos.up();
-							down = popPos.down();
-							north = popPos.north();
-							south = popPos.south();
-							east = popPos.east();
-							west = popPos.west();
-							if (isAir(world, north) && isAir(world, south))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, east) && isAir(world, west))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, up) && isAir(world, down))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, popPos.north().east().down()) && isAir(world, popPos.south().west().up()))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, popPos.south().east().down()) && isAir(world, popPos.north().west().up()))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, popPos.north().west().down()) && isAir(world, popPos.south().east().up()))
-								pos.add(new BlockPos(popPos));
-							else if (isAir(world, popPos.south().west().down()) && isAir(world, popPos.north().east().up()))
-								pos.add(new BlockPos(popPos));
-						}
-					}
-			}
-			for (BlockPos p : pos)
-			{
-				world.setBlockState(p, state_air);
-			}
-		}
-		if (cityManager != null)
-			cityManager.generate(world, cx, cz);
 	}
 
 	private static boolean isAir(World chunk, BlockPos pos)

@@ -63,15 +63,6 @@ public class EventsHandler
 			BNWorldGenerator.generate(world, event.getChunkX(), event.getChunkZ(), world.rand);
 		}
 	}
-	
-	@SubscribeEvent (priority = EventPriority.HIGHEST)
-	public void onPrePopulate(PopulateChunkEvent.Pre event)
-	{
-		if (!event.getWorld().isRemote && event.getWorld().provider.getDimensionType() == DimensionType.NETHER)
-		{
-			BNWorldGenerator.smoothChunk(event.getWorld(), event.getChunkX(), event.getChunkZ());
-		}
-	}
 
 	@SubscribeEvent
 	public void boneGrow(BonemealEvent event)

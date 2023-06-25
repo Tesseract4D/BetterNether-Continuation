@@ -3,6 +3,10 @@ package paulevs.betternether.structures.city;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -53,47 +57,76 @@ public class CityGenerator
 	
 	private void placeCenterBuilding(BlockPos pos, StructureCityBuilding building, ArrayList<BuildingInfo> city)
 	{
-		BoundingBox bb = building.getBoundingBox().offset(pos);
+		BoundingBox bb = building.getBoundingBox();
 		bounds.add(bb);
 		city.add(new BuildingInfo(building, pos.add(0, building.getYOffset(), 0)));
 		for (int i = 0; i < building.getEndsCount(); i++)
 			ends.add(pos.add(building.getOffsettedPos(i).add(0, building.getYOffset(), 0)));
 	}
-	
-	private void attachBuildings(Random random, ArrayList<BuildingInfo> city)
-	{
-		for (BlockPos pos : ends)
-		{
-			boolean generate = true;
-			for (int n = 0; n < 8 && generate; n++)
-			{
+
+	private void attachBuildings(Random random, ArrayList<BuildingInfo> city) {
+		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		List<Future<Void>> futures = new ArrayList<>();
+
+		// Cache building bounds
+		List<BoundingBox> buildingBounds = new ArrayList<>();
+		for (StructureCityBuilding building : buildings) {
+			for (int i = 0; i < building.getEndsCount(); i++) {
+				buildingBounds.add(building.getBoundingBox().offsetNegative(building.getPos(i)));
+			}
+		}
+
+		for (BlockPos pos : ends) {
+			AtomicBoolean generate = new AtomicBoolean(true);
+			for (int n = 0; n < 8 && generate.get(); n++) {
 				int b = random.nextInt(buildings.size() >> 2) << 2;
-				for (int r = 0; r < 4 && generate; r++)
-				{
+				for (int r = 0; r < 4 && generate.get(); r++) {
 					StructureCityBuilding building = buildings.get(b | r);
 					int index = random.nextInt(building.getEndsCount());
 					BlockPos offset = building.getPos(index);
-					BoundingBox bb = building.getBoundingBox().offset(pos).offsetNegative(offset);
-					if (noCollisions(bb))
-					{
-						BlockPos npos = new BlockPos(bb.x1, pos.getY() - offset.getY() + building.getYOffset(), bb.z1);
-						bounds.add(bb);
-						rem.add(pos);
-						for (int i = 0; i < building.getEndsCount(); i++)
-							if (i != index)
-								add.add(npos.add(building.getOffsettedPos(i)));
-						city.add(new BuildingInfo(building, npos));
-						generate = false;
-					}
+					BoundingBox bb = buildingBounds.get((b | r) * building.getEndsCount() + index);
+
+					Future<Void> future = executor.submit(() -> {
+						if (noCollisions(bb)) {
+							BlockPos npos = new BlockPos(bb.x1, pos.getY() - offset.getY() + building.getYOffset(), bb.z1);
+							synchronized (bounds) {
+								bounds.add(bb);
+								rem.add(pos);
+								for (int i = 0; i < building.getEndsCount(); i++) {
+									if (i != index) {
+										add.add(npos.add(building.getOffsettedPos(i)));
+									}
+								}
+								city.add(new BuildingInfo(building, npos));
+							}
+							generate.set(false);
+						}
+						return null;
+					});
+
+					futures.add(future);
 				}
 			}
 		}
+
+		// Wait for all tasks to complete
+		for (Future<Void> future : futures) {
+			try {
+				future.get();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 		ends.removeAll(rem);
 		ends.addAll(add);
 		rem.clear();
 		add.clear();
+
+		executor.shutdown();
 	}
-	
+
+
 	private void closeRoads(ArrayList<BuildingInfo> city)
 	{
 		for (BlockPos pos : ends)
@@ -102,7 +135,8 @@ public class CityGenerator
 			{
 				StructureCityBuilding building = roadEnds.get(n);
 				BlockPos offset = building.getPos(0);
-				BoundingBox bb = building.getBoundingBox().offset(pos).offsetNegative(offset);
+				BoundingBox bb = building.getBoundingBox();
+				bb.offset(new BlockPos(-offset.getX(), -offset.getY(), -offset.getZ()));
 				if (noCollisions(bb))
 				{
 					BlockPos npos = new BlockPos(bb.x1, pos.getY() - offset.getY() + building.getYOffset(), bb.z1);

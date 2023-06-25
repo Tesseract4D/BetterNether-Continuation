@@ -12,35 +12,50 @@ import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
-public class StructureEggPlant implements IStructure
-{
-	@Override
-	public void generate(World world, BlockPos pos, Random random)
-	{
+public class StructureEggPlant implements IStructure {
+	private static final int OUTER_LOOP_ITERATIONS = 18;
+	private static final int INNER_LOOP_ITERATIONS = 6;
+	private static final int MIN_Y = 32;
+
+	public void generate(World world, BlockPos pos, Random random) {
 		Block under = world.getBlockState(pos).getBlock();
-		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND)
-		{
+		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND) {
 			IBlockState state = BlocksRegister.BLOCK_EGG_PLANT.getDefaultState();
-			for (int i = 0; i < 18; i++)
-			{
-				int x = pos.getX() + (int) (random.nextGaussian() * 2);
-				int z = pos.getZ() + (int) (random.nextGaussian() * 2);
-				int y = pos.getY() + random.nextInt(6);
-				for (int j = 0; j < 6; j++)
-				{
-					BlockPos npos = new BlockPos(x, y - j, z);
-					if (npos.getY() > 31)
-					{
-						under = world.getBlockState(npos.down()).getBlock();
-						if ((ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND) && (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getMaterial() != Material.LAVA))
-						{
-							if (world.getBlockState(npos).getMaterial().isReplaceable())
-								world.setBlockState(npos, state);
-							break;
+
+			for (int i = 0; i < OUTER_LOOP_ITERATIONS; i++) {
+				double gaussianX = random.nextGaussian() * 2;
+				double gaussianZ = random.nextGaussian() * 2;
+				int x = pos.getX() + (int) gaussianX;
+				int z = pos.getZ() + (int) gaussianZ;
+				int y = pos.getY() + random.nextInt(INNER_LOOP_ITERATIONS);
+
+				BlockPos airPos = null;
+
+				for (int j = 0; j < INNER_LOOP_ITERATIONS; j++) {
+					// Find first potential air position
+					BlockPos downNpos = new BlockPos(x, y - j, z).down();
+					if (world.getBlockState(downNpos).getBlock() != Blocks.AIR) {
+						airPos = new BlockPos(x, y - j, z);
+						break;
+					}
+				}
+
+				// Check if actual valid base
+				if(airPos != null && world.getBlockState(airPos.down()).getBlock() != Blocks.AIR) {
+					// Batch block state modifications
+					IBlockState[] states = new IBlockState[INNER_LOOP_ITERATIONS];
+					BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(airPos);
+					for (int j = 0; j < INNER_LOOP_ITERATIONS; j++) {
+						mutablePos.setY(airPos.getY() - j);
+						states[j] = world.getBlockState(mutablePos);
+					}
+					for (int j = 0; j < INNER_LOOP_ITERATIONS; j++) {
+						if (states[j].getMaterial().isReplaceable()) {
+							mutablePos.setY(airPos.getY() - j);
+							world.setBlockState(mutablePos, state);
 						}
 					}
-					else
-						break;
+					break;
 				}
 			}
 		}
