@@ -126,51 +126,33 @@ public class BNWorldGenerator
 		final int[] wy = new int[1];
 		final int[] wz = new int[1];
 		Map<BlockPos, NetherBiome> biomeMap = new ConcurrentHashMap<>();
-		int numThreads = Runtime.getRuntime().availableProcessors();
-		ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
-		for (int i = 0; i < 8; i += numThreads) {
-			final int start = i;
-			final int end = Math.min(i + numThreads, 8);
-			Callable<Void> task = () -> {
-				for (int x = start; x < end; x++) {
-					wx[0] = sx | (x << 1);
-					for (int z = 0; z < 8; z++) {
-						wz[0] = sz | (z << 1);
-						NetherBiome edge = null;
-						for (int y = 0; y < 64; y++) {
-							wy[0] = (y << 1);
-							BlockPos pos = new BlockPos(wx[0], wy[0], wz[0]);
-							if (!biomeMap.containsKey(pos)) {
-								id[0] = getBiome(world, wx[0], wy[0], wz[0]);
-								biomeMap.put(pos, id[0]);
-								if (isEdge(world, id[0], wx[0], wy[0], wz[0], id[0].getEdgeSize()))
-									edge = id[0].getEdge();
-								else
-									edge = id[0].getSubBiome(wx[0], wy[0], wz[0]);
-							} else {
-								id[0] = biomeMap.get(pos);
-								if (edge != null && isEdge(world, id[0], wx[0], wy[0], wz[0], edge.getEdgeSize()))
-									id[0] = edge.getEdge();
-								else if (edge != null)
-									id[0] = edge.getSubBiome(wx[0], wy[0], wz[0]);
-								biomeMap.put(pos, id[0]);
-							}
-							BIO_ARRAY[x][y][z] = id[0];
-						}
+		for (int x = 0; x < 8; x++) {
+			wx[0] = sx | (x << 1);
+			for (int z = 0; z < 8; z++) {
+				wz[0] = sz | (z << 1);
+				NetherBiome edge = null;
+				for (int y = 0; y < 64; y++) {
+					wy[0] = (y << 1);
+					BlockPos pos = new BlockPos(wx[0], wy[0], wz[0]);
+					if (!biomeMap.containsKey(pos)) {
+						id[0] = getBiome(world, wx[0], wy[0], wz[0]);
+						biomeMap.put(pos, id[0]);
+						if (isEdge(world, id[0], wx[0], wy[0], wz[0], id[0].getEdgeSize()))
+							edge = id[0].getEdge();
+						else
+							edge = id[0].getSubBiome(wx[0], wy[0], wz[0]);
+					} else {
+						id[0] = biomeMap.get(pos);
+						if (edge != null && isEdge(world, id[0], wx[0], wy[0], wz[0], edge.getEdgeSize()))
+							id[0] = edge.getEdge();
+						else if (edge != null)
+							id[0] = edge.getSubBiome(wx[0], wy[0], wz[0]);
+						biomeMap.put(pos, id[0]);
 					}
+					BIO_ARRAY[x][y][z] = id[0];
 				}
-				return null;
-			};
-
-			executor.submit(task);
-		}
-
-		executor.shutdown();
-		try {
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-		} catch (InterruptedException e) {
-			// Handle interruption if required
+			}
 		}
 	}
 
