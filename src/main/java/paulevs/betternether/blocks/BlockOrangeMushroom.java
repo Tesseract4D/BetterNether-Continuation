@@ -18,9 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import paulevs.betternether.BetterNether;
+
+import javax.annotation.Nonnull;
 
 public class BlockOrangeMushroom extends Block implements IGrowable
 {
@@ -68,10 +71,10 @@ public class BlockOrangeMushroom extends Block implements IGrowable
 	{
 		return AABB[state.getValue(SIZE)];
 	}
-
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return this.getDefaultState().withProperty(SIZE, meta);
+	
+	public IBlockState getStateFromMeta(int meta) {
+		int clampedMeta = MathHelper.clamp(meta, 0, 3); // Ensure the meta value is within the allowed range
+		return this.getDefaultState().withProperty(SIZE, clampedMeta);
 	}
 
 	public int getMetaFromState(IBlockState state)
@@ -100,7 +103,7 @@ public class BlockOrangeMushroom extends Block implements IGrowable
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
 	{
 		int s = state.getValue(SIZE) + 1;
-		if (s < 4)
+		if (s <= 3) // Check if the size is less than or equal to 3
 			worldIn.setBlockState(pos, state.withProperty(SIZE, state.getValue(SIZE) + 1));
 	}
 	
