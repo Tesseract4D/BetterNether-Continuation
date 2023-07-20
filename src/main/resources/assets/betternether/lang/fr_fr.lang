@@ -1,7 +1,7 @@
 container.forge=Forge
 container.chest_of_drawers=Commode
 
-entity.firefly.name=Luciole
+entity.firefly_nether.name=Luciole
 
 item.black_apple.name=Pomme noire
 

@@ -1,7 +1,7 @@
 container.forge=Forge
 container.chest_of_drawers=Chest of Drawers
 
-entity.firefly.name=Firefly
+entity.firefly_nether.name=Firefly
 
 item.black_apple.name=Black Apple
 
