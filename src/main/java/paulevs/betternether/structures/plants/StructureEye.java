@@ -2,7 +2,9 @@ package paulevs.betternether.structures.plants;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,7 +20,13 @@ public class StructureEye implements IStructure {
 	@Override
 	public void generate(World world, BlockPos pos, Random random) {
 		BlockPos upPos = pos.up();
-		if (ConfigLoader.isTerrain(world.getBlockState(upPos).getBlock())) {
+		if(world.getBiome(pos) == Biomes.HELL && world.getBiome(pos.up()) == Biomes.HELL
+				&& world.getBiome(pos.up(2)) == Biomes.HELL) {
+
+			Block upBlock = world.getBlockState(pos.up()).getBlock();
+			Block upUpBlock = world.getBlockState(pos.up(2)).getBlock();
+
+			if(ConfigLoader.isTerrain(upBlock) && ConfigLoader.isTerrain(upUpBlock)) {
 			int height = random.nextInt(19) + MIN_STALK_HEIGHT;
 			int stalkHeight = pos.getY() - height;
 			if (stalkHeight < MIN_HEIGHT) {
@@ -55,6 +63,7 @@ public class StructureEye implements IStructure {
 			}
 			stalkPos.setY(pos.getY() - height);
 			world.setBlockState(stalkPos, eyeState);
+			}
 		}
 	}
 }
