@@ -17,7 +17,11 @@ public class NetherBiomeJungle extends NetherBiome
 	{
 		super(name);
 	}
+	public int getDefaultWeight() {
+		return
 
+				1000;
+	}
 	@Override
 	public void genFloorObjects(World world, BlockPos pos, Random random)
 	{

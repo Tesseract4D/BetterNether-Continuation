@@ -37,6 +37,7 @@ public class StructureLucis implements IStructure {
 				if (world.isAirBlock(offsetPos))
 					world.setBlockState(offsetPos, corner.withProperty(BlockLucisMushroom.FACING, facingMapping.get(cornerFacing.getOpposite())));
 			}
+
 		} else {
 			boolean offset = false;
 			EnumFacing offsetFacing = null;

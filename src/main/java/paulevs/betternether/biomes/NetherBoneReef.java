@@ -31,7 +31,9 @@ public class NetherBoneReef extends NetherGrasslands
 		return true;
 	}
 	public int getDefaultWeight() {
-		return 125;
+		return
+
+				125;
 	}
 	
 	@Override
