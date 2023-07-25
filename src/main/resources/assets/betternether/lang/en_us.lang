@@ -42,6 +42,7 @@ tile.bone_stairs.name=Bone Stairs
 tile.bone_tile.name=Bone Tile
 tile.bone_wall.name=Bone Wall
 
+
 tile.cincinnasite_bars.name=Cincinnasite Bars
 tile.cincinnasite_block.name=Cincinnasite Block
 tile.cincinnasite_brick_plate.name=Cincinnasite Brick Plate
@@ -64,6 +65,8 @@ tile.cincinnasite_stairs.name=Cincinnasite Stairs
 tile.cincinnasite_tile_large.name=Large Cincinnasite Tile
 tile.cincinnasite_tile_small.name=Small Cincinnasite Tile
 tile.cincinnasite_wall.name=Cincinnasite Wall
+
+tile.chest_of_drawers.name=Chest Of Drawers
 
 tile.egg_plant.name=Egg Plant
 
