@@ -9,6 +9,7 @@ public class WorleyNoiseIDDistorted3D {
 	private double cachedNoiseX;
 	private double cachedNoiseY;
 	private double cachedNoiseZ;
+	private int cachedBiome;
 
 	public WorleyNoiseIDDistorted3D(long seed, int maxID) {
 		idNoise = new WorleyNoiseID3D(seed, maxID);
@@ -19,27 +20,30 @@ public class WorleyNoiseIDDistorted3D {
 		cachedNoiseX = Double.NaN;
 		cachedNoiseY = Double.NaN;
 		cachedNoiseZ = Double.NaN;
+		cachedBiome = 0;
 	}
 
 	public int GetValue(double x, double y, double z) {
-		if (x != cachedX) {
-			cachedNoiseY = noise.GetValue(x * 0.5, -cachedZ * 0.5);
-			cachedNoiseZ = noise.GetValue(-x * 0.5, -cachedY * 0.5);
+		// Check if the input coordinates have changed since the last call
+		if (x != cachedX || y != cachedY || z != cachedZ) {
+			// Cache the new input coordinates
 			cachedX = x;
-		}
-		if (y != cachedY) {
-			cachedNoiseX = noise.GetValue(cachedY * 0.5, -z * 0.5);
-			cachedNoiseZ = noise.GetValue(-cachedX * 0.5, -y * 0.5);
 			cachedY = y;
-		}
-		if (z != cachedZ) {
-			cachedNoiseX = noise.GetValue(cachedZ * 0.5, -y * 0.5);
-			cachedNoiseY = noise.GetValue(x * 0.5, -cachedX * 0.5);
 			cachedZ = z;
+
+			// Calculate the noise for each dimension and cache them
+			cachedNoiseX = noise.GetValue(y * 0.5, -z * 0.5);
+			cachedNoiseY = noise.GetValue(z * 0.5, -x * 0.5);
+			cachedNoiseZ = noise.GetValue(x * 0.5, -y * 0.5);
+
+			// Calculate the biome using the cached noise values
+			double nx = x + cachedNoiseX;
+			double ny = y + cachedNoiseY;
+			double nz = z + cachedNoiseZ;
+			cachedBiome = idNoise.getBiome(nx, ny, nz);
 		}
-		double nx = x + cachedNoiseX;
-		double ny = y + cachedNoiseY;
-		double nz = z + cachedNoiseZ;
-		return idNoise.getBiome(nx, ny, nz);
+
+		// Return the cached biome value
+		return cachedBiome;
 	}
 }
