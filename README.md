@@ -4,6 +4,13 @@ BetterNether Continuation is a commissioned fork of the BetterNether -Rotn editi
 
 More changes will follow in the future. Please make suggestions in our Discord server and make bug reports on our GitHub! Thank you!
 
+
+# Links to descriptions of my projects.
+
+[*Github*](https://github.com/quentin452/BetterNether-Continuation)
+
+[*Curseforge*](https://legacy.curseforge.com/minecraft/mc-mods/better-nether-continuation)
+
 # Changes from Rotn Edition
 
 Contain changes from Better Nether Rotn Edition:
