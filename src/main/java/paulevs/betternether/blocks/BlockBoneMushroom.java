@@ -30,6 +30,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
@@ -206,12 +207,12 @@ public class BlockBoneMushroom extends Block implements IGrowable
     @Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
 	{
-        if (!worldIn.isRemote)
+        if (worldIn.isRemote) return;
+
+        if (canGrow(worldIn, pos, state, false) && ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(32) == 0))
         {
-            if (canGrow(worldIn, pos, state, false) && rand.nextInt(32) == 0)
-            {
-                grow(worldIn, rand, pos, state);
-            }
+            grow(worldIn, rand, pos, state);
+            ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
         }
 	}
     

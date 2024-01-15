@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import paulevs.betternether.BetterNether;
 
 import javax.annotation.Nonnull;
@@ -130,11 +131,10 @@ public class BlockOrangeMushroom extends Block implements IGrowable
 			this.dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 		}
-		else if (rand.nextInt(8) == 0)
+		else if (state.getValue(SIZE) + 1 < 4 && ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(8) == 0))
 		{
-			int s = state.getValue(SIZE) + 1;
-			if (s < 4)
-				worldIn.setBlockState(pos, state.withProperty(SIZE, state.getValue(SIZE) + 1));
+			worldIn.setBlockState(pos, state.withProperty(SIZE, state.getValue(SIZE) + 1));
+			ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
 		}
 	}
 	

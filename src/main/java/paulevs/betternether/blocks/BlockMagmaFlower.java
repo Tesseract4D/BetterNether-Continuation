@@ -21,6 +21,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import paulevs.betternether.BetterNether;
 
 public class BlockMagmaFlower extends Block implements IGrowable
@@ -58,14 +59,17 @@ public class BlockMagmaFlower extends Block implements IGrowable
 		if (!canPlaceBlockAt(worldIn, pos))
 			worldIn.destroyBlock(pos, true);
     }
-	
-	@Override
-	public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
-    {
-		if (!worldIn.isRemote && (canGrow(worldIn, pos, state, false)))
+
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+		if (worldIn.isRemote) return;
+
+		super.updateTick(worldIn, pos, state, rand);
+		if (canGrow(worldIn, pos, state, false) && (ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(16) == 0)))
 			{
-				grow(worldIn, random, pos, state);
-        }
+				grow(worldIn, rand, pos, state);
+				ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+		}
     }
 	
 	@Override
@@ -143,15 +147,14 @@ public class BlockMagmaFlower extends Block implements IGrowable
 
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-		if (!worldIn.isRemote)
+		if (worldIn.isRemote) return;
+
+		int size = state.getValue(SIZE);
+		if (!canPlaceBlockAt(worldIn, pos))
+			worldIn.destroyBlock(pos, true);
+		else if (canGrow(worldIn, pos, state, false))
 		{
-			int size = state.getValue(SIZE);
-			if (!canPlaceBlockAt(worldIn, pos))
-				worldIn.destroyBlock(pos, true);
-			else if (size < 3 && rand.nextInt(16) == 0)
-			{
-				worldIn.setBlockState(pos, state.withProperty(SIZE, size + 1));
-			}
+			worldIn.setBlockState(pos, state.withProperty(SIZE, size + 1));
 		}
 	}
 }
