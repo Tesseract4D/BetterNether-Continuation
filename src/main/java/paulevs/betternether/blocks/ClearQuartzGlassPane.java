@@ -16,14 +16,14 @@ public class ClearQuartzGlassPane extends BlockPane
 		this.setHardness(0.5F);
 		this.setResistance(3.0F);
 		this.setSoundType(SoundType.GLASS);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.TRANSLUCENT;
     }

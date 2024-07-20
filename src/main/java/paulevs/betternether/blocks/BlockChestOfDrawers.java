@@ -23,7 +23,7 @@ public class BlockChestOfDrawers extends BlockInventoryUniversal
 		this.setHardness(3.0F);
 		this.setResistance(10.0F);
 		this.setSoundType(SoundType.METAL);
-		this.setUnlocalizedName("chest_of_drawers");
+		this.setTranslationKey("chest_of_drawers");
 		this.setRegistryName("chest_of_drawers");
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}

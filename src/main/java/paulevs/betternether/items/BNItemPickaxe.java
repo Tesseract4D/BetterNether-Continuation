@@ -13,7 +13,7 @@ public class BNItemPickaxe extends ItemPickaxe
 	{
 		super(material);
 		this.speed = speed;
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setMaxDamage(maxDamage);

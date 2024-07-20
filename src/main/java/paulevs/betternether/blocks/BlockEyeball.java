@@ -15,7 +15,7 @@ public class BlockEyeball extends BlockEyeBase
 	{
 		super();
 		this.setRegistryName("block_eyeball");
-        this.setUnlocalizedName("block_eyeball");
+        this.setTranslationKey("block_eyeball");
 	}
 	
 	@Override

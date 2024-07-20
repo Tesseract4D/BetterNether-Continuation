@@ -10,7 +10,7 @@ public class BlockReedsLadder extends BlockLadder
 	{
 		super();
 		this.setRegistryName("reeds_ladder");
-		this.setUnlocalizedName("reeds_ladder");
+		this.setTranslationKey("reeds_ladder");
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setHardness(0.4F);
 		this.setSoundType(SoundType.LADDER);

@@ -30,7 +30,7 @@ public class BlockAgave extends Block
 		super(Material.CACTUS, MapColor.ORANGE_STAINED_HARDENED_CLAY);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName("agave");
-		this.setUnlocalizedName("agave");
+		this.setTranslationKey("agave");
 		this.setTickRandomly(true);
 		this.setSoundType(SoundType.CLOTH);
 	}
@@ -68,7 +68,7 @@ public class BlockAgave extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -91,7 +91,7 @@ public class BlockAgave extends Block
     }
 	
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         entityIn.attackEntityFrom(DamageSource.CACTUS, 1.5F);
     }

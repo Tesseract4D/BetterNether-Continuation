@@ -11,7 +11,7 @@ public class BlockBNStairs extends BlockStairs
 	{
 		super(block == null ? Blocks.AIR.getDefaultState() : block.getDefaultState());
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.useNeighborBrightness = true;
 	}

@@ -12,7 +12,7 @@ public class BlockPlateWooden extends BlockPressurePlate
 	{
 		super(Material.WOOD, Sensitivity.EVERYTHING);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setSoundType(SoundType.WOOD);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BetterNether.BN_TAB);

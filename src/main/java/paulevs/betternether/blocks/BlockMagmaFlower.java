@@ -33,7 +33,7 @@ public class BlockMagmaFlower extends Block implements IGrowable
 	{
 		super(Material.PLANTS, MapColor.ORANGE_STAINED_HARDENED_CLAY);
 		this.setRegistryName("magma_flower");
-		this.setUnlocalizedName("magma_flower");
+		this.setTranslationKey("magma_flower");
 		this.setHardness(0.5F);
 		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SIZE, 0));
@@ -125,7 +125,7 @@ public class BlockMagmaFlower extends Block implements IGrowable
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
 	{
 		if (state.getValue(SIZE) == 3)
 			spawnSeeds(worldIn, pos, worldIn.rand);

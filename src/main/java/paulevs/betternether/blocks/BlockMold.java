@@ -31,7 +31,7 @@ public class BlockMold extends Block
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setTickRandomly(true);
 	}
 
@@ -136,7 +136,7 @@ public class BlockMold extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

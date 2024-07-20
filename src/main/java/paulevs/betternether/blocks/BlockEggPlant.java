@@ -43,7 +43,7 @@ public class BlockEggPlant extends Block
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setHardness(1.0F);
 		this.setRegistryName("egg_plant");
-		this.setUnlocalizedName("egg_plant");
+		this.setTranslationKey("egg_plant");
 		this.setSoundType(SoundType.PLANT);
 	}
 	
@@ -73,7 +73,7 @@ public class BlockEggPlant extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -86,7 +86,7 @@ public class BlockEggPlant extends Block
     }
 	
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
 	{
 		if (BNWorldGenerator.enableMobDamage && entityIn instanceof EntityLiving && !((EntityLiving) entityIn).isPotionActive(potion))
 		{

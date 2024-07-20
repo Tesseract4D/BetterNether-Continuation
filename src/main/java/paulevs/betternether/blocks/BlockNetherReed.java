@@ -65,7 +65,7 @@ public class BlockNetherReed extends Block
 	public BlockNetherReed()
 	{
 		super(Material.PLANTS, MapColor.CYAN);
-		this.setUnlocalizedName("nether_reed");
+		this.setTranslationKey("nether_reed");
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("nether_reed");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumShape.TOP));
@@ -94,7 +94,7 @@ public class BlockNetherReed extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

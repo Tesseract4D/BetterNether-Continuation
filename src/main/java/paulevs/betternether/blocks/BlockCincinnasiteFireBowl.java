@@ -105,7 +105,7 @@ public class BlockCincinnasiteFireBowl extends BlockCincinnasite
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

@@ -32,7 +32,7 @@ public class BlockStalagnateBase extends Block
 	public BlockStalagnateBase()
 	{
 		super(Material.WOOD, MapColor.LIME_STAINED_HARDENED_CLAY);
-		this.setUnlocalizedName("stalagnate");
+		this.setTranslationKey("stalagnate");
 		this.setSoundType(SoundType.WOOD);
 		this.setHardness(2.0F);
 		this.setResistance(2F);
@@ -58,7 +58,7 @@ public class BlockStalagnateBase extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -100,7 +100,7 @@ public class BlockStalagnateBase extends Block
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
 		if (!worldIn.isRemote)
 		{
@@ -111,7 +111,7 @@ public class BlockStalagnateBase extends Block
     }
 	
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
     {
 		if (!worldIn.isRemote)
 		{

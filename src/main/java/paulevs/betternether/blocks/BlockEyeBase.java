@@ -48,7 +48,7 @@ public class BlockEyeBase extends Block
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
 	{
 		spawnSeeds(worldIn, pos, worldIn.rand);
 		worldIn.destroyBlock(pos, true);

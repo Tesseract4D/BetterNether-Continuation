@@ -17,6 +17,6 @@ public class BNBlockBone extends Block
         this.setSoundType(SoundType.STONE);
         this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 	}
 }

@@ -18,7 +18,7 @@ public class BlockCincinnasiteOre extends BlockOre
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.STONE);
-		this.setUnlocalizedName("cincinnasite_ore");
+		this.setTranslationKey("cincinnasite_ore");
 		this.setRegistryName("cincinnasite_ore");
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}

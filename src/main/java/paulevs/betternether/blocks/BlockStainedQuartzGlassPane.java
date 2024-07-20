@@ -9,7 +9,7 @@ public class BlockStainedQuartzGlassPane extends BlockStainedGlassPane
 	public BlockStainedQuartzGlassPane(String name)
 	{
 		this.setCreativeTab(BetterNether.BN_TAB);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setHardness(3.0F);
 		this.setResistance(10.0F);

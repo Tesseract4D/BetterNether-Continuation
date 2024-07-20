@@ -31,7 +31,7 @@ public class BlockBarrelCactus extends Block
 		super(Material.CACTUS, MapColor.ORANGE_STAINED_HARDENED_CLAY);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName("barrel_cactus");
-		this.setUnlocalizedName("barrel_cactus");
+		this.setTranslationKey("barrel_cactus");
 		this.setTickRandomly(true);
 		this.setSoundType(SoundType.CLOTH);
 	}
@@ -69,7 +69,7 @@ public class BlockBarrelCactus extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -92,7 +92,7 @@ public class BlockBarrelCactus extends Block
     }
 	
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         entityIn.attackEntityFrom(DamageSource.CACTUS, 1.5F);
     }

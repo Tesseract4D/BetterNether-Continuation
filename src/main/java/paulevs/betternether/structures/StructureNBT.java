@@ -74,8 +74,8 @@ public class StructureNBT
 	
 	private Template readTemplate(ResourceLocation resource)
     {
-        String s = resource.getResourceDomain();
-        String s1 = resource.getResourcePath();
+        String s = resource.getNamespace();
+        String s1 = resource.getPath();
         Path p = ConfigLoader.getStructureLoadPath().resolve(s1 + ".nbt");
         if(Files.exists(p)) {
         	try(InputStream inStream = new BufferedInputStream(Files.newInputStream(p))) {
@@ -127,6 +127,6 @@ public class StructureNBT
 	
 	public String getName()
 	{
-		return location.getResourcePath();
+		return location.getPath();
 	}
 }

@@ -12,7 +12,7 @@ public class ItemSoupStandart extends ItemSoup
 	{
 		super(amount);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 	

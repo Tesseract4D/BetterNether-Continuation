@@ -18,7 +18,7 @@ public class BNCreativeTab extends CreativeTabs
 	}
 
 	@Override
-	public ItemStack getTabIconItem()
+	public ItemStack createIcon()
 	{
 		return new ItemStack(BlocksRegister.BLOCK_NETHER_GRASS);
 	}
@@ -48,8 +48,8 @@ public class BNCreativeTab extends CreativeTabs
 			else
 				return 0;*/
 				//return stack1.getUnlocalizedName().length() - stack2.getUnlocalizedName().length();
-			String name1 = stack1.getUnlocalizedName();
-			String name2 = stack2.getUnlocalizedName();
+			String name1 = stack1.getTranslationKey();
+			String name2 = stack2.getTranslationKey();
 			return name1.compareTo(name2);
 		}
 	}

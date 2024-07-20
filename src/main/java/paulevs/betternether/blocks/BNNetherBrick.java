@@ -11,7 +11,7 @@ public class BNNetherBrick extends BlockNetherBrick
 		super();
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
 		this.setSoundType(SoundType.STONE);

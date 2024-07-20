@@ -91,12 +91,12 @@ public class BlockPottedPlant extends Block
 		this.setHardness(0.5F);
 		this.setResistance(0.5F);
 		this.setSoundType(SoundType.PLANT);
-		this.setUnlocalizedName("potted_plant_1");
+		this.setTranslationKey("potted_plant_1");
 		this.setRegistryName("potted_plant_1");
 		plants = new HashMap<String, EnumPlant>();
 		for (EnumPlant plant: EnumPlant.values())
 			if (plant.block != null)
-				plants.put(plant.block.getUnlocalizedName(), plant);
+				plants.put(plant.block.getTranslationKey(), plant);
 	}
 	
 	@Override
@@ -119,12 +119,12 @@ public class BlockPottedPlant extends Block
 	
 	public static boolean hasPlant(Block block)
 	{
-		return block != null && plants != null && plants.containsKey(block.getUnlocalizedName());
+		return block != null && plants != null && plants.containsKey(block.getTranslationKey());
 	}
 	
 	public IBlockState getBlockState(Block plant)
 	{
-		return this.getDefaultState().withProperty(PLANT, plants.get(plant.getUnlocalizedName()));
+		return this.getDefaultState().withProperty(PLANT, plants.get(plant.getTranslationKey()));
 	}
 	
 	protected BlockStateContainer createBlockState()
@@ -163,7 +163,7 @@ public class BlockPottedPlant extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

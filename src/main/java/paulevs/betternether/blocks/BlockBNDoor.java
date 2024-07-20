@@ -26,7 +26,7 @@ public class BlockBNDoor extends BlockDoor
 		this.setResistance(1F);
 		this.setSoundType(sound);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 	

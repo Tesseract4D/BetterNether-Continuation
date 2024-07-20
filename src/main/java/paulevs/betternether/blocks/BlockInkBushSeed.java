@@ -34,7 +34,7 @@ public class BlockInkBushSeed extends Block implements IGrowable
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("ink_bush_seed");
-		this.setUnlocalizedName("ink_bush_seed");
+		this.setTranslationKey("ink_bush_seed");
 		this.setTickRandomly(true);
 	}
 	
@@ -86,7 +86,7 @@ public class BlockInkBushSeed extends Block implements IGrowable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

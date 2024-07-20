@@ -34,7 +34,7 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 		this.setTickRandomly(true);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("stalagnate_seed");
-		this.setUnlocalizedName("stalagnate_seed");
+		this.setTranslationKey("stalagnate_seed");
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 	
@@ -121,7 +121,7 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

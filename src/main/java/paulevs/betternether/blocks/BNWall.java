@@ -44,7 +44,7 @@ public class BNWall extends Block
 		this.setSoundType(sound);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 	}
 
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)

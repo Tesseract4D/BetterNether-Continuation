@@ -12,7 +12,7 @@ public class BlockReedsBlock extends BlockRotatedPillar
 	{
 		super(Material.WOOD, MapColor.CYAN);
 		this.setRegistryName("reeds_block");
-		this.setUnlocalizedName("reeds_block");
+		this.setTranslationKey("reeds_block");
 		this.setSoundType(SoundType.WOOD);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BetterNether.BN_TAB);

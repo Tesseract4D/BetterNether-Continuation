@@ -45,7 +45,7 @@ public class BlockWartSeed extends Block implements IGrowable
 		this.setHardness(1.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setRegistryName("wart_seed");
-		this.setUnlocalizedName("wart_seed");
+		this.setTranslationKey("wart_seed");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
 	}
 
@@ -160,7 +160,7 @@ public class BlockWartSeed extends Block implements IGrowable
 	
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta % 6));
+		return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta % 6));
 	}
 
 	public int getMetaFromState(IBlockState state)

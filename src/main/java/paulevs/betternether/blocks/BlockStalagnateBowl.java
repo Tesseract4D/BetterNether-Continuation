@@ -82,7 +82,7 @@ public class BlockStalagnateBowl extends Block
 	{
 		super(Material.WOOD, MapColor.LIME_STAINED_HARDENED_CLAY);
 		this.setRegistryName("stalagnate_bowl_placed");
-		this.setUnlocalizedName("stalagnate_bowl_placed");
+		this.setTranslationKey("stalagnate_bowl_placed");
 		this.setHardness(0.1F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FOOD, EnumFood.NONE));
 	}
@@ -101,7 +101,7 @@ public class BlockStalagnateBowl extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

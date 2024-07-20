@@ -32,7 +32,7 @@ public class BlockLucisMushroom extends Block
 	{
 		super(Material.WOOD, MapColor.YELLOW);
 		this.setRegistryName("lucis_mushroom");
-		this.setUnlocalizedName("lucis_mushroom");
+		this.setTranslationKey("lucis_mushroom");
 		this.setHardness(1.0F);
 		this.setLightLevel(1F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumDir.NORTH).withProperty(SHAPE, BlockLucisMushroom.EnumShape.CENTER));
@@ -57,7 +57,7 @@ public class BlockLucisMushroom extends Block
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
 	{
 		if (!worldIn.isRemote && worldIn.rand.nextBoolean())
 			spawnSeeds(worldIn, pos);
@@ -65,7 +65,7 @@ public class BlockLucisMushroom extends Block
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
 	{
 		if (!worldIn.isRemote && worldIn.rand.nextInt(4) == 0)
 			spawnSeeds(worldIn, pos);

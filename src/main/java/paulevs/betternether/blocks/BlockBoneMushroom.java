@@ -53,7 +53,7 @@ public class BlockBoneMushroom extends Block implements IGrowable
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("bone_mushroom");
-		this.setUnlocalizedName("bone_mushroom");
+		this.setTranslationKey("bone_mushroom");
 		this.setTickRandomly(true);
     }
 
@@ -147,7 +147,7 @@ public class BlockBoneMushroom extends Block implements IGrowable
     }
 
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -230,7 +230,7 @@ public class BlockBoneMushroom extends Block implements IGrowable
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
 	{
 		if (state.getValue(AGE) > 1)
 			spawnSeeds(worldIn, pos, worldIn.rand);

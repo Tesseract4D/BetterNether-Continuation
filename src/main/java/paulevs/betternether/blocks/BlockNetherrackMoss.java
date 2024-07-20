@@ -11,7 +11,7 @@ public class BlockNetherrackMoss extends BlockNetherrack
 		this.setHardness(0.4F);
 		this.setSoundType(SoundType.STONE);
 		this.setRegistryName("netherrack_moss");
-		this.setUnlocalizedName("netherrack_moss");
+		this.setTranslationKey("netherrack_moss");
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 }

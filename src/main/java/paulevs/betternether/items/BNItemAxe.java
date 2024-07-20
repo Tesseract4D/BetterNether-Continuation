@@ -13,7 +13,7 @@ public class BNItemAxe extends ItemAxe
 	{
 		super(material);
 		this.speed = speed;
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setMaxDamage(maxDamage);

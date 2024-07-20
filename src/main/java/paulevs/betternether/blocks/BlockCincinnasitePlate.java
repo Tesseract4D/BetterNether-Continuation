@@ -12,7 +12,7 @@ public class BlockCincinnasitePlate extends BlockPressurePlateWeighted
 	{
 		super(Material.IRON, 150, MapColor.YELLOW);
 		this.setRegistryName("cincinnasite_plate");
-		this.setUnlocalizedName("cincinnasite_plate");
+		this.setTranslationKey("cincinnasite_plate");
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setHardness(0.5F);
 		this.setResistance(0.5F);

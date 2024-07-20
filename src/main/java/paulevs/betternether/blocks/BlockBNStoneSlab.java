@@ -33,7 +33,7 @@ public abstract class BlockBNStoneSlab extends BlockSlab
 		this.setSoundType(SoundType.STONE);
 		this.setHardness(1.5F);
 		this.setCreativeTab(BetterNether.BN_TAB);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		IBlockState iblockstate = this.blockState.getBaseState();
 		if (!this.isDouble())
@@ -81,9 +81,9 @@ public abstract class BlockBNStoneSlab extends BlockSlab
 	/**
 	 * Returns the slab block name with the type associated with it
 	 */
-	public String getUnlocalizedName(int meta)
+	public String getTranslationKey(int meta)
 	{
-		return super.getUnlocalizedName();
+		return super.getTranslationKey();
 	}
 
 	public IProperty<?> getVariantProperty()

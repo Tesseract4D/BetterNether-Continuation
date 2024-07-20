@@ -13,7 +13,7 @@ public class BlockStalagnateBark extends BlockRotatedPillar
 	{
 		super(Material.WOOD, MapColor.LIME_STAINED_HARDENED_CLAY);
 		this.setRegistryName("stalagnate_bark");
-		this.setUnlocalizedName("stalagnate_bark");
+		this.setTranslationKey("stalagnate_bark");
 		this.setSoundType(SoundType.WOOD);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BetterNether.BN_TAB);

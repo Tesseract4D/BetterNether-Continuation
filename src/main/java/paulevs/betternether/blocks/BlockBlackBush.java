@@ -33,7 +33,7 @@ public class BlockBlackBush extends Block
 		this.setHardness(1.0F);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("black_bush");
-		this.setUnlocalizedName("black_bush");
+		this.setTranslationKey("black_bush");
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class BlockBlackBush extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

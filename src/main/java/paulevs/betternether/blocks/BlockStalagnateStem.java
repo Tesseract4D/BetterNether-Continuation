@@ -25,7 +25,7 @@ public class BlockStalagnateStem extends Block
 	public BlockStalagnateStem()
 	{
 		super(Material.WOOD, MapColor.LIME_STAINED_HARDENED_CLAY);
-		this.setUnlocalizedName("stalagnate");
+		this.setTranslationKey("stalagnate");
 		this.setSoundType(SoundType.WOOD);
 		this.setRegistryName("stalagnate_stem");
 		this.setCreativeTab(BetterNether.BN_TAB);
@@ -45,7 +45,7 @@ public class BlockStalagnateStem extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

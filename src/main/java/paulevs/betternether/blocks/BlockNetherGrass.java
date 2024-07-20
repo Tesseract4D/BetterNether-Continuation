@@ -25,7 +25,7 @@ public class BlockNetherGrass extends BlockBush implements net.minecraftforge.co
 	{
 		super();
 		this.setRegistryName("nether_grass");
-		this.setUnlocalizedName("nether_grass");
+		this.setTranslationKey("nether_grass");
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
 	}

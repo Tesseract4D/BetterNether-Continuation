@@ -30,7 +30,7 @@ public class BlockEyeSeed extends Block implements IGrowable
 	{
 		super(Material.PLANTS, MapColor.RED);
 		this.setRegistryName("eye_seed");
-		this.setUnlocalizedName("eye_seed");
+		this.setTranslationKey("eye_seed");
 		this.setTickRandomly(true);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setSoundType(SoundType.PLANT);
@@ -132,7 +132,7 @@ public class BlockEyeSeed extends Block implements IGrowable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

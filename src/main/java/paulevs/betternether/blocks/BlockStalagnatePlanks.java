@@ -12,7 +12,7 @@ public class BlockStalagnatePlanks extends Block
 	{
 		super(Material.WOOD, MapColor.LIME_STAINED_HARDENED_CLAY);
 		this.setRegistryName("stalagnate_planks");
-		this.setUnlocalizedName("stalagnate_planks");
+		this.setTranslationKey("stalagnate_planks");
 		this.setSoundType(SoundType.WOOD);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BetterNether.BN_TAB);

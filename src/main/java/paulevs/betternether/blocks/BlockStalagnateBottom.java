@@ -29,7 +29,7 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
 	{
 		super();
 		this.setRegistryName("stalagnate_bottom");
-		this.setUnlocalizedName("stalagnate_bottom");
+		this.setTranslationKey("stalagnate_bottom");
 	}
 	
 	@Override
@@ -52,7 +52,7 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
@@ -94,7 +94,7 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
     {
 		if (worldIn.rand.nextInt(4) == 0)
 			spawnSeeds(worldIn, pos);
@@ -102,7 +102,7 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
     }
 	
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
     {
 		if (worldIn.rand.nextInt(4) == 0)
 			spawnSeeds(worldIn, pos);

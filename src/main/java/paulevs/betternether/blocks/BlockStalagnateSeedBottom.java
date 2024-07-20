@@ -32,7 +32,7 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 		this.setTickRandomly(true);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("stalagnate_seed_bottom");
-		this.setUnlocalizedName("stalagnate_seed");
+		this.setTranslationKey("stalagnate_seed");
 	}
 	
 	@Override
@@ -119,7 +119,7 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

@@ -387,7 +387,7 @@ public class BlocksRegister
 		{
 			ForgeRegistries.BLOCKS.register(block);
 			ForgeRegistries.ITEMS.register(new ItemCloth(block)
-					.setRegistryName(block.getRegistryName()).setUnlocalizedName(block.getUnlocalizedName()));
+					.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
 			renders.add(block);
 			return block;
 		}

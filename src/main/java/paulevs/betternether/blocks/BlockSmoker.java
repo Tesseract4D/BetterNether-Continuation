@@ -64,7 +64,7 @@ public class BlockSmoker extends Block
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setHardness(2.0F);
 		this.setRegistryName("smoker");
-		this.setUnlocalizedName("smoker");
+		this.setTranslationKey("smoker");
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumShape.TOP));
 	}
 	

@@ -16,7 +16,7 @@ public class BlockNetherMycelium extends BlockNetherrack
 	public BlockNetherMycelium()
 	{
 		this.setRegistryName("nether_mycelium");
-		this.setUnlocalizedName("nether_mycelium");
+		this.setTranslationKey("nether_mycelium");
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setHardness(0.5F);
 	}

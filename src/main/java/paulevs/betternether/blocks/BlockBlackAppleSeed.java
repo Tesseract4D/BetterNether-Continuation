@@ -31,7 +31,7 @@ public class BlockBlackAppleSeed extends Block implements IGrowable
 		this.setTickRandomly(true);
 		this.setSoundType(SoundType.PLANT);
 		this.setRegistryName("black_apple_seed");
-		this.setUnlocalizedName("black_apple_seed");
+		this.setTranslationKey("black_apple_seed");
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 	
@@ -95,7 +95,7 @@ public class BlockBlackAppleSeed extends Block implements IGrowable
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

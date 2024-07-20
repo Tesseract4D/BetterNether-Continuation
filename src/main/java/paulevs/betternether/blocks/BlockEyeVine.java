@@ -30,7 +30,7 @@ public class BlockEyeVine extends Block
 	{
 		super(Material.PLANTS, MapColor.RED);
 		this.setRegistryName("eye_vine");
-		this.setUnlocalizedName("eye_vine");
+		this.setTranslationKey("eye_vine");
 		this.setSoundType(SoundType.PLANT);
 	}
 
@@ -67,7 +67,7 @@ public class BlockEyeVine extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

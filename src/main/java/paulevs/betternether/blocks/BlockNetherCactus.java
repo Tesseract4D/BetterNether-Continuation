@@ -34,7 +34,7 @@ public class BlockNetherCactus extends Block
 		super(Material.CACTUS, MapColor.ORANGE_STAINED_HARDENED_CLAY);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setRegistryName("nether_cactus");
-		this.setUnlocalizedName("nether_cactus");
+		this.setTranslationKey("nether_cactus");
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumShape.TOP));
 		this.setSoundType(SoundType.CLOTH);
@@ -108,7 +108,7 @@ public class BlockNetherCactus extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
+	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.CUTOUT;
 	}
@@ -172,7 +172,7 @@ public class BlockNetherCactus extends Block
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
 	{
 		entityIn.attackEntityFrom(DamageSource.CACTUS, 1.5F);
 	}

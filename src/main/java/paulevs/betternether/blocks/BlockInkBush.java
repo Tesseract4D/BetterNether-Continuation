@@ -32,7 +32,7 @@ public class BlockInkBush extends Block
 		this.setHardness(1.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setRegistryName("ink_bush");
-		this.setUnlocalizedName("ink_bush");
+		this.setTranslationKey("ink_bush");
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class BlockInkBush extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

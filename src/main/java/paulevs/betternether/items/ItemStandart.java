@@ -8,7 +8,7 @@ public class ItemStandart extends Item
 	public ItemStandart(String name)
 	{
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setCreativeTab(BetterNether.BN_TAB);
 	}
 }

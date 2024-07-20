@@ -26,7 +26,7 @@ public abstract class BlockBNSlab extends BlockSlab
 		this.setSoundType(sound);
 		this.setHardness(2.0F);
 		this.setCreativeTab(BetterNether.BN_TAB);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setRegistryName(name);
 		IBlockState state = this.blockState.getBaseState();
 		if(!this.isDouble())
@@ -38,9 +38,9 @@ public abstract class BlockBNSlab extends BlockSlab
 	}
 	
 	@Override
-	public String getUnlocalizedName(int meta) 
+	public String getTranslationKey(int meta)
 	{
-		return this.getUnlocalizedName();
+		return this.getTranslationKey();
 	}
 
 	@Override

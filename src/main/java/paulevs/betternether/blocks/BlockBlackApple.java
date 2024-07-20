@@ -32,7 +32,7 @@ public class BlockBlackApple extends Block
 		super(Material.PLANTS, MapColor.WHITE_STAINED_HARDENED_CLAY);
 		this.setHardness(1.0F);
 		this.setRegistryName("black_apple");
-		this.setUnlocalizedName("black_apple");
+		this.setTranslationKey("black_apple");
 		this.setSoundType(SoundType.PLANT);
 	}
 	
@@ -62,7 +62,7 @@ public class BlockBlackApple extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }

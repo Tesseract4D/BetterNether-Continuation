@@ -67,7 +67,7 @@ public class BlockInventoryUniversal extends BlockContainer
 	@Override
 	public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(meta >> 1);
+        EnumFacing enumfacing = EnumFacing.byIndex(meta >> 1);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {

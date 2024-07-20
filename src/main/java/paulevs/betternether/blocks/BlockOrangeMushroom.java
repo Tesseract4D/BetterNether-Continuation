@@ -44,7 +44,7 @@ public class BlockOrangeMushroom extends Block implements IGrowable
 		this.setHardness(0.5F);
 		this.setSoundType(SoundType.WOOD);
 		this.setRegistryName("orange_mushroom");
-		this.setUnlocalizedName("orange_mushroom");
+		this.setTranslationKey("orange_mushroom");
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SIZE, 0));
 	}
@@ -155,7 +155,7 @@ public class BlockOrangeMushroom extends Block implements IGrowable
 	}
 	
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state)
 	{
 		if (state.getValue(SIZE) > 2)
 			spawnSeeds(worldIn, pos, worldIn.rand);

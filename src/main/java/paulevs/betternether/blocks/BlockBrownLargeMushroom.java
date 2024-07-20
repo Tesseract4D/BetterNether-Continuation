@@ -75,7 +75,7 @@ public class BlockBrownLargeMushroom extends Block
 	{
 		super(Material.WOOD, MapColor.BROWN_STAINED_HARDENED_CLAY);
 		this.setRegistryName("brown_large_mushroom");
-		this.setUnlocalizedName("brown_large_mushroom");
+		this.setTranslationKey("brown_large_mushroom");
 		this.setHardness(0.25F);
 		this.setSoundType(SoundType.WOOD);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, EnumShape.BOTTOM));
@@ -154,7 +154,7 @@ public class BlockBrownLargeMushroom extends Block
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
+	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.SOLID;
 	}

@@ -30,7 +30,7 @@ public class BlockLucisSpore extends Block implements IGrowable
 	{
 		super(Material.PLANTS, MapColor.LIME);
 		this.setRegistryName("lucis_spore");
-		this.setUnlocalizedName("lucis_spore");
+		this.setTranslationKey("lucis_spore");
 		this.setLightLevel(0.75F);
 		this.setCreativeTab(BetterNether.BN_TAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));

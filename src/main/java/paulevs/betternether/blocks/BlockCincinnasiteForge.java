@@ -45,7 +45,7 @@ public class BlockCincinnasiteForge extends BlockContainer
 	{
 		super(Material.IRON);
 		this.setRegistryName(name);
-		this.setUnlocalizedName(name);
+		this.setTranslationKey(name);
 		this.setHardness(3.0F);
 		this.setResistance(10.0F);
 		this.setSoundType(SoundType.METAL);
@@ -75,7 +75,7 @@ public class BlockCincinnasiteForge extends BlockContainer
 	
 	public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(meta >> 1);
+        EnumFacing enumfacing = EnumFacing.byIndex(meta >> 1);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {
