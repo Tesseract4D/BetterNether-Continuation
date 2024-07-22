@@ -21,7 +21,7 @@ public class StructureEggPlant implements IStructure
 		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND)
 		{
 			IBlockState state = BlocksRegister.BLOCK_EGG_PLANT.getDefaultState();
-			for (int i = 0; i < 18; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				int x = pos.getX() + (int) (random.nextGaussian() * 2);
 				int z = pos.getZ() + (int) (random.nextGaussian() * 2);

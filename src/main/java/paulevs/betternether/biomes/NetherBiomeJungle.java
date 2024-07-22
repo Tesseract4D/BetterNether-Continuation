@@ -29,11 +29,11 @@ public class NetherBiomeJungle extends NetherBiome
 				reeds = StructureReeds.generate(world, pos, random);
 			if (!reeds)
 			{
-				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(16) == 0)
+				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(32) == 0)
 					BNWorldGenerator.stalagnateGen.generate(world, pos, random);
 				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(64) == 0)
 					BNWorldGenerator.eggPlantGen.generate(world, pos, random);
-				else if (random.nextInt(3) != 0)
+				else if (random.nextInt(5) == 0)
 					world.setBlockState(pos.up(), BlocksRegister.BLOCK_JUNGLE_PLANT.getDefaultState());
 			}
 		}

@@ -75,7 +75,7 @@ public class ConfigLoader
 		structureLoadPath = configDir.toPath().resolve("betternether").resolve("structures");
 		config = new Configuration(file);
 		config.load();
-		biomeSizeXZ = config.getInt("BiomeSizeXZ", "Generator", 100, 1, 4096, "Defines size in horisontal space");
+		biomeSizeXZ = config.getInt("BiomeSizeXZ", "Generator", 256, 1, 4096, "Defines size in horisontal space");
 		biomeSizeY = config.getInt("BiomeSizeY", "Generator", 32, 1, 4096, "Defines size in vertical space");
 		hasCleaningPass = config.getBoolean("SecondPass", "Generator", true, "Enables|Disables second pass for smooth terrain");
 		hasNetherWart = config.getBoolean("NetherWartGeneration", "Generator", true, "Enables|Disables vanilla nether wart generation in biomes");
