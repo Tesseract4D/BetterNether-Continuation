@@ -1,0 +1,12 @@
+[{
+	"modid": "${mod_id}",
+	"name": "${mod_name}",
+	"version": "${mod_version}",
+	"mcversion": "1.12.2",
+	"description": "${mod_description}",
+	"authorList": ${mod_authors},
+	"credits":, "\\n -> §bpaulevs§r (programming, art, ideas, ru/en translations),\\n -> §3edos_§r (builder, design help),\\n -> §9yorusora_nk§r (chinese translation),\\n -> §9kralrindo1§r (turkish translation)",
+	"url": "${mod_url}",
+	"updateJSON": "${mod_update_json}",
+	"logoFile": "${mod_logo_path}"
+}]

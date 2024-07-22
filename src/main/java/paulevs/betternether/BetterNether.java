@@ -7,16 +7,13 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import paulevs.betternether.betternether.Tags;
 import paulevs.betternether.proxy.CommonProxy;
 import paulevs.betternether.tab.BNCreativeTab;
 
-@Mod(modid = BetterNether.MODID, name = BetterNether.NAME, version = BetterNether.VERSION)
+@Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION, dependencies = "after:nether_api@[,INCOMPATIBLE WITH NETHER API)")
 public class BetterNether
 {
-	public static final String MODID = "betternether";
-	public static final String NAME = "Chongzheng's Nether";
-	public static final String VERSION = "0.1.9.4";
-	
 	public static final CreativeTabs BN_TAB = new BNCreativeTab();
 	
 	@SidedProxy(clientSide = "paulevs.betternether.proxy.ClientProxy", serverSide = "paulevs.betternether.proxy.CommonProxy")
