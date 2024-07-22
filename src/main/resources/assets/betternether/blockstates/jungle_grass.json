@@ -1,0 +1,11 @@
+{
+    "variants":
+	{
+        "normal": [
+			{ "model": "betternether:jungle_grass" },
+			{ "model": "betternether:jungle_grass", "y": 90 },
+			{ "model": "betternether:jungle_grass", "y": 180 },
+			{ "model": "betternether:jungle_grass", "y": 270 }
+		]
+    }
+}

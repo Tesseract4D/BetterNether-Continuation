@@ -1,16 +1,5 @@
 package paulevs.betternether.config;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -23,12 +12,14 @@ import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.items.ItemsRegister;
 import paulevs.betternether.world.BNWorldGenerator;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.nio.file.Path;
+import java.util.*;
+
 public class ConfigLoader
 {
 	private static Configuration config;
-	//private static boolean[] registerBlocks;
-	private static boolean[] registerItems;
-	
 	private static Set<NetherBiome> enabledBiomes;
 	private static List<NetherBiome> everywhereBiomes;
 	private static Map<String, List<NetherBiome>> restrictedBiomes;
@@ -71,8 +62,6 @@ public class ConfigLoader
 	private static int biomeSizeXZ;
 	private static int biomeSizeY;
 	
-	private static Map<String, Boolean> registerBlocks;
-	
 	private static boolean hasCleaningPass;
 	private static boolean hasNetherWart;
 	
@@ -84,7 +73,6 @@ public class ConfigLoader
 	public static void load(File file, File configDir)
 	{
 		structureLoadPath = configDir.toPath().resolve("betternether").resolve("structures");
-		List<Boolean> items= new ArrayList<Boolean>();
 		config = new Configuration(file);
 		config.load();
 		biomeSizeXZ = config.getInt("BiomeSizeXZ", "Generator", 100, 1, 4096, "Defines size in horisontal space");
@@ -95,7 +83,7 @@ public class ConfigLoader
 		hasCities = config.getBoolean("CityEnabled", "Cities", true, "Enables|Disables cities");
 		centers = config.getStringList("CityCenters", "Cities", new String[]{"city_center_01", "city_center_02"}, "List of structures to use as city centers. Loaded from config/betternether/structures/city. (You can also override built-in ones by putting files with the same name there.)");
 		buildings = config.getStringList("CityBuildings", "Cities", new String[]{"city_building_01", "city_building_02", "city_building_03", "city_building_04", "city_building_05", "city_building_06", "city_building_07", "city_building_08", "city_building_09", "city_building_10", "city_library_01", "city_tower_01", "city_tower_02", "city_enchanter_01", "city_hall"}, "List of structures to use as city buildings. Loaded from config/betternether/structures/city. (You can also override built-in ones by putting files with the same name there.)");
-		netherTerrainIds = config.getStringList("PlantableBlocks", "Other", new String[]{"minecraft:netherrack", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "List of blocks plants can grow on. Some plants will always grow on soul sand.");
+		netherTerrainIds = config.getStringList("PlantableBlocks", "Other", new String[]{"minecraft:netherrack", "minecraft:soul_sand", "betternether:nether_mycelium", "betternether:netherrack_moss", "betternether:soul_soil", "betternether:jungle_grass"}, "List of blocks plants can grow on. Some plants will always grow on soul sand.");
 		netherGenTerrainIds = config.getStringList("TerrainBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "betternether:nether_mycelium", "betternether:netherrack_moss"}, "Blocks to consider normal terrain during worldgen for structure gen, etc.");
 		netherGenReplTerrainIds = config.getStringList("TerrainReplaceBlocks", "Generator", new String[] {"minecraft:netherrack", "minecraft:soul_sand", "minecraft:gravel"}, "Blocks to replace with Better Nether's biome ground covering (if there is one) during worldgen");
 		/*for (Field f : BiomeRegister.class.getDeclaredFields()) {
@@ -128,7 +116,7 @@ public class ConfigLoader
 					biome.itemWeight = config.getInt(name + "_chance", "Biomes", biome.getDefaultWeight(), 1, 1000, "Chance in 1000 for this sub-biome to appear within the main biome");
 				} else {
 					biome.itemWeight = config.getInt(name + "_weight", "Biomes", biome.getDefaultWeight(), 1, Short.MAX_VALUE, "Biome weight (higher = more common)");
-					String[] validBiomes = config.getStringList(name + "_spawns", "Biomes", new String[0], "Proper MC-registered biomes this \"biome\" can spawn in. Leave empty for all biomes.");
+					String[] validBiomes = config.getStringList(name + "_spawns", "Biomes", new String[]{"minecraft:hell"}, "Proper MC-registered biomes this \"biome\" can spawn in. Leave empty for all biomes.");
 					if(enabled) {
 						if(validBiomes.length == 0) {
 							everywhereBiomes.add(biome);
@@ -146,22 +134,7 @@ public class ConfigLoader
 			registerBiomes[i] = items.get(i);
 		biomeWeights = new int[weights.size()];
 		weights.toArray(biomeWeights);*/
-		items.clear();
 
-		registerBlocks = new HashMap<String, Boolean>();
-		for (Field f : BlocksRegister.class.getDeclaredFields())
-			if (f.getType().isAssignableFrom(Block.class))
-				registerBlocks.put(f.getName().toLowerCase(Locale.ROOT), config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Blocks", true, "Enables|Disables block"));
-		
-		for (Field f : ItemsRegister.class.getDeclaredFields())
-			if (f.getType().isAssignableFrom(Item.class))
-				items.add(config.getBoolean(f.getName().toLowerCase(Locale.ROOT), "Items", true, "Enables|Disables item"));
-		registerItems = new boolean[items.size()];
-		for (int i = 0; i < items.size(); i++)
-			registerItems[i] = items.get(i);
-		items.clear();
-		items = null;
-		
 		BNWorldGenerator.enablePlayerDamage = config.getBoolean("DamagePlayer", "EggplantDamage", true, "Damage for players");
 		BNWorldGenerator.enableMobDamage = config.getBoolean("DamageMobs", "EggplantDamage", true, "Damage for mobs");
 		
@@ -243,27 +216,7 @@ public class ConfigLoader
 		return enabledBiomes.contains(biome);
 	}
 	
-	public static boolean mustInitBlock(Field field)
-	{
-		String s = field.getName().toLowerCase(Locale.ROOT);
-		return registerBlocks.containsKey(s) && registerBlocks.get(s);
-	}
-	
-	public static boolean mustInitBlock(String key)
-	{
-		String s = key.toLowerCase(Locale.ROOT);
-		return registerBlocks.containsKey(s) && registerBlocks.get(s);
-	}
-	
-	/*public static void resetBlockIndex()
-	{
-		indexBlock = 0;
-	}*/
-	
-	public static boolean mustInitItem()
-	{
-		return registerItems[indexItems++];
-	}
+
 	
 	public static void resetItemIndex()
 	{
@@ -273,9 +226,7 @@ public class ConfigLoader
 	public static void dispose()
 	{
 		config.save();
-		registerBlocks = null;
 		enabledBiomes = null;
-		registerItems = null;
 	}
 	
 	public static int getBiomeSizeXZ()

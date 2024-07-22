@@ -18,7 +18,6 @@ public class NetherBiome extends WeightedRandom.Item
 	NetherBiome edge;
 	int edgeSize;
 	List<NetherBiome> subbiomes;
-	int sl;
 	
 	public NetherBiome(String name)
 	{
@@ -36,7 +35,7 @@ public class NetherBiome extends WeightedRandom.Item
 		return false;
 	}
 	public int getDefaultWeight() {
-		return 1;
+		return 10;
 	}
 	
 	public void genSurfColumn(World world, BlockPos pos, Random random) {}
@@ -91,7 +90,7 @@ public class NetherBiome extends WeightedRandom.Item
 	
 	public NetherBiome getSubBiome(int x, int y, int z)
 	{
-		if (subbiomes.size() > 0)
+		if (!subbiomes.isEmpty())
 		{
 			int id = BNWorldGenerator.getSubBiome(x, y, z);
 			NetherBiome b;

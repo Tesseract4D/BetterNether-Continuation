@@ -50,7 +50,7 @@ public class BlockInkBush extends Block
 	private boolean canStay(World world, BlockPos pos)
 	{
 		Block under = world.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
 	}
 	
 	@Override

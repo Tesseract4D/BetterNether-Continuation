@@ -40,7 +40,7 @@ public class BlockNetherCactus extends Block
 		this.setSoundType(SoundType.CLOTH);
 	}
 
-	public static enum EnumShape implements IStringSerializable
+	public enum EnumShape implements IStringSerializable
 	{
 		TOP(0, "top"),
 		SIDE(1, "side");
@@ -48,7 +48,7 @@ public class BlockNetherCactus extends Block
 		private final String name;
 		private final int index;
 
-		private EnumShape(int index, String name)
+		EnumShape(int index, String name)
 		{
 			this.name = name;
 			this.index = index;

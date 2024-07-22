@@ -1,9 +1,5 @@
 package paulevs.betternether.blocks;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -11,11 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
@@ -32,6 +26,9 @@ import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.entities.EntityFirefly;
 import paulevs.betternether.world.BNWorldGenerator;
 
+import javax.annotation.Nullable;
+import java.util.Random;
+
 public class BlockEggPlant extends Block
 {
 	private static final AxisAlignedBB EGG_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.5, 1.0);
@@ -46,13 +43,13 @@ public class BlockEggPlant extends Block
 		this.setTranslationKey("egg_plant");
 		this.setSoundType(SoundType.PLANT);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return EGG_AABB;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{
@@ -64,54 +61,50 @@ public class BlockEggPlant extends Block
 	{
 		return false;
 	}
-	
+
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
     }
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT;
     }
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
 		worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, pos.getX() + rand.nextDouble(), pos.getY() + 0.4, pos.getZ() + rand.nextDouble(), 0.46, 0.28, 0.55);
     }
-	
+
 	@Override
 	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
 	{
-		if (BNWorldGenerator.enableMobDamage && entityIn instanceof EntityLiving && !((EntityLiving) entityIn).isPotionActive(potion))
-		{
-			if (entityIn instanceof EntityGhast || entityIn instanceof EntityPigZombie || entityIn instanceof EntityFirefly)
-				return;
-			((EntityLiving) entityIn).addPotionEffect(new PotionEffect(potion, 100, 3));
+		if (BNWorldGenerator.enableMobDamage && entityIn instanceof EntityLivingBase && !(entityIn instanceof EntityGhast || entityIn instanceof EntityPigZombie || entityIn instanceof EntityFirefly)) {
+			((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(potion, 100, 3));
+			worldIn.destroyBlock(new BlockPos(pos), false);
 		}
-		else if (BNWorldGenerator.enablePlayerDamage && entityIn instanceof EntityPlayer && !((EntityPlayer) entityIn).isPotionActive(potion))
-			((EntityPlayer) entityIn).addPotionEffect(new PotionEffect(potion, 100, 3));
 	}
-	
+
 	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
 	{
 		return NULL_AABB;
 	}
-	
+
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
     }
-	
+
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
 	{

@@ -1,8 +1,5 @@
 package paulevs.betternether.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -11,22 +8,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemCloth;
-import net.minecraft.item.ItemDoor;
-import net.minecraft.item.ItemSlab;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import paulevs.betternether.BetterNether;
-import paulevs.betternether.config.ConfigLoader;
 
-public class BlocksRegister
-{	
+import java.util.ArrayList;
+import java.util.List;
+
+public class BlocksRegister {
+	public static Block BLOCK_JUNGLE_PLANT;
+	public static Block BLOCK_JUNGLE_GRASS;
+	public static Block BLOCK_SOUL_SOIL;
 	public static Block BLOCK_EYEBALL;
 	public static Block BLOCK_EYEBALL_SMALL;
 	public static Block BLOCK_EYE_VINE;
@@ -127,10 +122,10 @@ public class BlocksRegister
 	public static Block BLOCK_BONE_REED_DOOR;
 	public static Block BLOCK_BONE_CINCINNASITE_DOOR;
 	public static Block BLOCK_QUARTZ_STAINED_GLASS_FRAMED;
-	public static Block BLOCK_QUARTZ_STAINED_GLASS_PANE;
+	//public static Block BLOCK_QUARTZ_STAINED_GLASS_PANE;
 	public static Block BLOCK_STALAGNATE_BOWL;
 	public static Block BLOCK_CHEST_OF_DRAWERS;
-	
+
 	private static List<Block> renders = new ArrayList<Block>();
 
 	public static void register()
@@ -189,6 +184,9 @@ public class BlocksRegister
 		BLOCK_BLACK_APPLE_SEED = registerBlock(new BlockBlackAppleSeed(), BLOCK_BLACK_APPLE, "BLOCK_BLACK_APPLE_SEED");
 		BLOCK_MAGMA_FLOWER = registerBlock(new BlockMagmaFlower(), "BLOCK_MAGMA_FLOWER");
 		BLOCK_NETHER_MYCELIUM = registerBlock(new BlockNetherMycelium(), "BLOCK_NETHER_MYCELIUM");
+		BLOCK_JUNGLE_GRASS = registerBlock(new BlockJungleGrass(), "BLOCK_JUNGLE_GRASS");
+		BLOCK_JUNGLE_PLANT=registerBlock(new BlockJunglePlant(), "BLOCK_JUNGLE_PLANT");
+		BLOCK_SOUL_SOIL = registerBlock(new BlockSoulSoil(), "BLOCK_SOUL_SOIL");
 		BLOCK_RED_LARGE_MUSHROOM = registerNoItem(new BlockRedLargeMushroom(), "BLOCK_RED_LARGE_MUSHROOM");
 		BLOCK_BROWN_LARGE_MUSHROOM = registerNoItem(new BlockBrownLargeMushroom(), "BLOCK_BROWN_LARGE_MUSHROOM");
 		BLOCK_ORANGE_MUSHROOM = registerBlock(new BlockOrangeMushroom(), "BLOCK_ORANGE_MUSHROOM");
@@ -256,7 +254,7 @@ public class BlocksRegister
 		BLOCK_BONE_REED_DOOR = registerBlock(new BlockBNDoor("bone_reed_door", Material.ROCK, SoundType.STONE), "BLOCK_BONE_REED_DOOR");
 		BLOCK_BONE_CINCINNASITE_DOOR = registerBlock(new BlockBNDoor("bone_cincinnasite_door", Material.ROCK, SoundType.STONE), "BLOCK_BONE_CINCINNASITE_DOOR");
 		BLOCK_QUARTZ_STAINED_GLASS_FRAMED = registerColoredBlock(new BlockStainedQuartzGlass("quartz_stained_glass_framed"), "BLOCK_QUARTZ_STAINED_GLASS_FRAMED");
-		BLOCK_QUARTZ_STAINED_GLASS_PANE = registerColoredBlock(new BlockStainedQuartzGlassPane("quartz_stained_glass_pane"), "BLOCK_QUARTZ_STAINED_GLASS_PANE");
+		//BLOCK_QUARTZ_STAINED_GLASS_PANE = registerColoredBlock(new BlockStainedQuartzGlassPane("quartz_stained_glass_pane"), "BLOCK_QUARTZ_STAINED_GLASS_PANE");
 		BLOCK_STALAGNATE_BOWL = registerNoItem(new BlockStalagnateBowl(), "BLOCK_STALAGNATE_BOWL");
 		BLOCK_CHEST_OF_DRAWERS = registerBlock(new BlockChestOfDrawers(), "BLOCK_CHEST_OF_DRAWERS");
 	}
@@ -277,7 +275,7 @@ public class BlocksRegister
 		addToDictionary("oreCincinnasite", BLOCK_CINCINNASITE_ORE);
 		addToDictionary("sugarcane", BLOCK_NETHER_REED);
 	}
-	
+
 	private static void addToDictionary(String name, Block block)
 	{
 		if (block!= Blocks.AIR)
@@ -293,105 +291,72 @@ public class BlocksRegister
 			setRender(b);
 	}
 
-	private static Block registerBlock(Block block, String key)
-	{
-		if (ConfigLoader.mustInitBlock(key))
-		{
-			ForgeRegistries.BLOCKS.register(block);
-			ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
-			renders.add(block);
-			return block;
-		}
-		else
-			return Blocks.AIR;
+	private static Block registerBlock(Block block, String key) {
+		ForgeRegistries.BLOCKS.register(block);
+		ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+		renders.add(block);
+		return block;
 	}
-	
-	private static Block registerBlock(Block block, Block parrent, String key)
-	{
+
+	private static Block registerBlock(Block block, Block parrent, String key) {
 		if (parrent != Blocks.AIR)
 			return registerBlock(block, key);
 		else
 			return Blocks.AIR;
 	}
-	
-	@SuppressWarnings("unused")
-	private static Block registerBlockDoor(Block block, String key)
-	{
-		if (ConfigLoader.mustInitBlock(key))
-		{
-			ForgeRegistries.BLOCKS.register(block);
-			ForgeRegistries.ITEMS.register(
-					new ItemDoor(block)
-					.setRegistryName(block.getRegistryName())
-					.setCreativeTab(BetterNether.BN_TAB));
-			renders.add(block);
-			return block;
-		}
-		else
-			return Blocks.AIR;
+
+	private static Block registerBlockDoor(Block block, String key) {
+		ForgeRegistries.BLOCKS.register(block);
+		ForgeRegistries.ITEMS.register(
+				new ItemDoor(block)
+						.setRegistryName(block.getRegistryName())
+						.setCreativeTab(BetterNether.BN_TAB));
+		renders.add(block);
+		return block;
 	}
-	
-	private static Block registerNoItem(Block block, String key)
-	{
-		if (ConfigLoader.mustInitBlock(key))
-		{
-			ForgeRegistries.BLOCKS.register(block);
-			return block;
-		}
-		else
-			return Blocks.AIR;
+
+	private static Block registerNoItem(Block block, String key) {
+		ForgeRegistries.BLOCKS.register(block);
+		return block;
 	}
-	
-	private static Block registerNoItem(Block block, Block parrent, String key)
-	{
-		if (parrent!= Blocks.AIR)
+
+	private static Block registerNoItem(Block block, Block parrent, String key) {
+		if (parrent != Blocks.AIR)
 			return registerNoItem(block, key);
 		else
 			return Blocks.AIR;
 	}
-	
-	private static Block[] registerBlockSlab(Block blockSingle, Block blockDouble, Block parrent, String key1, String key2)
-	{
+
+	private static Block[] registerBlockSlab(Block blockSingle, Block blockDouble, Block parrent, String key1, String key2) {
 		Block[] res = new Block[2];
-		if (ConfigLoader.mustInitBlock(key1) && ConfigLoader.mustInitBlock(key2) && parrent!= Blocks.AIR)
-		{
-			((BlockBNSlab) blockDouble).setDrop(blockSingle);
-			((BlockBNSlabHalf) blockSingle).setDoubleSlab(blockDouble);
-			ForgeRegistries.BLOCKS.register(blockSingle);
-			ForgeRegistries.BLOCKS.register(blockDouble);
-			ForgeRegistries.ITEMS.register(new ItemSlab(blockSingle, (BlockSlab) blockSingle, (BlockSlab) blockDouble)
-					.setRegistryName(blockSingle.getRegistryName()));
-			renders.add(blockSingle);
-			res[0] = blockSingle;
-			res[1] = blockDouble;
-		}
+		((BlockBNSlab) blockDouble).setDrop(blockSingle);
+		((BlockBNSlabHalf) blockSingle).setDoubleSlab(blockDouble);
+		ForgeRegistries.BLOCKS.register(blockSingle);
+		ForgeRegistries.BLOCKS.register(blockDouble);
+		ForgeRegistries.ITEMS.register(new ItemSlab(blockSingle, (BlockSlab) blockSingle, (BlockSlab) blockDouble)
+				.setRegistryName(blockSingle.getRegistryName()));
+		renders.add(blockSingle);
+		res[0] = blockSingle;
+		res[1] = blockDouble;
 		return res;
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void setRender(Block block)
-	{
+	private static void setRender(Block block) {
 		Item item = Item.getItemFromBlock(block);
 		if (item instanceof ItemCloth)
-			for (int i = 0; i < 16; i++)
-			{
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, new ModelResourceLocation(item.getRegistryName(), "color="+ EnumDyeColor.byMetadata(i).getDyeColorName()));
+			for (int i = 0; i < 16; i++) {
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, i, new ModelResourceLocation(item.getRegistryName(), "color=" + EnumDyeColor.byMetadata(i).getDyeColorName()));
 			}
-			else
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
-	}
-	
-	private static Block registerColoredBlock(Block block, String key)
-	{
-		if (ConfigLoader.mustInitBlock(key))
-		{
-			ForgeRegistries.BLOCKS.register(block);
-			ForgeRegistries.ITEMS.register(new ItemCloth(block)
-					.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
-			renders.add(block);
-			return block;
-		}
 		else
-			return null;
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+	}
+
+	private static Block registerColoredBlock(Block block, String key) {
+		ForgeRegistries.BLOCKS.register(block);
+		ForgeRegistries.ITEMS.register(new ItemCloth(block)
+				.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
+		renders.add(block);
+		return block;
 	}
 }

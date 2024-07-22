@@ -1,18 +1,16 @@
 package paulevs.betternether.items;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.blocks.BlockStalagnateBowl.EnumFood;
-import paulevs.betternether.config.ConfigLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemsRegister
 {
@@ -52,14 +50,9 @@ public class ItemsRegister
 
     private static Item registerItem(Item item)
     {
-    	if (ConfigLoader.mustInitItem())
-    	{
-    		ForgeRegistries.ITEMS.register(item);
-    		render.add(item);
-    		return item;
-    	}
-    	else
-    		return Items.AIR;
+        ForgeRegistries.ITEMS.register(item);
+        render.add(item);
+        return item;
     }
 
     @SideOnly(Side.CLIENT)

@@ -3,7 +3,7 @@
     "textures": {
         "particle": "betternether:blocks/nether_mycelium_side",
         "down": "blocks/netherrack",
-        "up": "blocks/mycelium_top",
+        "up": "betternether:blocks/nether_mycelium_top",
         "north": "betternether:blocks/nether_mycelium_side",
         "east": "betternether:blocks/nether_mycelium_side",
         "south": "betternether:blocks/nether_mycelium_side",

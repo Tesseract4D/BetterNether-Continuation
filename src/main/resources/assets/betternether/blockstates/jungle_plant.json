@@ -1,0 +1,14 @@
+{
+    "variants":
+	{
+        "normal": [
+			{ "model": "betternether:jungle_plant_1_a", "weight": 10 },
+			{ "model": "betternether:jungle_plant_1_b", "weight": 10 },
+			{ "model": "betternether:jungle_plant_2" },
+			{ "model": "betternether:jungle_plant_2", "y": 90 },
+			{ "model": "betternether:jungle_plant_2", "y": 180 },
+			{ "model": "betternether:jungle_plant_2", "y": 270 },
+			{ "model": "betternether:jungle_plant_3", "weight": 2 }
+		]
+    }
+}

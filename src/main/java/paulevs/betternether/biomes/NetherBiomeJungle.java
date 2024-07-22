@@ -1,7 +1,5 @@
 package paulevs.betternether.biomes;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -10,6 +8,8 @@ import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.plants.StructureReeds;
 import paulevs.betternether.world.BNWorldGenerator;
+
+import java.util.Random;
 
 public class NetherBiomeJungle extends NetherBiome
 {
@@ -29,14 +29,12 @@ public class NetherBiomeJungle extends NetherBiome
 				reeds = StructureReeds.generate(world, pos, random);
 			if (!reeds)
 			{
-				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(8) == 0)
+				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(16) == 0)
 					BNWorldGenerator.stalagnateGen.generate(world, pos, random);
-				else if (BNWorldGenerator.hasMagmaFlowerGen && pos.getY() < 37 && pos.getY() > 23 && random.nextInt(32) == 0)
-					BNWorldGenerator.magmaFlowerGen.generate(world, pos, random);
-				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(16) == 0)
+				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(64) == 0)
 					BNWorldGenerator.eggPlantGen.generate(world, pos, random);
-				else if (BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR && random.nextInt(3) != 0)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
+				else if (random.nextInt(3) != 0)
+					world.setBlockState(pos.up(), BlocksRegister.BLOCK_JUNGLE_PLANT.getDefaultState());
 			}
 		}
 	}
@@ -58,23 +56,7 @@ public class NetherBiomeJungle extends NetherBiome
 	@Override
 	public void genSurfColumn(World world, BlockPos pos, Random random)
 	{
-		if (random.nextFloat() <= plantDensity && world.getBlockState(pos).getBlock() == Blocks.NETHERRACK)
-			if (BlocksRegister.BLOCK_NETHERRACK_MOSS != Blocks.AIR)
-			{
-				switch(random.nextInt(3))
-				{
-				case 0:
-					world.setBlockState(pos, Blocks.SOUL_SAND.getDefaultState());
-					break;
-				case 1:
-					world.setBlockState(pos, BlocksRegister.BLOCK_NETHERRACK_MOSS.getDefaultState());
-					break;
-				}
-			}
-			else
-			{
-				if(random.nextInt(3) == 0)
-					world.setBlockState(pos, Blocks.SOUL_SAND.getDefaultState());
-			}
+		if (world.getBlockState(pos).getBlock() == Blocks.NETHERRACK)
+			world.setBlockState(pos, BlocksRegister.BLOCK_JUNGLE_GRASS.getDefaultState());
 	}
 }

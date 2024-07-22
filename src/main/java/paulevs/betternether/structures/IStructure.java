@@ -7,5 +7,5 @@ import net.minecraft.world.World;
 
 public interface IStructure
 {
-	public void generate(World world, BlockPos pos, Random random);
+	void generate(World world, BlockPos pos, Random random);
 }

@@ -78,7 +78,7 @@ public class BlockBlackApple extends Block
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
     }
 	
 	@Override

@@ -14,14 +14,14 @@ import paulevs.betternether.tab.BNCreativeTab;
 public class BetterNether
 {
 	public static final String MODID = "betternether";
-	public static final String NAME = "BetterNether: RotN Edition";
+	public static final String NAME = "Chongzheng's Nether";
 	public static final String VERSION = "0.1.9.4";
 	
 	public static final CreativeTabs BN_TAB = new BNCreativeTab();
 	
 	@SidedProxy(clientSide = "paulevs.betternether.proxy.ClientProxy", serverSide = "paulevs.betternether.proxy.CommonProxy")
 	public static CommonProxy proxy;
-	private static Object mod;
+	private static BetterNether mod;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -42,7 +42,7 @@ public class BetterNether
 	    proxy.postInit(event);
 	}
 
-	public static Object getMod()
+	public static BetterNether getMod()
 	{
 		return mod;
 	}

@@ -41,7 +41,7 @@ public class BlockInkBushSeed extends Block implements IGrowable
 	private boolean canStay(World world, BlockPos pos)
 	{
 		Block under = world.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
 	}
 
 	@Override

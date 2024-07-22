@@ -32,7 +32,7 @@ public class StructureEggPlant implements IStructure
 					if (npos.getY() > 31)
 					{
 						under = world.getBlockState(npos.down()).getBlock();
-						if ((ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND) && (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getMaterial() != Material.LAVA))
+						if ((ConfigLoader.isTerrain(under)) && (world.getBlockState(pos).getBlock() == Blocks.AIR || world.getBlockState(pos).getMaterial() != Material.LAVA))
 						{
 							if (world.getBlockState(npos).getMaterial().isReplaceable())
 								world.setBlockState(npos, state);

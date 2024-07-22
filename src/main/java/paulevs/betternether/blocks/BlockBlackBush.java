@@ -51,7 +51,7 @@ public class BlockBlackBush extends Block
 	private boolean canStay(World world, BlockPos pos)
 	{
 		Block under = world.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
 	}
 	
 	@Override
@@ -100,6 +100,6 @@ public class BlockBlackBush extends Block
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
 		Block under = worldIn.getBlockState(pos.down()).getBlock();
-		return ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND;
+		return ConfigLoader.isTerrain(under);
     }
 }
