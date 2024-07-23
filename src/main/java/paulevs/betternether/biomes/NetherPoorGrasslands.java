@@ -6,6 +6,7 @@ import net.minecraft.block.BlockNetherrack;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.structures.plants.StructureReeds;
@@ -18,6 +19,7 @@ public class NetherPoorGrasslands extends NetherGrasslands
 	public NetherPoorGrasslands(String name)
 	{
 		super(name);
+		setFogColor(new Vec3d(0.44, 0.29, 0.52));
 	}
 	
 	public boolean isSub() {

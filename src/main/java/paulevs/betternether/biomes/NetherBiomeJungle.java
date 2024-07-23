@@ -3,6 +3,7 @@ package paulevs.betternether.biomes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
@@ -16,6 +17,7 @@ public class NetherBiomeJungle extends NetherBiome
 	public NetherBiomeJungle(String name)
 	{
 		super(name);
+		setFogColor(new Vec3d(0.24, 0.66, 0.24));
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class NetherBiomeJungle extends NetherBiome
 			{
 				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(32) == 0)
 					BNWorldGenerator.stalagnateGen.generate(world, pos, random);
-				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(64) == 0)
+				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(96) == 0)
 					BNWorldGenerator.eggPlantGen.generate(world, pos, random);
 				else if (random.nextInt(5) == 0)
 					world.setBlockState(pos.up(), BlocksRegister.BLOCK_JUNGLE_PLANT.getDefaultState());

@@ -1,7 +1,5 @@
 package paulevs.betternether.world;
 
-import java.util.*;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNetherBrick;
 import net.minecraft.block.material.Material;
@@ -23,21 +21,9 @@ import paulevs.betternether.structures.IStructureWorld;
 import paulevs.betternether.structures.StructureAltar;
 import paulevs.betternether.structures.StructureBuilding;
 import paulevs.betternether.structures.city.CityStructureManager;
-import paulevs.betternether.structures.plants.StructureBlackApple;
-import paulevs.betternether.structures.plants.StructureEggPlant;
-import paulevs.betternether.structures.plants.StructureEye;
-import paulevs.betternether.structures.plants.StructureGrayMold;
-import paulevs.betternether.structures.plants.StructureInkBush;
-import paulevs.betternether.structures.plants.StructureLucis;
-import paulevs.betternether.structures.plants.StructureMagmaFlower;
-import paulevs.betternether.structures.plants.StructureMedBrownMushroom;
-import paulevs.betternether.structures.plants.StructureMedRedMushroom;
-import paulevs.betternether.structures.plants.StructureOrangeMushroom;
-import paulevs.betternether.structures.plants.StructureRedMold;
-import paulevs.betternether.structures.plants.StructureSmoker;
-import paulevs.betternether.structures.plants.StructureStalagnate;
-import paulevs.betternether.structures.plants.StructureWartCap;
-import paulevs.betternether.structures.plants.StructureWartTree;
+import paulevs.betternether.structures.plants.*;
+
+import java.util.*;
 
 public class BNWorldGenerator
 {
@@ -281,13 +267,14 @@ public class BNWorldGenerator
 				centerID != getBiome(world, x, y, z - distance));
 	}
 
-	private static NetherBiome getBiome(World world, int x, int y, int z)
+	public static NetherBiome getBiome(World world, int x, int y, int z)
 	{
 		double px = (double) dither.ditherX(x, y, z) * biomeSizeXZ;
 		double py = (double) dither.ditherY(x, y, z) * biomeSizeY;
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
 		Biome biome = world.getBiome(new BlockPos(x, y, z));
-		return WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), BiomeRegister.getBiomesForMCBiome(biome));
+		List<NetherBiome> l = BiomeRegister.getBiomesForMCBiome(biome);
+		return l.isEmpty() ? BiomeRegister.BIOME_EMPTY_NETHER : WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), l);
 	}
 
 	// generate cities

@@ -3,6 +3,7 @@ package paulevs.betternether.biomes;
 import net.minecraft.block.BlockNetherWart;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
@@ -15,6 +16,7 @@ public class NetherWartForestEdge extends NetherWartForest
 	public NetherWartForestEdge(String name)
 	{
 		super(name);
+		setFogColor(new Vec3d(0.75, 0.11, 0.11));
 	}
 	
 	public boolean isEdge() {

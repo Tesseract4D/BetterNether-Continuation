@@ -2,6 +2,7 @@ package paulevs.betternether.biomes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
@@ -14,6 +15,7 @@ public class NetherMushroomForestEdge extends NetherMushroomForest
 	public NetherMushroomForestEdge(String name)
 	{
 		super(name);
+		setFogColor(new Vec3d(0.78, 0.47, 0.61));
 	}
 	
 	public boolean isEdge() {

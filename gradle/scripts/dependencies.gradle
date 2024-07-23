@@ -60,4 +60,5 @@ dependencies {
     //     transitive = false
     // }
     implementation rfg.deobf('curse.maven:albedo-275300:2714505')
+    implementation "maven.modrinth:mysteriumlibunofficial:1.5.8"
 }

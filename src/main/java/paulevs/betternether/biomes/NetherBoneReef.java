@@ -9,6 +9,7 @@ import net.minecraft.block.BlockBone;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BNBlockBone;
 import paulevs.betternether.blocks.BlockBoneMushroom;
@@ -27,6 +28,7 @@ public class NetherBoneReef extends NetherGrasslands {
 
 	public NetherBoneReef(String name) {
 		super(name);
+		setFogColor(new Vec3d(0.18, 0.86, 0.79));
 	}
 
 	public boolean isSub() {

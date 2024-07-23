@@ -1,14 +1,15 @@
 package paulevs.betternether.biomes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import paulevs.betternether.world.BNWorldGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class NetherBiome extends WeightedRandom.Item
 {
@@ -16,6 +17,7 @@ public class NetherBiome extends WeightedRandom.Item
 	float plantDensity = 1;
 	String name;
 	NetherBiome edge;
+	Vec3d fogColor = new Vec3d(0.2, 0.03, 0.03);
 	int edgeSize;
 	List<NetherBiome> subbiomes;
 	
@@ -52,7 +54,17 @@ public class NetherBiome extends WeightedRandom.Item
 		value = featureScatter.generateNoiseOctaves(value, pos.getX(), pos.getZ(), 1, 1, 0.1, 0.1, 1.0);
 		return value[0];
 	}
-	
+
+	public Vec3d getFogColor(float f, float partialTicks) {
+		return fogColor;
+	}
+
+	public void setFogColor(Vec3d f) {
+		fogColor = f;
+	}
+	public void setFogColor(int x, int y, int z) {
+		fogColor = new Vec3d(x / 256d, y / 256d, z / 256d);
+	}
 	public void setDensity(float density)
 	{
 		plantDensity = density;

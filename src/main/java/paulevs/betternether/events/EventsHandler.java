@@ -1,7 +1,5 @@
 package paulevs.betternether.events;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNetherrack;
 import net.minecraft.block.state.IBlockState;
@@ -18,11 +16,15 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import paulevs.betternether.blocks.BlockBrownLargeMushroom;
 import paulevs.betternether.blocks.BlockRedLargeMushroom;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.commands.CommandsRegister;
+import paulevs.betternether.fix.FixesCommon;
 import paulevs.betternether.world.BNWorldGenerator;
+
+import java.util.Random;
 
 public class EventsHandler
 {
@@ -70,6 +72,14 @@ public class EventsHandler
 		{
 			BNWorldGenerator.smoothChunk(event.getWorld(), event.getChunkX(), event.getChunkZ());
 		}
+	}
+
+	@SubscribeEvent
+	public void onClientTick(TickEvent.ClientTickEvent e) {
+		if (FixesCommon.fogFadeTime > 0)
+			FixesCommon.fogFadeTime--;
+		else
+			FixesCommon.fadingFog = null;
 	}
 
 	@SubscribeEvent

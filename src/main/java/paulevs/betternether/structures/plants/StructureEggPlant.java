@@ -18,10 +18,10 @@ public class StructureEggPlant implements IStructure
 	public void generate(World world, BlockPos pos, Random random)
 	{
 		Block under = world.getBlockState(pos).getBlock();
-		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND)
+		if (ConfigLoader.isTerrain(under))
 		{
 			IBlockState state = BlocksRegister.BLOCK_EGG_PLANT.getDefaultState();
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				int x = pos.getX() + (int) (random.nextGaussian() * 2);
 				int z = pos.getZ() + (int) (random.nextGaussian() * 2);

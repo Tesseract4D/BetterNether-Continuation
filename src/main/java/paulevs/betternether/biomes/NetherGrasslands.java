@@ -5,6 +5,7 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlocksRegister;
 import paulevs.betternether.config.ConfigLoader;
@@ -18,6 +19,7 @@ public class NetherGrasslands extends NetherBiome
 	public NetherGrasslands(String name)
 	{
 		super(name);
+		setFogColor(new Vec3d(0.44, 0.28, 0.52));
 	}
 
 	@Override

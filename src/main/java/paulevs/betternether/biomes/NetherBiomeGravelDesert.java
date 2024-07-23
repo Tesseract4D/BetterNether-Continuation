@@ -2,6 +2,7 @@ package paulevs.betternether.biomes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockNetherCactus;
 import paulevs.betternether.blocks.BlocksRegister;
@@ -11,6 +12,7 @@ import java.util.Random;
 public class NetherBiomeGravelDesert extends NetherBiome {
 	public NetherBiomeGravelDesert(String name) {
 		super(name);
+		setFogColor(new Vec3d(0.66, 0.19, 0));
 	}
 
 	@Override
