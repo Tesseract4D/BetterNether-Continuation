@@ -1,7 +1,5 @@
 package paulevs.betternether.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -22,6 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import paulevs.betternether.BetterNether;
+
+import java.util.Random;
 
 public class BlockNetherCactus extends Block
 {
@@ -72,10 +72,7 @@ public class BlockNetherCactus extends Block
 
 	public IBlockState getStateFromMeta(int meta)
 	{
-		EnumShape shape = EnumShape.TOP;
-		if (meta == 1)
-			shape = EnumShape.SIDE;
-		return this.getDefaultState().withProperty(SHAPE, shape);
+		return this.getDefaultState().withProperty(SHAPE, meta == 1 ? EnumShape.SIDE : EnumShape.TOP);
 	}
 
 	public int getMetaFromState(IBlockState state)

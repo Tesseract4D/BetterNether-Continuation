@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "shape=normal": [
+      {
+        "model": "betternether:golden_vine_1"
+      },
+      {
+        "model": "betternether:golden_vine_2"
+      }
+    ],
+    "shape=bottom": [
+      {
+        "model": "betternether:golden_vine_bottom_1"
+      },
+      {
+        "model": "betternether:golden_vine_bottom_2"
+      }
+    ]
+  }
+}

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlocksRegister {
+	public static Block BLOCK_FLOWERED_VINE;
+	public static Block BLOCK_GOLDEN_VINE;
+	public static Block BLOCK_BLACK_VINE;
 	public static Block BLOCK_JUNGLE_PLANT;
 	public static Block BLOCK_JUNGLE_GRASS;
 	public static Block BLOCK_SOUL_SOIL;
@@ -172,6 +175,9 @@ public class BlocksRegister {
 		BLOCK_LUCIS_MUSHROOM = registerNoItem(new BlockLucisMushroom(), "BLOCK_LUCIS_MUSHROOM");
 		BLOCK_LUCIS_SPORE = registerBlock(new BlockLucisSpore(), BLOCK_LUCIS_MUSHROOM, "BLOCK_LUCIS_SPORE");
 		BLOCK_NETHER_CACTUS = registerBlock(new BlockNetherCactus(), "BLOCK_NETHER_CACTUS");
+		BLOCK_BLACK_VINE = registerBlock(new BlockBlackVine(), "BLOCK_BLACK_VINE");
+		BLOCK_FLOWERED_VINE = registerBlock(new BlockFloweredVine(), "BLOCK_FLOWERED_VINE");
+		BLOCK_GOLDEN_VINE = registerBlock(new BlockGoldenVine(), "BLOCK_GOLDEN_VINE");
 		BLOCK_WART_SEED = registerBlock(new BlockWartSeed(), "BLOCK_WART_SEED");
 		BLOCK_BARREL_CACTUS = registerBlock(new BlockBarrelCactus(), "BLOCK_BARREL_CACTUS");
 		BLOCK_AGAVE = registerBlock(new BlockAgave(), "BLOCK_AGAVE");

@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "betternether:blocks/golden_vine_bottom"
+    }
+}

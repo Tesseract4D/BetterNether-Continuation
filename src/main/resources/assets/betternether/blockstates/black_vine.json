@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "shape=normal": [
+      {
+        "model": "betternether:black_vine_1"
+      },
+      {
+        "model": "betternether:black_vine_2"
+      }
+    ],
+    "shape=bottom": [
+      {
+        "model": "betternether:black_vine_bottom_1"
+      },
+      {
+        "model": "betternether:black_vine_bottom_2"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "variants": {
+    "shape=normal": [
+      {
+        "model": "betternether:flowered_vine_1"
+      },
+      {
+        "model": "betternether:flowered_vine_2"
+      },
+      {
+        "model": "betternether:flowered_vine_3"
+      },
+      {
+        "model": "betternether:flowered_vine_4"
+      },
+      {
+        "model": "betternether:flowered_vine_5"
+      },
+      {
+        "model": "betternether:flowered_vine_6"
+      }
+    ],
+    "shape=bottom": [
+      {
+        "model": "betternether:flowered_vine_bottom_1"
+      },
+      {
+        "model": "betternether:flowered_vine_bottom_2"
+      },
+      {
+        "model": "betternether:flowered_vine_bottom_3"
+      },
+      {
+        "model": "betternether:flowered_vine_bottom_4"
+      }
+    ]
+  }
+}
