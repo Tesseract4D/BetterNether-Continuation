@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "betternether:rubeus_pressure_plate_up" },
+        "powered=true": { "model": "betternether:rubeus_pressure_plate_down" }
+    }
+}

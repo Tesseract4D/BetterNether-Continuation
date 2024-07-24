@@ -6,11 +6,14 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,6 +23,7 @@ import paulevs.betternether.BetterNether;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BlocksRegister {
 	public static Block BLOCK_RUBEUS_LOG;
@@ -133,8 +137,17 @@ public class BlocksRegister {
 	public static Block BLOCK_STALAGNATE_BOWL;
 	public static Block BLOCK_CHEST_OF_DRAWERS;
 
-	private static List<Block> renders = new ArrayList<Block>();
+	public static List<Block> renders = new ArrayList<Block>();
 	public static Block BLOCK_RUBEUS_LEAVES;
+	public static Block BLOCK_RUBEUS_PLANKS;
+	public static Block BLOCK_RUBEUS_PLATE;
+	public static Block BLOCK_RUBEUS_BUTTON;
+	public static Block BLOCK_RUBEUS_SLAB_DOUBLE;
+	public static Block BLOCK_RUBEUS_FENCE;
+	public static Block BLOCK_RUBEUS_GATE;
+	public static Block BLOCK_RUBEUS_SLAB_HALF;
+	public static Block BLOCK_RUBEUS_STAIRS;
+	public static Block BLOCK_RUBEUS_SAPLING;
 
 	public static void register()
 	{
@@ -179,6 +192,24 @@ public class BlocksRegister {
 		BLOCK_REEDS_PLATE = registerBlock(new BlockPlateWooden("reeds_plate"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_PLATE");
 		BLOCK_RUBEUS_LOG = registerBlock(new BlockRubeusLog(), "BLOCK_RUBEUS_LOG");
 		BLOCK_RUBEUS_LEAVES = registerBlockLeaves(new BlockNetherLeaves("rubeus_leaves"), "BLOCK_RUBEUS_LEAVES");
+		BLOCK_RUBEUS_SAPLING = registerBlock(new BlockNetherSapling("rubeus_sapling") {
+			@Override
+			protected void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+				worldIn.setBlockState(pos, Blocks.BEDROCK.getDefaultState());
+			}
+		}, "BLOCK_RUBEUS_SAPLING");
+		BLOCK_RUBEUS_PLANKS = registerBlock(new BlockRubeusPlanks(), "BLOCK_RUBEUS_PLANKS");
+		BLOCK_RUBEUS_STAIRS = registerBlock(new BlockBNStairs("rubeus_stairs", BLOCK_RUBEUS_PLANKS), BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_STAIRS");
+		slabs = registerBlockSlab(
+				new BlockBNSlabHalf("rubeus", Material.WOOD, MapColor.RED_STAINED_HARDENED_CLAY, SoundType.WOOD),
+				new BlockBNSlabDouble("rubeus", Material.WOOD, MapColor.RED_STAINED_HARDENED_CLAY, SoundType.WOOD),
+				BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_SLAB_DOUBLE", "BLOCK_RUBEUS_SLAB_HALF");
+		BLOCK_RUBEUS_SLAB_DOUBLE = slabs[1];
+		BLOCK_RUBEUS_SLAB_HALF = slabs[0];
+		BLOCK_RUBEUS_FENCE = registerBlock(new WoodenFence("rubeus_fence", MapColor.RED_STAINED_HARDENED_CLAY), BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_FENCE");
+		BLOCK_RUBEUS_GATE = registerBlock(new BlockWoodenGate("rubeus_gate"), BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_GATE");
+		BLOCK_RUBEUS_BUTTON = registerBlock(new BlockWoodenButton("rubeus_button"), BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_BUTTON");
+		BLOCK_RUBEUS_PLATE = registerBlock(new BlockPlateWooden("rubeus_plate"), BLOCK_RUBEUS_PLANKS, "BLOCK_RUBEUS_PLATE");
 		BLOCK_LUCIS_MUSHROOM = registerNoItem(new BlockLucisMushroom(), "BLOCK_LUCIS_MUSHROOM");
 		BLOCK_LUCIS_SPORE = registerBlock(new BlockLucisSpore(), BLOCK_LUCIS_MUSHROOM, "BLOCK_LUCIS_SPORE");
 		BLOCK_NETHER_CACTUS = registerBlock(new BlockNetherCactus(), "BLOCK_NETHER_CACTUS");
@@ -289,7 +320,7 @@ public class BlocksRegister {
 		addToDictionary("sugarcane", BLOCK_NETHER_REED);
 	}
 
-	private static void addToDictionary(String name, Block block)
+	public static void addToDictionary(String name, Block block)
 	{
 		if (block!= Blocks.AIR)
 		{
@@ -304,14 +335,14 @@ public class BlocksRegister {
 			setRender(b);
 	}
 
-	private static Block registerBlock(Block block, String key) {
+	public static Block registerBlock(Block block, String key) {
 		ForgeRegistries.BLOCKS.register(block);
 		ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 		renders.add(block);
 		return block;
 	}
 
-	private static Block registerBlockLeaves(Block block, String s) {
+	public static Block registerBlockLeaves(Block block, String s) {
 		ForgeRegistries.BLOCKS.register(block);
 		ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
 		ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
@@ -319,14 +350,14 @@ public class BlocksRegister {
 		return block;
 	}
 
-	private static Block registerBlock(Block block, Block parent, String key) {
+	public static Block registerBlock(Block block, Block parent, String key) {
 		if (parent != Blocks.AIR)
 			return registerBlock(block, key);
 		else
 			return Blocks.AIR;
 	}
 
-	private static Block registerBlockDoor(Block block, String key) {
+	public static Block registerBlockDoor(Block block, String key) {
 		ForgeRegistries.BLOCKS.register(block);
 		ForgeRegistries.ITEMS.register(
 				new ItemDoor(block)
@@ -336,19 +367,19 @@ public class BlocksRegister {
 		return block;
 	}
 
-	private static Block registerNoItem(Block block, String key) {
+	public static Block registerNoItem(Block block, String key) {
 		ForgeRegistries.BLOCKS.register(block);
 		return block;
 	}
 
-	private static Block registerNoItem(Block block, Block parrent, String key) {
+	public static Block registerNoItem(Block block, Block parrent, String key) {
 		if (parrent != Blocks.AIR)
 			return registerNoItem(block, key);
 		else
 			return Blocks.AIR;
 	}
 
-	private static Block[] registerBlockSlab(Block blockSingle, Block blockDouble, Block parrent, String key1, String key2) {
+	public static Block[] registerBlockSlab(Block blockSingle, Block blockDouble, Block parrent, String key1, String key2) {
 		Block[] res = new Block[2];
 		((BlockBNSlab) blockDouble).setDrop(blockSingle);
 		((BlockBNSlabHalf) blockSingle).setDoubleSlab(blockDouble);
@@ -363,7 +394,7 @@ public class BlocksRegister {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void setRender(Block block) {
+	public static void setRender(Block block) {
 		Item item = Item.getItemFromBlock(block);
 		if (item instanceof ItemCloth)
 			for (int i = 0; i < 16; i++) {
@@ -373,7 +404,7 @@ public class BlocksRegister {
 			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
 	}
 
-	private static Block registerColoredBlock(Block block, String key) {
+	public static Block registerColoredBlock(Block block, String key) {
 		ForgeRegistries.BLOCKS.register(block);
 		ForgeRegistries.ITEMS.register(new ItemCloth(block)
 				.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
@@ -381,7 +412,7 @@ public class BlocksRegister {
 		return block;
 	}
 
-	private static void registerItemBlock(Block block, ItemBlock i) {
+	public static void registerItemBlock(Block block, ItemBlock i) {
 		ForgeRegistries.ITEMS.register(i.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
 	}
 }

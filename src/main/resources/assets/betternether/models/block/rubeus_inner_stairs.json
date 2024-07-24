@@ -1,0 +1,8 @@
+{
+    "parent": "block/inner_stairs",
+    "textures": {
+        "bottom": "betternether:blocks/rubeus_planks",
+        "top": "betternether:blocks/rubeus_planks",
+        "side": "betternether:blocks/rubeus_planks"
+    }
+}
