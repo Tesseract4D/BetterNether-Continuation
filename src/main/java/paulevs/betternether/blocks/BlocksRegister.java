@@ -1,14 +1,17 @@
 package paulevs.betternether.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -131,6 +134,7 @@ public class BlocksRegister {
 	public static Block BLOCK_CHEST_OF_DRAWERS;
 
 	private static List<Block> renders = new ArrayList<Block>();
+	public static Block BLOCK_RUBEUS_LEAVES;
 
 	public static void register()
 	{
@@ -174,6 +178,7 @@ public class BlocksRegister {
 		BLOCK_REEDS_BUTTON = registerBlock(new BlockWoodenButton("reeds_button"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_BUTTON");
 		BLOCK_REEDS_PLATE = registerBlock(new BlockPlateWooden("reeds_plate"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_PLATE");
 		BLOCK_RUBEUS_LOG = registerBlock(new BlockRubeusLog(), "BLOCK_RUBEUS_LOG");
+		BLOCK_RUBEUS_LEAVES = registerBlockLeaves(new BlockNetherLeaves("rubeus_leaves"), "BLOCK_RUBEUS_LEAVES");
 		BLOCK_LUCIS_MUSHROOM = registerNoItem(new BlockLucisMushroom(), "BLOCK_LUCIS_MUSHROOM");
 		BLOCK_LUCIS_SPORE = registerBlock(new BlockLucisSpore(), BLOCK_LUCIS_MUSHROOM, "BLOCK_LUCIS_SPORE");
 		BLOCK_NETHER_CACTUS = registerBlock(new BlockNetherCactus(), "BLOCK_NETHER_CACTUS");
@@ -306,8 +311,16 @@ public class BlocksRegister {
 		return block;
 	}
 
-	private static Block registerBlock(Block block, Block parrent, String key) {
-		if (parrent != Blocks.AIR)
+	private static Block registerBlockLeaves(Block block, String s) {
+		ForgeRegistries.BLOCKS.register(block);
+		ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
+		ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+		renders.add(block);
+		return block;
+	}
+
+	private static Block registerBlock(Block block, Block parent, String key) {
+		if (parent != Blocks.AIR)
 			return registerBlock(block, key);
 		else
 			return Blocks.AIR;
@@ -366,5 +379,9 @@ public class BlocksRegister {
 				.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
 		renders.add(block);
 		return block;
+	}
+
+	private static void registerItemBlock(Block block, ItemBlock i) {
+		ForgeRegistries.ITEMS.register(i.setRegistryName(block.getRegistryName()).setTranslationKey(block.getTranslationKey()));
 	}
 }

@@ -1,51 +1,25 @@
 package paulevs.betternether.blocks;
 
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import paulevs.betternether.BetterNether;
 
-public class BlockRubeusLog extends BlockRotatedPillar {
-    public static final PropertyEnum<BlockRubeusLog.EnumType> VARIANT = PropertyEnum.create("variant", BlockRubeusLog.EnumType.class);
+public class BlockRubeusLog extends BlockNetherLog {
+    public static final PropertyEnum<BlockRubeusLog.EnumType> VARIANT = PropertyEnum.create("variant", BlockRubeusLog.EnumType.class, a -> true);
 
     public BlockRubeusLog() {
-        super(Material.WOOD, MapColor.RED_STAINED_HARDENED_CLAY);
+        super();
         this.setRegistryName("rubeus_log");
         this.setTranslationKey("rubeus_log");
-        this.setSoundType(SoundType.WOOD);
-        this.setHardness(2.0F);
         this.setCreativeTab(BetterNether.BN_TAB);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.BOTTOM).withProperty(AXIS, EnumFacing.Axis.Y));
     }
 
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        items.add(new ItemStack(this, 1, EnumType.TOP.getMetadata()));
-        items.add(new ItemStack(this, 1, EnumType.MIDDLE.getMetadata()));
-        items.add(new ItemStack(this, 1, EnumType.BOTTOM.getMetadata()));
-    }
-
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        System.out.println("&" + meta);
-        System.out.println("&" + (meta & 3));
-        System.out.println("&" + EnumType.byMetadata(meta & 3));
-        return this.getStateFromMeta(meta).withProperty(AXIS, facing.getAxis());
-    }
-
     public IBlockState getStateFromMeta(int meta) {
-        IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 3));
+        IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, EnumType.byIndex(meta & 3));
 
         switch (meta & 12) {
             case 0:
@@ -63,7 +37,7 @@ public class BlockRubeusLog extends BlockRotatedPillar {
     }
 
     public int getMetaFromState(IBlockState state) {
-        int i = state.getValue(VARIANT).getMetadata();
+        int i = state.getValue(VARIANT).getIndex();
 
         switch (state.getValue(AXIS)) {
             case X:
@@ -81,53 +55,43 @@ public class BlockRubeusLog extends BlockRotatedPillar {
         return new BlockStateContainer(this, VARIANT, AXIS);
     }
 
-    protected ItemStack getSilkTouchDrop(IBlockState state) {
-        return new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(VARIANT).getMetadata());
-    }
-
     public int damageDropped(IBlockState state) {
-        return state.getValue(VARIANT).getMetadata();
+        return 0;
     }
 
     public enum EnumType implements IStringSerializable {
-
-        TOP(0, "top"),
+        TOP(2, "top"),
         MIDDLE(1, "middle"),
-        BOTTOM(2, "bottom");
+        BOTTOM(0, "bottom");
 
-        private static final EnumType[] METADATA_LOOKUP = new EnumType[values().length];
-        public static final int length = values().length;
-        private final int metadata;
         private final String name;
+        private final int index;
 
-        EnumType(int metadataIn, String nameIn) {
-            metadata = metadataIn;
-            name = nameIn;
-        }
-
-        public int getMetadata() {
-            return metadata;
+        EnumType(int index, String name) {
+            this.name = name;
+            this.index = index;
         }
 
         public String toString() {
-            return name;
-        }
-
-        public static EnumType byMetadata(int metadata) {
-            if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-                metadata = 0;
-            }
-
-            return METADATA_LOOKUP[metadata];
+            return this.name;
         }
 
         public String getName() {
-            return name;
+            return this.name;
         }
 
-        static {
-            for (EnumType v : values()) {
-                METADATA_LOOKUP[v.getMetadata()] = v;
+        public int getIndex() {
+            return this.index;
+        }
+
+        public static EnumType byIndex(int i) {
+            switch (i) {
+                case 0:
+                    return BOTTOM;
+                case 1:
+                    return MIDDLE;
+                default:
+                    return TOP;
             }
         }
     }
