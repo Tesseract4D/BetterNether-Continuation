@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "axis=y,variant=bottom": { "model": "betternether:rubeus_log" },
+    "axis=z,variant=bottom": { "model": "betternether:rubeus_log", "x": 90 },
+    "axis=x,variant=bottom": { "model": "betternether:rubeus_log", "x": 90, "y": 90 },
+    "axis=y,variant=middle": { "model": "betternether:rubeus_log_blend" },
+    "axis=z,variant=middle": { "model": "betternether:rubeus_log_blend", "x": 90 },
+    "axis=x,variant=middle": { "model": "betternether:rubeus_log_blend", "x": 90, "y": 90 },
+    "axis=y,variant=top": { "model": "betternether:rubeus_log_top" },
+    "axis=z,variant=top": { "model": "betternether:rubeus_log_top", "x": 90 },
+    "axis=x,variant=top": { "model": "betternether:rubeus_log_top", "x": 90, "y": 90 }
+  }
+}

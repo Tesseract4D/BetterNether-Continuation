@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlocksRegister {
+	public static Block BLOCK_RUBEUS_LOG;
 	public static Block BLOCK_FLOWERED_VINE;
 	public static Block BLOCK_GOLDEN_VINE;
 	public static Block BLOCK_BLACK_VINE;
@@ -172,6 +173,7 @@ public class BlocksRegister {
 		BLOCK_REEDS_GATE = registerBlock(new BlockWoodenGate("reeds_gate"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_GATE");
 		BLOCK_REEDS_BUTTON = registerBlock(new BlockWoodenButton("reeds_button"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_BUTTON");
 		BLOCK_REEDS_PLATE = registerBlock(new BlockPlateWooden("reeds_plate"), BLOCK_REEDS_BLOCK, "BLOCK_REEDS_PLATE");
+		BLOCK_RUBEUS_LOG = registerBlock(new BlockRubeusLog(), "BLOCK_RUBEUS_LOG");
 		BLOCK_LUCIS_MUSHROOM = registerNoItem(new BlockLucisMushroom(), "BLOCK_LUCIS_MUSHROOM");
 		BLOCK_LUCIS_SPORE = registerBlock(new BlockLucisSpore(), BLOCK_LUCIS_MUSHROOM, "BLOCK_LUCIS_SPORE");
 		BLOCK_NETHER_CACTUS = registerBlock(new BlockNetherCactus(), "BLOCK_NETHER_CACTUS");
