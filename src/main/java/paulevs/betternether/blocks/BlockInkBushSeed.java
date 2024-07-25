@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -59,7 +58,7 @@ public class BlockInkBushSeed extends Block implements IGrowable
 	@Override
 	public void grow(World world, Random random, BlockPos pos, IBlockState state)
 	{
-		world.setBlockState(pos, BlocksRegister.BLOCK_INK_BUSH.getDefaultState());
+		world.setBlockState(pos, BlocksRegistry.BLOCK_INK_BUSH.getDefaultState());
 	}
 	
 	@Override
@@ -125,7 +124,7 @@ public class BlockInkBushSeed extends Block implements IGrowable
 		}
 		else if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, rand.nextInt(16) == 0))
 		{
-			worldIn.setBlockState(pos, BlocksRegister.BLOCK_INK_BUSH.getDefaultState());
+			worldIn.setBlockState(pos, BlocksRegistry.BLOCK_INK_BUSH.getDefaultState());
 			ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
 		}
 	}

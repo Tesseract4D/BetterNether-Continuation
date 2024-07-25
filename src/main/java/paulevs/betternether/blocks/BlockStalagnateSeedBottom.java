@@ -77,11 +77,11 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 		}
 		if (interrupted && ConfigLoader.isTerrain(worldIn.getBlockState(pos.up(h2 + 1)).getBlock()))
 		{
-			IBlockState middleState = BlocksRegister.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
-			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_BOTTOM.getDefaultState());
+			IBlockState middleState = BlocksRegistry.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
+			worldIn.setBlockState(pos, BlocksRegistry.BLOCK_STALAGNATE_BOTTOM.getDefaultState());
 			for (int y = 1; y < h2; y++)
 				worldIn.setBlockState(pos.up(y), middleState);
-			worldIn.setBlockState(pos.up(h2), BlocksRegister.BLOCK_STALAGNATE_TOP.getDefaultState());
+			worldIn.setBlockState(pos.up(h2), BlocksRegistry.BLOCK_STALAGNATE_TOP.getDefaultState());
 		}
 	}
 
@@ -140,6 +140,6 @@ public class BlockStalagnateSeedBottom extends Block implements IGrowable
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(BlocksRegister.BLOCK_STALAGNATE_SEED);
+        return Item.getItemFromBlock(BlocksRegistry.BLOCK_STALAGNATE_SEED);
     }
 }

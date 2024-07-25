@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BNBlockBone;
 import paulevs.betternether.blocks.BlockBoneMushroom;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.StructureNBT;
 
@@ -47,13 +47,13 @@ public class NetherBoneReef extends NetherGrasslands {
 				if (random.nextInt(20) == 0) {
 					StructureNBT structure = bones.get(random.nextInt(bones.size()));
 					structure.generateCentered(world, pos.down(random.nextInt(4)), random);
-				} else if (BlocksRegister.BLOCK_NETHER_GRASS != Blocks.AIR && random.nextInt(4) != 0 && ConfigLoader.isTerrain(ground)) {
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
+				} else if (BlocksRegistry.BLOCK_NETHER_GRASS != Blocks.AIR && random.nextInt(4) != 0 && ConfigLoader.isTerrain(ground)) {
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_NETHER_GRASS.getDefaultState());
 				}
 			} else if (ground instanceof BlockBone || ground instanceof BNBlockBone) {
-				if (BlocksRegister.BLOCK_BONE_MUSHROOM != Blocks.AIR && random.nextBoolean()) {
+				if (BlocksRegistry.BLOCK_BONE_MUSHROOM != Blocks.AIR && random.nextBoolean()) {
 					int age = random.nextInt(3);
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_BONE_MUSHROOM.getDefaultState().withProperty(BlockBoneMushroom.AGE, age));
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_BONE_MUSHROOM.getDefaultState().withProperty(BlockBoneMushroom.AGE, age));
 				}
 			}
 		}
@@ -61,12 +61,12 @@ public class NetherBoneReef extends NetherGrasslands {
 
 	@Override
 	public void genWallObjects(World world, BlockPos origin, BlockPos pos, Random random) {
-		if (random.nextFloat() <= plantDensity && BlocksRegister.BLOCK_BONE_MUSHROOM != Blocks.AIR && random.nextBoolean() &&
-				(world.getBlockState(origin).getBlock() == Blocks.BONE_BLOCK || world.getBlockState(origin).getBlock() == BlocksRegister.BLOCK_BONE)) {
+		if (random.nextFloat() <= plantDensity && BlocksRegistry.BLOCK_BONE_MUSHROOM != Blocks.AIR && random.nextBoolean() &&
+				(world.getBlockState(origin).getBlock() == Blocks.BONE_BLOCK || world.getBlockState(origin).getBlock() == BlocksRegistry.BLOCK_BONE)) {
 			BlockPos dir = pos.subtract(origin);
 			EnumFacing facing = EnumFacing.getFacingFromVector(dir.getX(), dir.getY(), dir.getZ());
 			int age = random.nextInt(3);
-			world.setBlockState(pos, BlocksRegister.BLOCK_BONE_MUSHROOM.getDefaultState().withProperty(BlockBoneMushroom.FACING, facing).withProperty(BlockBoneMushroom.AGE, age));
+			world.setBlockState(pos, BlocksRegistry.BLOCK_BONE_MUSHROOM.getDefaultState().withProperty(BlockBoneMushroom.FACING, facing).withProperty(BlockBoneMushroom.AGE, age));
 		}
 	}
 }

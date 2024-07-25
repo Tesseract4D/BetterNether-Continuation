@@ -1,58 +1,39 @@
 package paulevs.betternether.structures.plants;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import paulevs.betternether.BlocksHelper;
+import paulevs.betternether.MHelper;
+import paulevs.betternether.blocks.BlockRubeusLog;
+import paulevs.betternether.blocks.BlocksRegistry;
+import paulevs.betternether.config.ConfigLoader;
+import paulevs.betternether.structures.StructureFuncScatter;
 
-public class StructureRubeus {
-    private static final float[] CURVE_X = new float[] { 9F, 7F, 1.5F, 0.5F, 3F, 7F };
-    private static final float[] CURVE_Y = new float[] { 20F, 17F, 12F, 4F, 0F, -2F };
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static paulevs.betternether.blocks.BlockRubeusLog.VARIANT;
+
+public class StructureRubeus extends StructureFuncScatter {
+    private static final float[] CURVE_X = new float[]{9F, 7F, 1.5F, 0.5F, 3F, 7F};
+    private static final float[] CURVE_Y = new float[]{20F, 17F, 12F, 4F, 0F, -2F};
     private static final int MIDDLE_Y = 10;
-
-    private void updateSDFFrom(BlockPos bpos, StructureGeneratorThreadContext context) {
-        for (int x=-7; x<=7; x++) {
-            for (int y = -7; y <= 7; y++) {
-                for (int z = -7; z <= 7; z++) {
-                    if (x == 0 && y == 0 && z == 0) continue;
-                    final int dist = Math.abs(x) + Math.abs(y) + Math.abs(z);
-                    if (dist<=7) {
-                        final BlockPos blPos = bpos.offset(x, y, z);
-                        context.LOGS_DIST.merge(blPos, (byte) dist, (oldDist, newDist) -> (byte) Math.min(oldDist, dist));
-                    }
-                }
-            }
-        }
-    }
-
-    private void updateDistances(ServerWorld world, StructureGeneratorThreadContext context) {
-        for (Entry<BlockPos, Byte> entry : context.LOGS_DIST.entrySet()){
-            final int dist = entry.getValue();
-            final BlockPos logPos = entry.getKey();
-
-            IBlockState currentState = world.getIBlockState(logPos);
-            if (currentState.hasProperty(IBlockStateProperties.DISTANCE) ) {
-                int cDist = currentState.getValue(IBlockStateProperties.DISTANCE);
-                if (dist < cDist) {
-                    BlocksHelper.setWithoutUpdate(world, logPos, currentState.setValue(IBlockStateProperties.DISTANCE, dist));
-                    cDist = dist;
-                }
-
-                if (cDist>=7){
-                    BlocksHelper.setWithoutUpdate(world, logPos, Blocks.AIR.defaultIBlockState());
-                }
-            }
-        }
-    }
+    private static final Set<BlockPos> POINTS = new HashSet<BlockPos>();
+    private static final Set<BlockPos> MIDDLE = new HashSet<BlockPos>();
+    private static final Set<BlockPos> TOP = new HashSet<BlockPos>();
 
     public StructureRubeus() {
         super(7);
     }
-
-
     @Override
-    public void grow(ServerWorld world, BlockPos pos, Random random, boolean natural, StructureGeneratorThreadContext context) {
-        context.clear();
-        world.setBlock(pos, Blocks.AIR.defaultIBlockState(), 0);
+    public void grow(World world, BlockPos pos, Random random) {
+        world.setBlockState(pos, Blocks.AIR.getDefaultState(), 0);
         float scale = MHelper.randRange(0.5F, 1F, random);
         int minCount = scale < 0.75 ? 3 : 4;
         int maxCount = scale < 0.75 ? 5 : 7;
@@ -78,10 +59,10 @@ public class StructureRubeus {
                 int z2 = Math.round(pos.getZ() + radius * (float) Math.sin(angle) + MHelper.randRange(-2F, 2F, random) * branchSize);
 
                 if (CURVE_Y[i] <= 0) {
-                    if (!isGround(world.getIBlockState(context.POS.set(x2, y2, z2)))) {
+                    if (!isGround(world.getBlockState(POS.setPos(x2, y2, z2)))) {
                         boolean noGround = true;
                         for (int d = 1; d < 3; d++) {
-                            if (isGround(world.getIBlockState(context.POS.set(x2, y2 - d, z2)))) {
+                            if (isGround(world.getBlockState(POS.setPos(x2, y2 - d, z2)))) {
                                 y2 -= d;
                                 noGround = false;
                                 break;
@@ -95,7 +76,7 @@ public class StructureRubeus {
                     }
                 }
 
-                line(world, x1, y1, z1, x2, y2, z2, middle, context);
+                line(world, x1, y1, z1, x2, y2, z2, middle);
                 x1 = x2;
                 y1 = y2;
                 z1 = z2;
@@ -103,75 +84,58 @@ public class StructureRubeus {
         }
 
         IBlockState state;
-        Iterator<BlockPos> iterator = context.TOP.iterator();
+        Iterator<BlockPos> iterator = TOP.iterator();
         while (iterator.hasNext()) {
             BlockPos bpos = iterator.next();
             if (bpos != null) {
-                if (context.POINTS.contains(bpos.above()) && !context.TOP.contains(bpos.above()))
+                if (POINTS.contains(bpos.up()) && !TOP.contains(bpos.up()))
                     iterator.remove();
             }
         }
 
-        iterator = context.MIDDLE.iterator();
+        iterator = MIDDLE.iterator();
         while (iterator.hasNext()) {
             BlockPos bpos = iterator.next();
             if (bpos != null) {
-                BlockPos up = bpos.above();
-                if (context.MIDDLE.contains(up) || (!context.TOP.contains(up) && context.POINTS.contains(up)))
+                BlockPos up = bpos.up();
+                if (MIDDLE.contains(up) || (!TOP.contains(up) && POINTS.contains(up)))
                     iterator.remove();
             }
             else
                 iterator.remove();
         }
 
-        for (BlockPos bpos : context.POINTS) {
-            if (context.POINTS.contains(bpos.above()) && context.POINTS.contains(bpos.below())) {
-                state = NetherBlocks.MAT_RUBEUS.getLog().defaultIBlockState();
-                if (context.MIDDLE.contains(bpos))
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.MIDDLE), false, random);
-                else if (context.TOP.contains(bpos))
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.TOP), false, random);
-                else
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.BOTTOM), natural, random);
-            }
-            else {
-                state = NetherBlocks.MAT_RUBEUS.getBark().defaultIBlockState();
-                if (context.MIDDLE.contains(bpos))
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.MIDDLE), false, random);
-                else if (context.TOP.contains(bpos))
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.TOP), false, random);
-                else
-                    setCondition(world, bpos, pos.getY(), state.setValue(RubeusLog.SHAPE, TripleShape.BOTTOM), natural, random);
-            }
-            updateSDFFrom(bpos, context);
+        for (BlockPos bpos : POINTS) {
+            state = BlocksRegistry.BLOCK_RUBEUS_LOG.getBlockState().getBaseState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+            if (MIDDLE.contains(bpos))
+                setCondition(world, bpos, pos.getY(), state.withProperty(VARIANT, BlockRubeusLog.EnumType.MIDDLE));
+            else if (TOP.contains(bpos))
+                setCondition(world, bpos, pos.getY(), state.withProperty(VARIANT, BlockRubeusLog.EnumType.TOP));
+                else setCondition(world, bpos, pos.getY(), state.withProperty(VARIANT, BlockRubeusLog.EnumType.BOTTOM));
         }
 
-        updateDistances(world, context);
-        context.LOGS_DIST.clear();
-
-        context.POINTS.clear();
-        context.MIDDLE.clear();
-        context.TOP.clear();
+        POINTS.clear();
+        MIDDLE.clear();
+        TOP.clear();
     }
 
     @Override
-    public void generate(ServerWorld world, BlockPos pos, Random random, final int MAX_HEIGHT, StructureGeneratorThreadContext context) {
+    public void generate(World world, BlockPos pos, Random random) {
         int length = BlocksHelper.upRay(world, pos, StructureStalagnate.MAX_LENGTH + 2);
-        if (length >= StructureStalagnate.MAX_LENGTH)
-            super.generate(world, pos, random, MAX_HEIGHT, context);
+        if (length >= StructureStalagnate.MAX_LENGTH) super.generate(world, pos, random);
     }
 
     @Override
     protected boolean isStructure(IBlockState state) {
-        return state.getBlock() == NetherBlocks.MAT_RUBEUS.getLog();
+        return state.getBlock() == BlocksRegistry.BLOCK_RUBEUS_LOG;
     }
 
     @Override
     protected boolean isGround(IBlockState state) {
-        return BlocksHelper.isNetherGround(state);
+        return ConfigLoader.isTerrain(state.getBlock());
     }
 
-    private void line(World world, int x1, int y1, int z1, int x2, int y2, int z2, int middleY, StructureGeneratorThreadContext context) {
+    private void line(World world, int x1, int y1, int z1, int x2, int y2, int z2, int middleY) {
         int dx = x2 - x1;
         int dy = y2 - y1;
         int dz = z2 - z1;
@@ -183,40 +147,32 @@ public class StructureRubeus {
         float py = y1;
         float pz = z1;
 
-        BlockPos pos = context.POS.set(x1, y1, z1).immutable();
-        context.POINTS.add(pos);
-        if (pos.getY() == middleY)
-            context.MIDDLE.add(pos);
-        else if (pos.getY() > middleY)
-            context.TOP.add(pos);
+        BlockPos pos = POS.setPos(x1, y1, z1).toImmutable();
+        POINTS.add(pos);
+        if (pos.getY() == middleY) MIDDLE.add(pos);
+        else if (pos.getY() > middleY) TOP.add(pos);
 
-        pos = context.POS.set(x2, y2, z2).immutable();
-        context.POINTS.add(pos);
-        if (pos.getY() == middleY)
-            context.MIDDLE.add(pos);
-        else if (pos.getY() > middleY)
-            context.TOP.add(pos);
+        pos = POS.setPos(x2, y2, z2).toImmutable();
+        POINTS.add(pos);
+        if (pos.getY() == middleY) MIDDLE.add(pos);
+        else if (pos.getY() > middleY) TOP.add(pos);
 
         for (int i = 0; i < mx; i++) {
             px += fdx;
             py += fdy;
             pz += fdz;
 
-            context.POS.set(Math.round(px), Math.round(py), Math.round(pz));
-            pos = context.POS.immutable();
-            context.POINTS.add(pos);
-            if (context.POS.getY() == middleY)
-                context.MIDDLE.add(pos);
-            else if (context.POS.getY() > middleY)
-                context.TOP.add(pos);
+            POS.setPos(Math.round(px), Math.round(py), Math.round(pz));
+            pos = POS.toImmutable();
+            POINTS.add(pos);
+            if (POS.getY() == middleY) MIDDLE.add(pos);
+            else if (POS.getY() > middleY) TOP.add(pos);
         }
     }
 
-    private void crown(World world, int x, int y, int z, float radius, Random random) {
-        final BlockPos.MutableBlockPos POS = new BlockPos.MutableBlockPos();
 
-        IBlockState leaves = NetherBlocks.RUBEUS_LEAVES.defaultIBlockState().setValue(LeavesBlock.PERSISTENT, true);
-        IBlockState cone = NetherBlocks.MAT_RUBEUS.getCone().defaultIBlockState();
+    private void crown(World world, int x, int y, int z, float radius, Random random) {
+        IBlockState leaves = BlocksRegistry.BLOCK_RUBEUS_LEAVES.getDefaultState();
         float halfR = radius * 0.5F;
         float r2 = radius * radius;
         int start = (int) Math.floor(-radius);
@@ -227,48 +183,40 @@ public class StructureRubeus {
             POS.setY((int) (y + cy - halfR));
             for (int cx = start; cx <= radius; cx++) {
                 int cx2 = cx * cx;
-                POS.setX(x + cx);
+                POS.x = (x + cx);
                 for (int cz = start; cz <= radius; cz++) {
                     int cz2 = cz * cz;
                     if (cx2 + cy2_out + cz2 < r2 && cx2 + cy2_in + cz2 > r2) {
-                        POS.setZ(z + cz);
+                        POS.z = (z + cz);
                         setIfAirLeaves(world, POS, leaves);
-                        if (((POS.getX() + POS.getZ()) & 1) == 0 && random.nextInt(6) == 0)
-                            setIfAir(world, POS.below(), cone);
                     }
                 }
             }
         }
     }
 
-    private void setCondition(World world, BlockPos pos, int y, IBlockState state, boolean moss, Random random) {
+    private void setCondition(World world, BlockPos pos, int y, IBlockState state) {
         if (pos.getY() > y)
             setIfAir(world, pos, state);
         else
             setIfGroundOrAir(world, pos, state);
-        if (moss && Math.abs(pos.getY() - y) < 4) {
-            for (Direction dir : BlocksHelper.HORIZONTAL) {
-                if (random.nextInt(3) > 0)
-                    setIfAir(world, pos.relative(dir), NetherBlocks.JUNGLE_MOSS.defaultIBlockState().setValue(BlockPlantWall.FACING, dir));
-            }
-        }
     }
 
     private void setIfAir(World world, BlockPos pos, IBlockState state) {
-        IBlockState bState = world.getIBlockState(pos);
-        if (world.isEmptyBlock(pos) || bState.getMaterial().isReplaceable() || bState.getBlock() == NetherBlocks.RUBEUS_LEAVES || bState.getBlock() == NetherBlocks.MAT_RUBEUS.getCone())
+        IBlockState bState = world.getBlockState(pos);
+        if (world.isAirBlock(pos) || bState.getBlock() == BlocksRegistry.BLOCK_RUBEUS_LEAVES || bState.getMaterial().isReplaceable())
             BlocksHelper.setWithoutUpdate(world, pos, state);
     }
 
     private void setIfGroundOrAir(World world, BlockPos pos, IBlockState state) {
-        IBlockState bState = world.getIBlockState(pos);
-        if (bState.isAir() || bState.getBlock() == NetherBlocks.RUBEUS_LEAVES || bState.getMaterial().isReplaceable() || BlocksHelper.isNetherGround(bState))
+        IBlockState bState = world.getBlockState(pos);
+        if (world.isAirBlock(pos) || bState.getBlock() == BlocksRegistry.BLOCK_RUBEUS_LEAVES || bState.getMaterial().isReplaceable() || BlocksHelper.isNetherGround(bState))
             BlocksHelper.setWithoutUpdate(world, pos, state);
     }
 
     private void setIfAirLeaves(World world, BlockPos pos, IBlockState state) {
-        IBlockState bState = world.getIBlockState(pos);
-        if (world.isEmptyBlock(pos) || bState.getMaterial().isReplaceable())
+        IBlockState bState = world.getBlockState(pos);
+        if (world.isAirBlock(pos) || bState.getMaterial().isReplaceable())
             BlocksHelper.setWithoutUpdate(world, pos, state);
     }
 }

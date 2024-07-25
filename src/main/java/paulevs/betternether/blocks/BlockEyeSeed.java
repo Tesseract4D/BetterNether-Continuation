@@ -85,12 +85,12 @@ public class BlockEyeSeed extends Block implements IGrowable
 				h = 5;
 			h -= 1;
 		}
-		IBlockState vineState = BlocksRegister.BLOCK_EYE_VINE.getDefaultState();
+		IBlockState vineState = BlocksRegistry.BLOCK_EYE_VINE.getDefaultState();
 		IBlockState eyeState = null;
 		if (rand.nextInt(2) == 0)
-			eyeState = BlocksRegister.BLOCK_EYEBALL.getDefaultState();
+			eyeState = BlocksRegistry.BLOCK_EYEBALL.getDefaultState();
 		else
-			eyeState = BlocksRegister.BLOCK_EYEBALL_SMALL.getDefaultState();
+			eyeState = BlocksRegistry.BLOCK_EYEBALL_SMALL.getDefaultState();
 		for (int y = 0; y < h; y++)
 			worldIn.setBlockState(pos.down(y), vineState, 2);
 		worldIn.setBlockState(pos.down(h), eyeState);

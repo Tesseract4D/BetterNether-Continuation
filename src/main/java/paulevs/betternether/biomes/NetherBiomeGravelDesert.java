@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockNetherCactus;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 
 import java.util.Random;
 
@@ -38,7 +38,7 @@ public class NetherBiomeGravelDesert extends NetherBiome {
 	public void genFloorObjects(World world, BlockPos pos, Random random) {
 		if (random.nextFloat() <= plantDensity && world.getBlockState(pos).getBlock() == Blocks.GRAVEL && ((random.nextInt(16) == 0 || getFeatureNoise(pos) > 0.3))) {
 			if (random.nextInt(24) == 0) {
-				world.setBlockState(pos.up(), BlocksRegister.BLOCK_AGAVE.getDefaultState());
+				world.setBlockState(pos.up(), BlocksRegistry.BLOCK_AGAVE.getDefaultState());
 			} else if (random.nextInt(75) == 0) {
 				int h = 2 + random.nextInt(3);
 				for (int i = 1; i < h; i++) {
@@ -48,11 +48,11 @@ public class NetherBiomeGravelDesert extends NetherBiome {
 					}
 				}
 				for (int i = 1; i < h; i++) {
-					world.setBlockState(pos.up(i), BlocksRegister.BLOCK_NETHER_CACTUS.getDefaultState().withProperty(BlockNetherCactus.SHAPE, BlockNetherCactus.EnumShape.SIDE));
+					world.setBlockState(pos.up(i), BlocksRegistry.BLOCK_NETHER_CACTUS.getDefaultState().withProperty(BlockNetherCactus.SHAPE, BlockNetherCactus.EnumShape.SIDE));
 				}
-				world.setBlockState(pos.up(h), BlocksRegister.BLOCK_NETHER_CACTUS.getDefaultState());
+				world.setBlockState(pos.up(h), BlocksRegistry.BLOCK_NETHER_CACTUS.getDefaultState());
 			} else if (random.nextInt(75) == 0) {
-				world.setBlockState(pos.up(), BlocksRegister.BLOCK_BARREL_CACTUS.getDefaultState());
+				world.setBlockState(pos.up(), BlocksRegistry.BLOCK_BARREL_CACTUS.getDefaultState());
 			}
 		}
 	}

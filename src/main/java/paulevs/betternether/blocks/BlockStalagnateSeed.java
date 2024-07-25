@@ -80,11 +80,11 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 		}
 		if (interrupted && ConfigLoader.isTerrain(worldIn.getBlockState(pos.down(h2 + 1)).getBlock()))
 		{
-			IBlockState middleState = BlocksRegister.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
-			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_TOP.getDefaultState());
+			IBlockState middleState = BlocksRegistry.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
+			worldIn.setBlockState(pos, BlocksRegistry.BLOCK_STALAGNATE_TOP.getDefaultState());
 			for (int y = 1; y < h2; y++)
 				worldIn.setBlockState(pos.down(y), middleState);
-			worldIn.setBlockState(pos.down(h2), BlocksRegister.BLOCK_STALAGNATE_BOTTOM.getDefaultState());
+			worldIn.setBlockState(pos.down(h2), BlocksRegistry.BLOCK_STALAGNATE_BOTTOM.getDefaultState());
 		}
 	}
 	
@@ -145,6 +145,6 @@ public class BlockStalagnateSeed extends Block implements IGrowable
 		if (ConfigLoader.isTerrain(worldIn.getBlockState(pos.up()).getBlock()))
 			worldIn.setBlockState(pos, state);
 		else if (ConfigLoader.isTerrain(worldIn.getBlockState(pos.down()).getBlock()))
-			worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_SEED_BOTTOM.getDefaultState());
+			worldIn.setBlockState(pos, BlocksRegistry.BLOCK_STALAGNATE_SEED_BOTTOM.getDefaultState());
     }
 }

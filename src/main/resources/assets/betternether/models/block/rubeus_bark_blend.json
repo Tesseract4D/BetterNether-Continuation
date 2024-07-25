@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "betternether:blocks/rubeus_log_side_blend",
+        "down": "betternether:blocks/rubeus_log_side",
+        "up": "betternether:blocks/striped_rubeus_log_side",
+        "north": "betternether:blocks/rubeus_log_side_blend",
+        "east": "betternether:blocks/rubeus_log_side_blend",
+        "south": "betternether:blocks/rubeus_log_side_blend",
+        "west": "betternether:blocks/rubeus_log_side_blend"
+    }
+}

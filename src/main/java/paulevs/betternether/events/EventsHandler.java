@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import paulevs.betternether.blocks.BlockBrownLargeMushroom;
 import paulevs.betternether.blocks.BlockRedLargeMushroom;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.commands.CommandsRegister;
 import paulevs.betternether.fix.FixesCommon;
 import paulevs.betternether.world.BNWorldGenerator;
@@ -90,8 +90,8 @@ public class EventsHandler
 		Random random = world.rand;
 		if (!world.isRemote && block instanceof BlockNetherrack)
 		{
-			IBlockState grass = BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState();
-			IBlockState moss = BlocksRegister.BLOCK_NETHERRACK_MOSS.getDefaultState();
+			IBlockState grass = BlocksRegistry.BLOCK_NETHER_GRASS.getDefaultState();
+			IBlockState moss = BlocksRegistry.BLOCK_NETHERRACK_MOSS.getDefaultState();
 			BlockPos bpos = event.getPos();
 			if (world.getBlockState(bpos.up()).getBlock() == Blocks.AIR)
 			{
@@ -121,7 +121,7 @@ public class EventsHandler
 		else if (!world.isRemote && block == Blocks.RED_MUSHROOM)
 		{
 			BlockPos pos = event.getPos();
-			if (world.getBlockState(pos.down()).getBlock() == BlocksRegister.BLOCK_NETHER_MYCELIUM)
+			if (world.getBlockState(pos.down()).getBlock() == BlocksRegistry.BLOCK_NETHER_MYCELIUM)
 			{
 				int size = 1 + random.nextInt(3);
 				for (int y = 1; y <= size; y++)
@@ -136,17 +136,17 @@ public class EventsHandler
 					if (random.nextInt(4) == 0)
 					{
 						world.setBlockToAir(pos);
-						IBlockState middle = BlocksRegister
+						IBlockState middle = BlocksRegistry
 								.BLOCK_RED_LARGE_MUSHROOM
 								.getDefaultState()
 								.withProperty(BlockRedLargeMushroom.SHAPE, BlockRedLargeMushroom.EnumShape.MIDDLE);
 						for (int y = 1; y < size; y++)
 							world.setBlockState(pos.up(y), middle, 2);
-						world.setBlockState(pos.up(size), BlocksRegister
+						world.setBlockState(pos.up(size), BlocksRegistry
 								.BLOCK_RED_LARGE_MUSHROOM
 								.getDefaultState()
 								.withProperty(BlockRedLargeMushroom.SHAPE, BlockRedLargeMushroom.EnumShape.TOP), 2);
-						world.setBlockState(pos, BlocksRegister
+						world.setBlockState(pos, BlocksRegistry
 								.BLOCK_RED_LARGE_MUSHROOM
 								.getDefaultState(), 2);
 					}
@@ -156,7 +156,7 @@ public class EventsHandler
 		else if (!world.isRemote && block == Blocks.BROWN_MUSHROOM)
 		{
 			BlockPos pos = event.getPos();
-			if (world.getBlockState(pos.down()).getBlock() == BlocksRegister.BLOCK_NETHER_MYCELIUM)
+			if (world.getBlockState(pos.down()).getBlock() == BlocksRegistry.BLOCK_NETHER_MYCELIUM)
 			{
 				int size = 1 + random.nextInt(3);
 				for (int y = 1; y <= size; y++)
@@ -171,57 +171,57 @@ public class EventsHandler
 					if (random.nextInt(4) == 0)
 					{
 						world.setBlockToAir(pos);
-						IBlockState middle = BlocksRegister
+						IBlockState middle = BlocksRegistry
 								.BLOCK_BROWN_LARGE_MUSHROOM
 								.getDefaultState()
 								.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.MIDDLE);
-						world.setBlockState(pos, BlocksRegister
+						world.setBlockState(pos, BlocksRegistry
 								.BLOCK_BROWN_LARGE_MUSHROOM
 								.getDefaultState(), 2);
 						for (int y = 1; y < size; y++)
 							world.setBlockState(pos.up(y), middle, 2);
 						pos = pos.up(size);
-						world.setBlockState(pos, BlocksRegister
+						world.setBlockState(pos, BlocksRegistry
 								.BLOCK_BROWN_LARGE_MUSHROOM
 								.getDefaultState()
 								.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.TOP), 2);
 						if (world.isAirBlock(pos.north()))
-							world.setBlockState(pos.north(), BlocksRegister
+							world.setBlockState(pos.north(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.SIDE_N), 2);
 						if (world.isAirBlock(pos.south()))
-							world.setBlockState(pos.south(), BlocksRegister
+							world.setBlockState(pos.south(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.SIDE_S), 2);
 						if (world.isAirBlock(pos.east()))
-							world.setBlockState(pos.east(), BlocksRegister
+							world.setBlockState(pos.east(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.SIDE_E), 2);
 						if (world.isAirBlock(pos.west()))
-							world.setBlockState(pos.west(), BlocksRegister
+							world.setBlockState(pos.west(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.SIDE_W), 2);
 						if (world.isAirBlock(pos.north().east()))
-							world.setBlockState(pos.north().east(), BlocksRegister
+							world.setBlockState(pos.north().east(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.CORNER_N), 2);
 						if (world.isAirBlock(pos.north().west()))
-							world.setBlockState(pos.north().west(), BlocksRegister
+							world.setBlockState(pos.north().west(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.CORNER_W), 2);
 						if (world.isAirBlock(pos.south().east()))
-							world.setBlockState(pos.south().east(), BlocksRegister
+							world.setBlockState(pos.south().east(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.CORNER_E), 2);
 						if (world.isAirBlock(pos.south().west()))
-							world.setBlockState(pos.south().west(), BlocksRegister
+							world.setBlockState(pos.south().west(), BlocksRegistry
 									.BLOCK_BROWN_LARGE_MUSHROOM
 									.getDefaultState()
 									.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.CORNER_S), 2);

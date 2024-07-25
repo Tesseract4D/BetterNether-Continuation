@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import paulevs.betternether.biomes.BiomeRegister;
 import paulevs.betternether.biomes.NetherBiome;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.noise.Dither;
 import paulevs.betternether.noise.WorleyNoiseIDDistorted3D;
@@ -249,8 +249,8 @@ public class BNWorldGenerator
 								}
 							}
 						}
-						if (BlocksRegister.BLOCK_CINCINNASITE_ORE != Blocks.AIR && random.nextFloat() < oreDensity)
-							spawnOre(BlocksRegister.BLOCK_CINCINNASITE_ORE.getDefaultState(), world, popPos, random);
+						if (BlocksRegistry.BLOCK_CINCINNASITE_ORE != Blocks.AIR && random.nextFloat() < oreDensity)
+							spawnOre(BlocksRegistry.BLOCK_CINCINNASITE_ORE.getDefaultState(), world, popPos, random);
 					}
 				}
 			}
@@ -390,23 +390,23 @@ public class BNWorldGenerator
 		biomeSizeY = 1.0 / (double) ConfigLoader.getBiomeSizeY();
 		subBiomeSize = biomeSizeXZ * 3;
 		hasCleaningPass = ConfigLoader.hasCleaningPass();
-		hasEyeGen = BlocksRegister.BLOCK_EYE_VINE != Blocks.AIR &&
-				BlocksRegister.BLOCK_EYEBALL != Blocks.AIR &&
-				BlocksRegister.BLOCK_EYEBALL_SMALL != Blocks.AIR;
-		hasStalagnateGen = BlocksRegister.BLOCK_STALAGNATE_BOTTOM != Blocks.AIR &&
-				BlocksRegister.BLOCK_STALAGNATE_MIDDLE != Blocks.AIR &&
-				BlocksRegister.BLOCK_STALAGNATE_TOP != Blocks.AIR;
-		hasLucisGen = BlocksRegister.BLOCK_LUCIS_MUSHROOM != Blocks.AIR;
-		hasSmokerGen = BlocksRegister.BLOCK_SMOKER != Blocks.AIR;
-		hasEggPlantGen = BlocksRegister.BLOCK_EGG_PLANT != Blocks.AIR;
-		hasInkBushGen = BlocksRegister.BLOCK_INK_BUSH != Blocks.AIR;
-		hasBlackAppleGen = BlocksRegister.BLOCK_BLACK_APPLE != Blocks.AIR;
-		hasMagmaFlowerGen = BlocksRegister.BLOCK_MAGMA_FLOWER != Blocks.AIR;
-		hasRedMushroomGen = BlocksRegister.BLOCK_RED_LARGE_MUSHROOM != Blocks.AIR;
-		hasBrownMushroomGen = BlocksRegister.BLOCK_BROWN_LARGE_MUSHROOM != Blocks.AIR;
-		hasOrangeMushroomGen = BlocksRegister.BLOCK_ORANGE_MUSHROOM != Blocks.AIR;
-		hasRedMoldGen = BlocksRegister.BLOCK_RED_MOLD != Blocks.AIR;
-		hasGrayMoldGen = BlocksRegister.BLOCK_GRAY_MOLD != Blocks.AIR;
+		hasEyeGen = BlocksRegistry.BLOCK_EYE_VINE != Blocks.AIR &&
+				BlocksRegistry.BLOCK_EYEBALL != Blocks.AIR &&
+				BlocksRegistry.BLOCK_EYEBALL_SMALL != Blocks.AIR;
+		hasStalagnateGen = BlocksRegistry.BLOCK_STALAGNATE_BOTTOM != Blocks.AIR &&
+				BlocksRegistry.BLOCK_STALAGNATE_MIDDLE != Blocks.AIR &&
+				BlocksRegistry.BLOCK_STALAGNATE_TOP != Blocks.AIR;
+		hasLucisGen = BlocksRegistry.BLOCK_LUCIS_MUSHROOM != Blocks.AIR;
+		hasSmokerGen = BlocksRegistry.BLOCK_SMOKER != Blocks.AIR;
+		hasEggPlantGen = BlocksRegistry.BLOCK_EGG_PLANT != Blocks.AIR;
+		hasInkBushGen = BlocksRegistry.BLOCK_INK_BUSH != Blocks.AIR;
+		hasBlackAppleGen = BlocksRegistry.BLOCK_BLACK_APPLE != Blocks.AIR;
+		hasMagmaFlowerGen = BlocksRegistry.BLOCK_MAGMA_FLOWER != Blocks.AIR;
+		hasRedMushroomGen = BlocksRegistry.BLOCK_RED_LARGE_MUSHROOM != Blocks.AIR;
+		hasBrownMushroomGen = BlocksRegistry.BLOCK_BROWN_LARGE_MUSHROOM != Blocks.AIR;
+		hasOrangeMushroomGen = BlocksRegistry.BLOCK_ORANGE_MUSHROOM != Blocks.AIR;
+		hasRedMoldGen = BlocksRegistry.BLOCK_RED_MOLD != Blocks.AIR;
+		hasGrayMoldGen = BlocksRegistry.BLOCK_GRAY_MOLD != Blocks.AIR;
 		hasWartsGen = ConfigLoader.hasNetherWart();
 
 		globalStructuresLand.clear();

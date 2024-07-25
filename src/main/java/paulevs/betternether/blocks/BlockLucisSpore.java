@@ -169,9 +169,9 @@ public class BlockLucisSpore extends Block implements IGrowable
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
 	{
-		IBlockState center = BlocksRegister.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.CENTER);
-		IBlockState side = BlocksRegister.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.SIDE);
-		IBlockState corner = BlocksRegister.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.CORNER);
+		IBlockState center = BlocksRegistry.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.CENTER);
+		IBlockState side = BlocksRegistry.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.SIDE);
+		IBlockState corner = BlocksRegistry.BLOCK_LUCIS_MUSHROOM.getDefaultState().withProperty(BlockLucisMushroom.SHAPE, BlockLucisMushroom.EnumShape.CORNER);
 		if (rand.nextInt(3) == 0)
 		{
 			worldIn.setBlockState(pos, center);

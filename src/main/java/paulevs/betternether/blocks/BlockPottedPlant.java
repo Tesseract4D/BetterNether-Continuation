@@ -31,20 +31,20 @@ public class BlockPottedPlant extends Block
 {
 	public static enum EnumPlant implements IStringSerializable
 	{
-		AGAVE(BlocksRegister.BLOCK_AGAVE),
-		BARREL_CACTUS(BlocksRegister.BLOCK_BARREL_CACTUS),
-		BLACK_APPLE(BlocksRegister.BLOCK_BLACK_APPLE_SEED),
-		BLACK_BUSH(BlocksRegister.BLOCK_BLACK_BUSH),
-		EGG_PLANT(BlocksRegister.BLOCK_EGG_PLANT),
-		INK_BUSH(BlocksRegister.BLOCK_INK_BUSH_SEED),
-		REEDS(BlocksRegister.BLOCK_NETHER_REED),
-		NETHER_CACTUS(BlocksRegister.BLOCK_NETHER_CACTUS),
-		NETHER_GRASS(BlocksRegister.BLOCK_NETHER_GRASS),
-		ORANGE_MUSHROOM(BlocksRegister.BLOCK_ORANGE_MUSHROOM),
-		RED_MOLD(BlocksRegister.BLOCK_RED_MOLD),
-		GRAY_MOLD(BlocksRegister.BLOCK_GRAY_MOLD),
-		MAGMA_FLOWER(BlocksRegister.BLOCK_MAGMA_FLOWER),
-		NETHER_WART(BlocksRegister.BLOCK_WART_SEED);
+		AGAVE(BlocksRegistry.BLOCK_AGAVE),
+		BARREL_CACTUS(BlocksRegistry.BLOCK_BARREL_CACTUS),
+		BLACK_APPLE(BlocksRegistry.BLOCK_BLACK_APPLE_SEED),
+		BLACK_BUSH(BlocksRegistry.BLOCK_BLACK_BUSH),
+		EGG_PLANT(BlocksRegistry.BLOCK_EGG_PLANT),
+		INK_BUSH(BlocksRegistry.BLOCK_INK_BUSH_SEED),
+		REEDS(BlocksRegistry.BLOCK_NETHER_REED),
+		NETHER_CACTUS(BlocksRegistry.BLOCK_NETHER_CACTUS),
+		NETHER_GRASS(BlocksRegistry.BLOCK_NETHER_GRASS),
+		ORANGE_MUSHROOM(BlocksRegistry.BLOCK_ORANGE_MUSHROOM),
+		RED_MOLD(BlocksRegistry.BLOCK_RED_MOLD),
+		GRAY_MOLD(BlocksRegistry.BLOCK_GRAY_MOLD),
+		MAGMA_FLOWER(BlocksRegistry.BLOCK_MAGMA_FLOWER),
+		NETHER_WART(BlocksRegistry.BLOCK_WART_SEED);
 
 		private final String name;
 		private final int index;

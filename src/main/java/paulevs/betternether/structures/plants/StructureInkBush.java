@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
@@ -21,7 +21,7 @@ public class StructureInkBush implements IStructure {
 	public void generate(World world, BlockPos pos, Random random) {
 		Block under = world.getBlockState(pos).getBlock();
 		if (ConfigLoader.isTerrain(under) || under == Blocks.SOUL_SAND) {
-			IBlockState state = BlocksRegister.BLOCK_INK_BUSH.getDefaultState();
+			IBlockState state = BlocksRegistry.BLOCK_INK_BUSH.getDefaultState();
 			BlockPos airPos = null;
 			Material lavaMaterial = Material.LAVA;
 

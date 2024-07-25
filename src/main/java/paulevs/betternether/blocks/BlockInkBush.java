@@ -10,7 +10,6 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -79,7 +78,7 @@ public class BlockInkBush extends Block
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
-		return Item.getItemFromBlock(BlocksRegister.BLOCK_INK_BUSH_SEED);
+		return Item.getItemFromBlock(BlocksRegistry.BLOCK_INK_BUSH_SEED);
 	}
 
 	@Override

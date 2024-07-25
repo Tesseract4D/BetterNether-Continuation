@@ -5,15 +5,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 
 public class RecipeRegister
 {
 	public static void register()
 	{
-		addRecipe(BlocksRegister.BLOCK_INK_BUSH_SEED, new ItemStack(Items.DYE, 3));
-		addRecipe(BlocksRegister.BLOCK_CINCINNASITE, BlocksRegister.BLOCK_CINCINNASITE_FORGED);
-		addRecipe(Items.QUARTZ, BlocksRegister.BLOCK_QUARTZ_GLASS);
+		addRecipe(BlocksRegistry.BLOCK_INK_BUSH_SEED, new ItemStack(Items.DYE, 3));
+		addRecipe(BlocksRegistry.BLOCK_CINCINNASITE, BlocksRegistry.BLOCK_CINCINNASITE_FORGED);
+		addRecipe(Items.QUARTZ, BlocksRegistry.BLOCK_QUARTZ_GLASS);
 	}
 	
 	private static void addRecipe(Block material, Block result)

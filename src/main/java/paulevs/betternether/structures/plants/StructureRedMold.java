@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockNetherMycelium;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureRedMold implements IStructure {
@@ -30,7 +30,7 @@ public class StructureRedMold implements IStructure {
 					BlockPos npos = new BlockPos(x, y - j, z);
 					if (npos.getY() > 31) {
 						under = world.getBlockState(npos.down()).getBlock();
-						if (under == BlocksRegister.BLOCK_NETHER_MYCELIUM && world.getBlockState(npos).getBlock() == Blocks.AIR) {
+						if (under == BlocksRegistry.BLOCK_NETHER_MYCELIUM && world.getBlockState(npos).getBlock() == Blocks.AIR) {
 							positions[count++] = npos;
 							foundValidPosition = true;
 						}
@@ -45,7 +45,7 @@ public class StructureRedMold implements IStructure {
 			}
 
 			if (count > 0) {
-				IBlockState moldState = BlocksRegister.BLOCK_RED_MOLD.getDefaultState();
+				IBlockState moldState = BlocksRegistry.BLOCK_RED_MOLD.getDefaultState();
 
 				world.captureBlockSnapshots = true;
 

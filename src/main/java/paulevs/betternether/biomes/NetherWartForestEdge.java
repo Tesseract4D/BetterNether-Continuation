@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -34,7 +34,7 @@ public class NetherWartForestEdge extends NetherWartForest
 			} else if (BNWorldGenerator.hasWartsGen && random.nextInt(6) == 0 && ConfigLoader.isTerrain(world.getBlockState(pos).getBlock()) && world.getBlockState(pos.up()).getBlock() == Blocks.AIR)
 				world.setBlockState(pos.up(), Blocks.NETHER_WART.getDefaultState().withProperty(BlockNetherWart.AGE, random.nextInt(4)));
 			else if (random.nextInt(12) == 0)
-				world.setBlockState(pos.up(), BlocksRegister.BLOCK_BLACK_BUSH.getDefaultState());
+				world.setBlockState(pos.up(), BlocksRegistry.BLOCK_BLACK_BUSH.getDefaultState());
 		}
 	}
 }

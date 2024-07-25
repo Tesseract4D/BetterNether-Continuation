@@ -7,7 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
@@ -18,7 +18,7 @@ public class StructureSmoker implements IStructure {
 		if (ConfigLoader.isGenTerrain(under) || under == Blocks.SOUL_SAND) {
 			BlockPos[] positions = new BlockPos[8];
 			int count = 0;
-			IBlockState smokerState = BlocksRegister.BLOCK_SMOKER.getDefaultState();
+			IBlockState smokerState = BlocksRegistry.BLOCK_SMOKER.getDefaultState();
 
 			for (int i = 0; i < 8; i++) {
 				int x = pos.getX() + (int) (random.nextGaussian() * 2);

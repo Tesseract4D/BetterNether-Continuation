@@ -6,21 +6,23 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureStalagnate implements IStructure
 {
+	public static final int MAX_LENGTH = 25;
+
 	@Override
 	public void generate(World chunk, BlockPos pos, Random random)
 	{
 		BlockPos up = upRay(chunk, pos);
 		if (up != BlockPos.ORIGIN)
 		{
-			IBlockState bottom = BlocksRegister.BLOCK_STALAGNATE_BOTTOM.getDefaultState();
-			IBlockState middle = BlocksRegister.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
-			IBlockState top = BlocksRegister.BLOCK_STALAGNATE_TOP.getDefaultState();
+			IBlockState bottom = BlocksRegistry.BLOCK_STALAGNATE_BOTTOM.getDefaultState();
+			IBlockState middle = BlocksRegistry.BLOCK_STALAGNATE_MIDDLE.getDefaultState();
+			IBlockState top = BlocksRegistry.BLOCK_STALAGNATE_TOP.getDefaultState();
 			chunk.setBlockState(pos.up(), bottom);
 			for (int y = 2; y < up.getY() - pos.getY() - 1; y++)
 				chunk.setBlockState(pos.up(y), middle);
@@ -42,7 +44,7 @@ public class StructureStalagnate implements IStructure
 		int h = dist;
 		dist = dist - start.getY();
 		BlockPos result = new BlockPos(start.getX(), h, start.getZ());
-		if (dist < 25 && dist > 2 && ConfigLoader.isTerrain(chunk.getBlockState(result).getBlock()))
+		if (dist < MAX_LENGTH && dist > 2 && ConfigLoader.isTerrain(chunk.getBlockState(result).getBlock()))
 		{
 			return result;
 		}

@@ -56,7 +56,7 @@ public class BlockBlackAppleSeed extends Block implements IGrowable
 	@Override
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
 	{
-		worldIn.setBlockState(pos, BlocksRegister.BLOCK_BLACK_APPLE.getDefaultState());
+		worldIn.setBlockState(pos, BlocksRegistry.BLOCK_BLACK_APPLE.getDefaultState());
 	}
 	
 	@Override

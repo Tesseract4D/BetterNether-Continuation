@@ -8,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockBrownLargeMushroom;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
@@ -31,7 +31,7 @@ public class StructureMedBrownMushroom implements IStructure {
 					BlockPos npos = new BlockPos(x, y - j, z);
 					if (npos.getY() > 31) {
 						under = world.getBlockState(npos.down()).getBlock();
-						if (under == BlocksRegister.BLOCK_NETHER_MYCELIUM) {
+						if (under == BlocksRegistry.BLOCK_NETHER_MYCELIUM) {
 							positions[count++] = npos;
 							foundValidPosition = true;
 						}
@@ -46,7 +46,7 @@ public class StructureMedBrownMushroom implements IStructure {
 			}
 
 			if (count > 0) {
-				IBlockState mushroomState = BlocksRegister.BLOCK_BROWN_LARGE_MUSHROOM.getDefaultState();
+				IBlockState mushroomState = BlocksRegistry.BLOCK_BROWN_LARGE_MUSHROOM.getDefaultState();
 				IBlockState middleState = mushroomState.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.MIDDLE);
 				IBlockState topState = mushroomState.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.TOP);
 				IBlockState sideNState = mushroomState.withProperty(BlockBrownLargeMushroom.SHAPE, BlockBrownLargeMushroom.EnumShape.SIDE_N);

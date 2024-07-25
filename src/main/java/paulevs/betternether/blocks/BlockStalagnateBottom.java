@@ -84,13 +84,13 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(BlocksRegister.BLOCK_STALAGNATE_STEM);
+        return Item.getItemFromBlock(BlocksRegistry.BLOCK_STALAGNATE_STEM);
     }
 	
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 	{
-		return new ItemStack(BlocksRegister.BLOCK_STALAGNATE_STEM);
+		return new ItemStack(BlocksRegistry.BLOCK_STALAGNATE_STEM);
 	}
 	
 	@Override
@@ -111,7 +111,7 @@ public class BlockStalagnateBottom extends BlockStalagnateBase
 	
 	private void spawnSeeds(World world, BlockPos pos)
 	{
-		ItemStack drop = new ItemStack(BlocksRegister.BLOCK_STALAGNATE_SEED, 1);
+		ItemStack drop = new ItemStack(BlocksRegistry.BLOCK_STALAGNATE_SEED, 1);
 		EntityItem itemEntity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
 		world.spawnEntity(itemEntity);
 	}

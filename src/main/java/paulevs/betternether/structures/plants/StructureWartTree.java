@@ -10,7 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.structures.IStructure;
 
 public class StructureWartTree implements IStructure {
@@ -86,10 +86,10 @@ public class StructureWartTree implements IStructure {
 
 	private void placeRandomSeed(World world, BlockPos pos) {
 		if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
-			if (BlocksRegister.BLOCK_WART_SEED == Blocks.AIR) {
+			if (BlocksRegistry.BLOCK_WART_SEED == Blocks.AIR) {
 				return;
 			}
-			IBlockState seed = BlocksRegister.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+			IBlockState seed = BlocksRegistry.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
 			if (world.getBlockState(pos.north()).isFullBlock()) {
 				seed = seed.withProperty(BlockDirectional.FACING, EnumFacing.SOUTH);
 			} else if (world.getBlockState(pos.south()).isFullBlock()) {

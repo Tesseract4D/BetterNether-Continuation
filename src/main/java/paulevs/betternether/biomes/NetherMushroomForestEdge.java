@@ -4,7 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -27,7 +27,7 @@ public class NetherMushroomForestEdge extends NetherMushroomForest
 	{
 		if (random.nextFloat() <= plantDensity)
 		{
-			if (world.getBlockState(pos).getBlock() == BlocksRegister.BLOCK_NETHER_MYCELIUM)
+			if (world.getBlockState(pos).getBlock() == BlocksRegistry.BLOCK_NETHER_MYCELIUM)
 			{
 				if (BNWorldGenerator.hasRedMushroomGen && random.nextInt(100) == 0)
 					BNWorldGenerator.redMushroomGen.generate(world, pos, random);
@@ -47,7 +47,7 @@ public class NetherMushroomForestEdge extends NetherMushroomForest
 			}
 			else if (ConfigLoader.isTerrain(world.getBlockState(pos).getBlock()) && random.nextBoolean())
 			{
-				world.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
+				world.setBlockState(pos.up(), BlocksRegistry.BLOCK_NETHER_GRASS.getDefaultState());
 			}
 		}
 	}
@@ -56,7 +56,7 @@ public class NetherMushroomForestEdge extends NetherMushroomForest
 	public void genSurfColumn(World world, BlockPos pos, Random random)
 	{
 		if (world.getBlockState(pos).getBlock() == Blocks.NETHERRACK) {
-			world.setBlockState(pos, BlocksRegister.BLOCK_NETHER_MYCELIUM.getDefaultState());
+			world.setBlockState(pos, BlocksRegistry.BLOCK_NETHER_MYCELIUM.getDefaultState());
 		}
 	}
 }

@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.plants.StructureReeds;
 import paulevs.betternether.world.BNWorldGenerator;
@@ -27,7 +27,7 @@ public class NetherBiomeJungle extends NetherBiome
 		if (ConfigLoader.isTerrain(ground) || ground == Blocks.SOUL_SAND)
 		{
 			boolean reeds = false;
-			if (BlocksRegister.BLOCK_NETHER_REED != Blocks.AIR && random.nextInt(4) == 0)
+			if (BlocksRegistry.BLOCK_NETHER_REED != Blocks.AIR && random.nextInt(4) == 0)
 				reeds = StructureReeds.generate(world, pos, random);
 			if (!reeds)
 			{
@@ -36,7 +36,7 @@ public class NetherBiomeJungle extends NetherBiome
 				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(96) == 0)
 					BNWorldGenerator.eggPlantGen.generate(world, pos, random);
 				else if (random.nextInt(5) == 0)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_JUNGLE_PLANT.getDefaultState());
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_JUNGLE_PLANT.getDefaultState());
 			}
 		}
 	}
@@ -59,6 +59,6 @@ public class NetherBiomeJungle extends NetherBiome
 	public void genSurfColumn(World world, BlockPos pos, Random random)
 	{
 		if (world.getBlockState(pos).getBlock() == Blocks.NETHERRACK)
-			world.setBlockState(pos, BlocksRegister.BLOCK_JUNGLE_GRASS.getDefaultState());
+			world.setBlockState(pos, BlocksRegistry.BLOCK_JUNGLE_GRASS.getDefaultState());
 	}
 }

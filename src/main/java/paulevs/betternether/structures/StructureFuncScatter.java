@@ -6,7 +6,9 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public abstract class StructureFuncScatter implements IStructure{
+public abstract class StructureFuncScatter implements IStructure {
+    protected static final BlockPos.MutableBlockPos POS = new BlockPos.MutableBlockPos();
+
     final int distance;
     final int manDist;
 
@@ -16,34 +18,28 @@ public abstract class StructureFuncScatter implements IStructure{
     }
 
     @Override
-    public void generate(World world, BlockPos pos, Random random, final int MAX_HEIGHT, StructureGeneratorThreadContext context) {
+    public void generate(World world, BlockPos pos, Random random) {
         if (isGround(world.getBlockState(pos.down())) && noObjNear(world, pos)) {
-            grow(world, pos, random, true, context);
+            grow(world, pos, random);
         }
     }
 
-    public void grow(World world, BlockPos pos, Random random){
-        grow(world, pos, random,false, NetherChunkPopulatorFeature.generatorForThread().context);
-    }
-
-    public abstract void grow(World world, BlockPos pos, Random random, boolean natural, StructureGeneratorThreadContext context);
+    public abstract void grow(World world, BlockPos pos, Random random);
 
     protected abstract boolean isStructure(IBlockState state);
 
     protected abstract boolean isGround(IBlockState state);
 
     private boolean noObjNear(World world, BlockPos pos) {
-        final BlockPos.MutableBlockPos POS = new BlockPos.MutableBlockPos();
-
         int x1 = pos.getX() - distance;
         int z1 = pos.getZ() - distance;
         int x2 = pos.getX() + distance;
         int z2 = pos.getZ() + distance;
-        POS.setY(pos.getY());
+        POS.y = pos.getY();
         for (int x = x1; x <= x2; x++) {
-            POS.setX(x);
+            POS.x = x;
             for (int z = z1; z <= z2; z++) {
-                POS.setZ(z);
+                POS.z = z;
                 if (isInside(x - pos.getX(), z - pos.getZ()) && isStructure(world.getBlockState(POS)))
                     return false;
             }

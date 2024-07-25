@@ -143,7 +143,7 @@ public class BlockWartSeed extends Block implements IGrowable
 	{
 		if (world.getBlockState(pos).getBlock() == Blocks.AIR)
 		{
-			IBlockState seed = BlocksRegister.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
+			IBlockState seed = BlocksRegistry.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP);
 			if (world.getBlockState(pos.north()).isFullBlock())
 				seed = seed.withProperty(BlockDirectional.FACING, EnumFacing.SOUTH);
 			else if (world.getBlockState(pos.south()).isFullBlock())

@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
@@ -20,7 +20,7 @@ public class StructureEggPlant implements IStructure
 		Block under = world.getBlockState(pos).getBlock();
 		if (ConfigLoader.isTerrain(under))
 		{
-			IBlockState state = BlocksRegister.BLOCK_EGG_PLANT.getDefaultState();
+			IBlockState state = BlocksRegistry.BLOCK_EGG_PLANT.getDefaultState();
 			for (int i = 0; i < 4; i++)
 			{
 				int x = pos.getX() + (int) (random.nextGaussian() * 2);

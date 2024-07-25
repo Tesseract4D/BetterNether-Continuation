@@ -7,16 +7,16 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import paulevs.betternether.blocks.BlockCincinnasiteFireBowl;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 
 public class StructureAltar implements IStructureWorld {
 	@Override
 	public void generate(World world, BlockPos pos, Rotation rotation) {
 		if (shouldGenerateAltar(world, pos)) {
-			IBlockState pillar = BlocksRegister.BLOCK_CINCINNASITE_WALL.getDefaultState();
-			IBlockState cincinnasitePillar = BlocksRegister.BLOCK_CINCINNASITE_PILLAR.getDefaultState();
-			IBlockState cincinnasiteFireBowl = Block.isEqualTo(BlocksRegister.BLOCK_CINCINNASITE_FIRE_BOWL, Blocks.AIR) ? Blocks.AIR.getDefaultState() : BlocksRegister.BLOCK_CINCINNASITE_FIRE_BOWL.getDefaultState().withProperty(BlockCincinnasiteFireBowl.STATE, true);
+			IBlockState pillar = BlocksRegistry.BLOCK_CINCINNASITE_WALL.getDefaultState();
+			IBlockState cincinnasitePillar = BlocksRegistry.BLOCK_CINCINNASITE_PILLAR.getDefaultState();
+			IBlockState cincinnasiteFireBowl = Block.isEqualTo(BlocksRegistry.BLOCK_CINCINNASITE_FIRE_BOWL, Blocks.AIR) ? Blocks.AIR.getDefaultState() : BlocksRegistry.BLOCK_CINCINNASITE_FIRE_BOWL.getDefaultState().withProperty(BlockCincinnasiteFireBowl.STATE, true);
 			BlockPos[] positions = {
 					pos,
 					pos.up(),

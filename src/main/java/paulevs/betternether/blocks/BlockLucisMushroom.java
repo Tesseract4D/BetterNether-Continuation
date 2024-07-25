@@ -53,7 +53,7 @@ public class BlockLucisMushroom extends Block
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 	{
-		return new ItemStack(BlocksRegister.BLOCK_LUCIS_SPORE);
+		return new ItemStack(BlocksRegistry.BLOCK_LUCIS_SPORE);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class BlockLucisMushroom extends Block
 
 	private void spawnSeeds(World world, BlockPos pos)
 	{
-		ItemStack drop = new ItemStack(BlocksRegister.BLOCK_LUCIS_SPORE, 1);
+		ItemStack drop = new ItemStack(BlocksRegistry.BLOCK_LUCIS_SPORE, 1);
 		EntityItem itemEntity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
 		world.spawnEntity(itemEntity);
 	}

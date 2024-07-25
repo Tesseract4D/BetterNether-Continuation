@@ -8,7 +8,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.structures.IStructure;
 
@@ -51,10 +51,10 @@ public class StructureEye implements IStructure {
 				height = MIN_STALK_HEIGHT + random.nextInt(stalkHeight / STALK_HEIGHT_VARIATION_DIVISOR);
 			}
 
-			IBlockState vineState = BlocksRegister.BLOCK_EYE_VINE.getDefaultState();
+			IBlockState vineState = BlocksRegistry.BLOCK_EYE_VINE.getDefaultState();
 			IBlockState eyeState = random.nextInt(2) == 0 ?
-					BlocksRegister.BLOCK_EYEBALL.getDefaultState() :
-					BlocksRegister.BLOCK_EYEBALL_SMALL.getDefaultState();
+					BlocksRegistry.BLOCK_EYEBALL.getDefaultState() :
+					BlocksRegistry.BLOCK_EYEBALL_SMALL.getDefaultState();
 
 			BlockPos.MutableBlockPos stalkPos = new BlockPos.MutableBlockPos(pos);
 			for (int y = 0; y < height; y++) {

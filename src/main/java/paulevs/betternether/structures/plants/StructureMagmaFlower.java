@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.noise.WorleyNoise;
 import paulevs.betternether.structures.IStructure;
@@ -19,7 +19,7 @@ public class StructureMagmaFlower implements IStructure {
 	@Override
 	public void generate(World world, BlockPos pos, Random random) {
 		if (ConfigLoader.isTerrain(world.getBlockState(pos).getBlock())) {
-			IBlockState state = BlocksRegister.BLOCK_MAGMA_FLOWER.getDefaultState();
+			IBlockState state = BlocksRegistry.BLOCK_MAGMA_FLOWER.getDefaultState();
 
 			for (int y = -3; y < 4; y++) {
 				for (int x = -3; x < 4; x++) {

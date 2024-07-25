@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.structures.plants.StructureReeds;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -46,11 +46,11 @@ public class NetherPoorGrasslands extends NetherGrasslands
 				else if (BNWorldGenerator.hasBlackAppleGen && random.nextInt(128) == 0)
 					BNWorldGenerator.blackAppleGen.generate(world, pos, random);
 				else if (random.nextInt(32) == 0 && getFeatureNoise(pos) > 0.3)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_BLACK_BUSH.getDefaultState());
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_BLACK_BUSH.getDefaultState());
 				else if (random.nextInt(20) == 0)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 				else if (random.nextInt(4) == 0)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_NETHER_GRASS.getDefaultState());
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_NETHER_GRASS.getDefaultState());
 			}
 		}
 	}

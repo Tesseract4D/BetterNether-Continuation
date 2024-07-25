@@ -30,7 +30,7 @@ public class BlockEyeBase extends Block
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
 		Block up = worldIn.getBlockState(pos.up()).getBlock();
-		if (up != BlocksRegister.BLOCK_EYE_VINE)
+		if (up != BlocksRegistry.BLOCK_EYE_VINE)
 		{
 			worldIn.destroyBlock(pos, true);
 			spawnSeeds(worldIn, pos, worldIn.rand);
@@ -41,7 +41,7 @@ public class BlockEyeBase extends Block
 	{
 		if (!world.isRemote)
 		{
-		ItemStack drop = new ItemStack(BlocksRegister.BLOCK_EYE_SEED, 1 + random.nextInt(3));
+		ItemStack drop = new ItemStack(BlocksRegistry.BLOCK_EYE_SEED, 1 + random.nextInt(3));
 		EntityItem itemEntity = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop);
 		world.spawnEntity(itemEntity);
 		}

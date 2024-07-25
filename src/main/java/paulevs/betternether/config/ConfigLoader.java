@@ -2,18 +2,14 @@ package paulevs.betternether.config;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import paulevs.betternether.biomes.BiomeRegister;
 import paulevs.betternether.biomes.NetherBiome;
-import paulevs.betternether.blocks.BlocksRegister;
-import paulevs.betternether.items.ItemsRegister;
 import paulevs.betternether.world.BNWorldGenerator;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.*;
 

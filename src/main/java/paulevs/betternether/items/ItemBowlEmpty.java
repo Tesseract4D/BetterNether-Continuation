@@ -10,7 +10,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 
 public class ItemBowlEmpty extends ItemStandart
 {
@@ -30,10 +30,10 @@ public class ItemBowlEmpty extends ItemStandart
         }
         else if (player.isSneaking())
         {
-            if (BlocksRegister.BLOCK_STALAGNATE_BOWL != Blocks.AIR && worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
+            if (BlocksRegistry.BLOCK_STALAGNATE_BOWL != Blocks.AIR && worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
             {
                 worldIn.playSound(player, pos, SoundEvents.BLOCK_WOOD_PLACE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-                worldIn.setBlockState(pos, BlocksRegister.BLOCK_STALAGNATE_BOWL.getDefaultState(), 2);
+                worldIn.setBlockState(pos, BlocksRegistry.BLOCK_STALAGNATE_BOWL.getDefaultState(), 2);
                 if (!player.isCreative())
                 	itemstack.shrink(1);
                 return EnumActionResult.SUCCESS;

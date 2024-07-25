@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import paulevs.betternether.biomes.BiomeRegister;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.entities.EntityRegister;
 import paulevs.betternether.events.EventsHandler;
@@ -21,8 +21,8 @@ public class CommonProxy
 	{
 		ConfigLoader.load(event.getSuggestedConfigurationFile(), event.getModConfigurationDirectory());
 		EventsHandler.init();
-		BlocksRegister.register();
-		BlocksRegister.registerOreDictionary();
+		BlocksRegistry.register();
+		BlocksRegistry.registerOreDictionary();
 		ItemsRegister.register();
 		RecipeRegister.register();
 		SoundRegister.register();

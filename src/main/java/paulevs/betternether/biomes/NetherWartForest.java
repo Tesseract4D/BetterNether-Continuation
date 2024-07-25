@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -31,7 +31,7 @@ public class NetherWartForest extends NetherBiome
 				{
 					BNWorldGenerator.wartTreeGen.generate(world, pos, random);
 				} else if (BNWorldGenerator.hasWartsGen && random.nextInt(12) == 0 && ConfigLoader.isTerrain(d) && world.getBlockState(pos.up()).getBlock() == Blocks.AIR)
-					world.setBlockState(pos.up(), BlocksRegister.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
+					world.setBlockState(pos.up(), BlocksRegistry.BLOCK_WART_SEED.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		}
 	}
 	
@@ -41,7 +41,7 @@ public class NetherWartForest extends NetherBiome
 		if (world.getBlockState(pos).getBlock() == Blocks.NETHERRACK)
 			switch (random.nextInt(5)) {
 				case 0:
-					world.setBlockState(pos, BlocksRegister.BLOCK_SOUL_SOIL.getDefaultState());
+					world.setBlockState(pos, BlocksRegistry.BLOCK_SOUL_SOIL.getDefaultState());
 					break;
 				case 1:
 				case 2:
@@ -49,7 +49,7 @@ public class NetherWartForest extends NetherBiome
 					world.setBlockState(pos, Blocks.SOUL_SAND.getDefaultState());
 					break;
 				default:
-					world.setBlockState(pos, BlocksRegister.BLOCK_NETHERRACK_MOSS.getDefaultState());
+					world.setBlockState(pos, BlocksRegistry.BLOCK_NETHERRACK_MOSS.getDefaultState());
 			}
 	}
 }

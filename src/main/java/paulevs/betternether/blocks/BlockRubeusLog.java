@@ -1,5 +1,6 @@
 package paulevs.betternether.blocks;
 
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -7,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import paulevs.betternether.BetterNether;
 
-public class BlockRubeusLog extends BlockNetherLog {
+public class BlockRubeusLog extends BlockLog {
     public static final PropertyEnum<BlockRubeusLog.EnumType> VARIANT = PropertyEnum.create("variant", BlockRubeusLog.EnumType.class, a -> true);
 
     public BlockRubeusLog() {
@@ -15,7 +16,7 @@ public class BlockRubeusLog extends BlockNetherLog {
         this.setRegistryName("rubeus_log");
         this.setTranslationKey("rubeus_log");
         this.setCreativeTab(BetterNether.BN_TAB);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.BOTTOM).withProperty(AXIS, EnumFacing.Axis.Y));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumType.BOTTOM).withProperty(LOG_AXIS, EnumAxis.Y));
     }
 
     public IBlockState getStateFromMeta(int meta) {
@@ -23,13 +24,16 @@ public class BlockRubeusLog extends BlockNetherLog {
 
         switch (meta & 12) {
             case 0:
-                iblockstate = iblockstate.withProperty(AXIS, EnumFacing.Axis.Y);
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
                 break;
             case 4:
-                iblockstate = iblockstate.withProperty(AXIS, EnumFacing.Axis.X);
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
                 break;
             case 8:
-                iblockstate = iblockstate.withProperty(AXIS, EnumFacing.Axis.Z);
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+                break;
+            default:
+                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
                 break;
         }
 
@@ -39,20 +43,22 @@ public class BlockRubeusLog extends BlockNetherLog {
     public int getMetaFromState(IBlockState state) {
         int i = state.getValue(VARIANT).getIndex();
 
-        switch (state.getValue(AXIS)) {
+        switch (state.getValue(LOG_AXIS)) {
             case X:
                 i |= 4;
                 break;
             case Z:
                 i |= 8;
                 break;
+            case NONE:
+                i |= 12;
         }
 
         return i;
     }
 
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT, AXIS);
+        return new BlockStateContainer(this, VARIANT, LOG_AXIS);
     }
 
     public int damageDropped(IBlockState state) {

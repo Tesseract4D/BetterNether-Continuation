@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import paulevs.betternether.blocks.BlocksRegister;
+import paulevs.betternether.blocks.BlocksRegistry;
 
 public class BNCreativeTab extends CreativeTabs
 {
@@ -20,7 +20,7 @@ public class BNCreativeTab extends CreativeTabs
 	@Override
 	public ItemStack createIcon()
 	{
-		return new ItemStack(BlocksRegister.BLOCK_NETHER_GRASS);
+		return new ItemStack(BlocksRegistry.BLOCK_NETHER_GRASS);
 	}
 	
 	@Override
