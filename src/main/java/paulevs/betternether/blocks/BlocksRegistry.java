@@ -20,8 +20,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import paulevs.betternether.BetterNether;
-import paulevs.betternether.structures.IStructure;
-import paulevs.betternether.structures.plants.StructureRubeus;
+import paulevs.betternether.structures.plants.StructureVine;
+import paulevs.betternether.world.BNWorldGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,10 +195,9 @@ public class BlocksRegistry {
 		BLOCK_RUBEUS_LOG = registerBlock(new BlockRubeusLog(), "BLOCK_RUBEUS_LOG");
 		BLOCK_RUBEUS_LEAVES = registerBlockLeaves(new BlockNetherLeaves("rubeus_leaves"), "BLOCK_RUBEUS_LEAVES");
 		BLOCK_RUBEUS_SAPLING = registerBlock(new BlockNetherSapling("rubeus_sapling") {
-			public final IStructure structureTree = new StructureRubeus();
 			@Override
 			protected void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-				structureTree.generate(worldIn, pos, rand);
+				BNWorldGenerator.rubeusGen.generate(worldIn, pos, rand);
 			}
 		}, "BLOCK_RUBEUS_SAPLING");
 		BLOCK_RUBEUS_PLANKS = registerBlock(new BlockRubeusPlanks(), "BLOCK_RUBEUS_PLANKS");
@@ -219,6 +218,9 @@ public class BlocksRegistry {
 		BLOCK_BLACK_VINE = registerBlock(new BlockBlackVine(), "BLOCK_BLACK_VINE");
 		BLOCK_FLOWERED_VINE = registerBlock(new BlockFloweredVine(), "BLOCK_FLOWERED_VINE");
 		BLOCK_GOLDEN_VINE = registerBlock(new BlockGoldenVine(), "BLOCK_GOLDEN_VINE");
+		BNWorldGenerator.blackVineGen = new StructureVine(BLOCK_BLACK_VINE);
+		BNWorldGenerator.bloomingVineGen = new StructureVine(BLOCK_FLOWERED_VINE);
+		BNWorldGenerator.goldenVineGen = new StructureVine(BLOCK_GOLDEN_VINE);
 		BLOCK_WART_SEED = registerBlock(new BlockWartSeed(), "BLOCK_WART_SEED");
 		BLOCK_BARREL_CACTUS = registerBlock(new BlockBarrelCactus(), "BLOCK_BARREL_CACTUS");
 		BLOCK_AGAVE = registerBlock(new BlockAgave(), "BLOCK_AGAVE");

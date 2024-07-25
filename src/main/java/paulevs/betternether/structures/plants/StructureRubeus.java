@@ -75,7 +75,8 @@ public class StructureRubeus extends StructureFuncScatter {
                         }
                     }
                 }
-
+                if(y1 < y2)
+                    return;
                 line(world, x1, y1, z1, x2, y2, z2, middle);
                 x1 = x2;
                 y1 = y2;

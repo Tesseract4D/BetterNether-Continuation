@@ -15,6 +15,7 @@ import net.tclproject.mysteriumlib.asm.core.MiscUtils;
 import paulevs.betternether.betternether.Tags;
 import paulevs.betternether.proxy.CommonProxy;
 import paulevs.betternether.tab.BNCreativeTab;
+import paulevs.betternether.world.BNWorldGenerator;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,13 +46,6 @@ public class BetterNether extends CustomLoadingPlugin
 	public void postInit(FMLPostInitializationEvent event)
 	{
 	    proxy.postInit(event);
-        try {
-            System.out.println("@"+ new MetaReader().getLocalVariables(GuiOverlayDebug.class.getDeclaredMethod("call")));
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 	public static BetterNether getMod()

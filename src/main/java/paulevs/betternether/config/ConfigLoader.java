@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import paulevs.betternether.biomes.BiomeRegister;
+import paulevs.betternether.biomes.BiomeRegistry;
 import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.world.BNWorldGenerator;
 
@@ -100,7 +100,7 @@ public class ConfigLoader
 		enabledBiomes = new HashSet<>();
 		everywhereBiomes = new ArrayList<>();
 		restrictedBiomes = new HashMap<>();
-		for(Map.Entry<String, NetherBiome> e : BiomeRegister.BIOME_REGISTRY.entrySet()) {
+		for(Map.Entry<String, NetherBiome> e : BiomeRegistry.BIOME_REGISTRY.entrySet()) {
 			String name = e.getKey();
 			NetherBiome biome = e.getValue();
 			boolean enabled = config.getBoolean(name, "Biomes", true, "Enables|Disables biome");

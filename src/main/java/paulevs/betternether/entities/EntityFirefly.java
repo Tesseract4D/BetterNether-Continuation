@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
 import elucent.albedo.event.GatherLightsEvent;
@@ -32,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import paulevs.betternether.biomes.BiomeRegister;
+import paulevs.betternether.biomes.BiomeRegistry;
 import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.sounds.SoundRegister;
 import paulevs.betternether.world.BNWorldGenerator;
@@ -65,10 +64,10 @@ public class EntityFirefly extends EntityAmbientCreature implements ILightProvid
 	public boolean getCanSpawnHere() {
 		NetherBiome biome = BNWorldGenerator.getBiome(this.world, this.getPosition());
 
-		return (biome == BiomeRegister.BIOME_GRASSLANDS ||
-				biome == BiomeRegister.BIOME_NETHER_JUNGLE ||
-				biome == BiomeRegister.BIOME_MUSHROOM_FOREST ||
-				biome == BiomeRegister.BIOME_MUSHROOM_FOREST_EDGE);
+		return (biome == BiomeRegistry.BIOME_GRASSLANDS ||
+				biome == BiomeRegistry.BIOME_NETHER_JUNGLE ||
+				biome == BiomeRegistry.BIOME_MUSHROOM_FOREST ||
+				biome == BiomeRegistry.BIOME_MUSHROOM_FOREST_EDGE);
 	}
 
 	public int getSpawnWeight(EnumCreatureType type, World world) {

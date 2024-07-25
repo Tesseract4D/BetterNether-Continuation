@@ -4,7 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import paulevs.betternether.biomes.BiomeRegister;
+import paulevs.betternether.biomes.BiomeRegistry;
 import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
 import paulevs.betternether.entities.EntityRegister;
@@ -33,7 +33,7 @@ public class CommonProxy
 
 	public void init(FMLInitializationEvent event)
 	{
-		BiomeRegister.registerBiomes();
+		BiomeRegistry.registerBiomes();
 		ConfigLoader.init();
 	}
 

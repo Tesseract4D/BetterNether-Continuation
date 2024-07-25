@@ -24,14 +24,18 @@ public class NetherBiomeJungle extends NetherBiome
 	public void genFloorObjects(World world, BlockPos pos, Random random)
 	{
 		Block ground = world.getBlockState(pos).getBlock();
-		if (ConfigLoader.isTerrain(ground) || ground == Blocks.SOUL_SAND)
+		if (ConfigLoader.isTerrain(ground))
 		{
 			boolean reeds = false;
-			if (BlocksRegistry.BLOCK_NETHER_REED != Blocks.AIR && random.nextInt(4) == 0)
+			if (random.nextInt(4) == 0)
 				reeds = StructureReeds.generate(world, pos, random);
 			if (!reeds)
 			{
-				if (BNWorldGenerator.hasStalagnateGen && random.nextInt(32) == 0)
+				if (random.nextInt(12) == 0)
+					BNWorldGenerator.rubeusBushGen.generate(world, pos.up(), random);
+				else if (random.nextInt(8) == 0)
+					BNWorldGenerator.rubeusGen.generate(world, pos, random);
+				else if (BNWorldGenerator.hasStalagnateGen && random.nextInt(32) == 0)
 					BNWorldGenerator.stalagnateGen.generate(world, pos, random);
 				else if (BNWorldGenerator.hasEggPlantGen && random.nextInt(96) == 0)
 					BNWorldGenerator.eggPlantGen.generate(world, pos, random);
@@ -51,8 +55,17 @@ public class NetherBiomeJungle extends NetherBiome
 	@Override
 	public void genCeilObjects(World world, BlockPos pos, Random random)
 	{
-		if (random.nextFloat() <= plantDensity && BNWorldGenerator.hasEyeGen && random.nextInt(8) == 0 && random.nextDouble() * 4D + 0.5 < getFeatureNoise(pos))
+		if (random.nextFloat() <= plantDensity) {
+			double noise = getFeatureNoise(pos);
+			if (noise < -1.5 && random.nextInt(24) == 0)
 			BNWorldGenerator.eyeGen.generate(world, pos.down(), random);
+			else if (noise < -0.5 && random.nextInt(24) == 0)
+				BNWorldGenerator.bloomingVineGen.generate(world, pos.down(), random);
+			else if (noise < 1.5 && random.nextInt(24) == 0)
+				BNWorldGenerator.blackVineGen.generate(world, pos.down(), random);
+			else if (noise < 2.5 && random.nextInt(24) == 0)
+				BNWorldGenerator.goldenVineGen.generate(world, pos.down(), random);
+		}
 	}
 
 	@Override

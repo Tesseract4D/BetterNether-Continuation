@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import paulevs.betternether.biomes.BiomeRegister;
+import paulevs.betternether.biomes.BiomeRegistry;
 import paulevs.betternether.biomes.NetherBiome;
 import paulevs.betternether.blocks.BlocksRegistry;
 import paulevs.betternether.config.ConfigLoader;
@@ -31,6 +31,9 @@ public class BNWorldGenerator
 	public static StructureStalagnate stalagnateGen = new StructureStalagnate();
 	public static StructureLucis lucisGen = new StructureLucis();
 	public static StructureSmoker smokerGen = new StructureSmoker();
+	public static StructureVine blackVineGen;
+	public static StructureVine goldenVineGen;
+	public static StructureVine bloomingVineGen;
 	public static StructureWartTree wartTreeGen = new StructureWartTree();
 	public static StructureEggPlant eggPlantGen = new StructureEggPlant();
 	public static StructureInkBush inkBushGen = new StructureInkBush();
@@ -42,6 +45,8 @@ public class BNWorldGenerator
 	public static StructureRedMold redMoldGen = new StructureRedMold();
 	public static StructureGrayMold grayMoldGen = new StructureGrayMold();
 	public static StructureWartCap wartCapGen = new StructureWartCap();
+	public static StructureRubeus rubeusGen = new StructureRubeus();
+	public static StructureRubeusBush rubeusBushGen = new StructureRubeusBush();
 
 	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLand = new LinkedHashMap<>();
 	public static LinkedHashMap<IStructureWorld, Integer> globalStructuresLava = new LinkedHashMap<>();
@@ -273,8 +278,8 @@ public class BNWorldGenerator
 		double py = (double) dither.ditherY(x, y, z) * biomeSizeY;
 		double pz = (double) dither.ditherZ(x, y, z) * biomeSizeXZ;
 		Biome biome = world.getBiome(new BlockPos(x, y, z));
-		List<NetherBiome> l = BiomeRegister.getBiomesForMCBiome(biome);
-		return l.isEmpty() ? BiomeRegister.BIOME_EMPTY_NETHER : WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), l);
+		List<NetherBiome> l = BiomeRegistry.getBiomesForMCBiome(biome);
+		return l.isEmpty() ? BiomeRegistry.BIOME_EMPTY_NETHER : WeightedRandom.getRandomItem(new Random(noise3d.GetValue(px, py, pz)), l);
 	}
 
 	// generate cities
